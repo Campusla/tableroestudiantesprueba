@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusLA - Panel de Control Académico</title>
+    
+    <!-- ========================================== -->
+    <!-- 1. HOJA DE ESTILOS Y VARIABLES GLOBALES -->
+    <!-- ========================================== -->
     <style>
-        :root { --sidebar-width: 280px; --primary-blue: #003366; --accent-blue: #385898; --success-green: #10b981; --danger-red: #ef4444; }
-        body { font-family: Helvetica, Arial, sans-serif; background: #e9ebee; color: #1c1e21; margin: 0; display: flex; min-height: 100vh; }
+        :root { 
+            --sidebar-width: 280px; 
+            --primary-blue: #003366; 
+            --accent-blue: #385898; 
+            --success-green: #10b981; 
+            --danger-red: #ef4444; 
+        }
+        body { 
+            font-family: Helvetica, Arial, sans-serif; 
+            background: #e9ebee; 
+            color: #1c1e21; 
+            margin: 0; 
+            display: flex; 
+            min-height: 100vh; 
+        }
         
         /* Sidebar Fijo */
         .help-sidebar { width: var(--sidebar-width); background: #ffffff; border-right: 1px solid #ccd0d5; position: fixed; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; box-sizing: border-box; z-index: 10; }
@@ -40,23 +57,28 @@
         .sec-number { background: #003366; color: #fff; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: bold; }
         .sec-header h2 { font-size: 16px; margin: 0; color: #1d2129; }
 
-        /* NUEVA VISTA PRINCIPAL: 5 CAJAS DE ESTUDIANTES DESPLEGADAS */
-        .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 15px; margin-bottom: 30px; }
+        /* Filtros de Categorías de Estudio */
+        .filter-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .filter-btn { background: #f0f2f5; border: 1px solid #ccd0d5; color: #4b4f56; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .filter-btn:hover, .filter-btn.active-filter { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
+
+        /* Estudiantes Grid */
+        .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; margin-bottom: 30px; }
         .estudiante-mini-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
         .estudiante-mini-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px auto; border: 2px solid var(--accent-blue); }
         .estudiante-mini-card h4 { font-size: 13px; margin: 0 0 4px 0; color: var(--primary-blue); }
-        .estudiante-mini-card p { font-size: 11px; color: #606770; margin: 0 0 10px 0; min-height: 28px; }
+        .estudiante-mini-card p { font-size: 11px; color: #606770; margin: 0 0 10px 0; min-height: 32px; }
         .btn-conectar-mini { background: var(--success-green); color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
         .btn-conectar-mini:hover { background: #059669; }
 
-        /* Perfil y Avatar principal */
+        /* Perfil y Avatar */
         .profile-avatar-container { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background: #f0f2f5; padding: 15px; border-radius: 8px; }
         .profile-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-blue); background: #ccc; }
         .avatar-actions input[type="file"] { display: none; }
         .btn-upload { background: #fff; border: 1px solid #ccd0d5; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #4b4f56; display: inline-block; }
         .btn-upload:hover { background: #e4e6eb; }
 
-        /* Galería de 4 Fotos */
+        /* Galería */
         .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
         .gallery-slot { height: 90px; background: #f0f2f5; border: 2px dashed #ccd0d5; border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; }
         .gallery-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
@@ -73,7 +95,7 @@
         .meta-label { font-weight: 700; color: #606770; width: 45%; }
         .meta-value { color: #1c1e21; font-weight: 500; }
 
-        /* Estilos sección: Moodle y Compras */
+        /* Moodle y Compras */
         .moodle-access-box { background: #f0f2f5; border: 1px solid #ccd0d5; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 25px; }
         .moodle-access-box h3 { margin: 0 0 8px 0; color: var(--primary-blue); font-size: 16px; }
         .moodle-access-box p { font-size: 13px; color: #606770; margin: 0 0 15px 0; }
@@ -84,22 +106,6 @@
         .purchases-table th { background: #f0f2f5; color: #4b4f56; font-weight: 700; text-align: left; padding: 10px; border-bottom: 1px solid #ccd0d5; }
         .purchases-table td { padding: 10px; border-bottom: 1px solid #f0f2f5; color: #1c1e21; }
         .badge-status { background: #d1fae5; color: #065f46; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-
-        /* TINDER CLASSIC VIEW */
-        .tinder-wrapper { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
-        .tinder-card { width: 100%; max-width: 380px; background: white; border-radius: 12px; border: 1px solid #ccd0d5; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden; position: relative; text-align: center; }
-        .tinder-img-container { width: 100%; height: 260px; position: relative; background: #000; }
-        .tinder-img-container img { width: 100%; height: 100%; object-fit: cover; }
-        .tinder-badge { position: absolute; top: 15px; left: 15px; background: rgba(0, 51, 102, 0.85); color: white; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
-        .tinder-info { padding: 20px; }
-        .tinder-info h3 { margin: 0 0 5px 0; font-size: 20px; color: var(--primary-blue); }
-        .tinder-info p { font-size: 13px; color: #606770; font-style: italic; margin: 0 0 15px 0; line-height: 1.4; min-height: 40px; }
-        .tinder-actions { display: flex; justify-content: center; gap: 20px; padding-bottom: 20px; }
-        .btn-tinder { width: 60px; height: 60px; border-radius: 50%; border: 1px solid #ccd0d5; background: white; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .btn-pass { color: var(--danger-red); border-color: #fecaca; }
-        .btn-pass:hover { background: #fee2e2; }
-        .btn-match-yes { color: var(--success-green); border-color: #a7f3d0; }
-        .btn-match-yes:hover { background: #ecfdf5; }
 
         /* Chat Flotante */
         .chat-modal { position: fixed; bottom: 20px; right: 20px; width: 320px; background: white; border: 1px solid #ccd0d5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; flex-direction: column; z-index: 100; }
@@ -126,7 +132,9 @@
 </head>
 <body>
 
-    <!-- SIDEBAR -->
+    <!-- ========================================== -->
+    <!-- 2. SECCIÓN: NAVEGACIÓN LATERAL (SIDEBAR)  -->
+    <!-- ========================================== -->
     <aside class="help-sidebar">
         <div>
             <div>
@@ -135,12 +143,11 @@
             </div>
             
             <nav class="help-nav-menu">
-                <button onclick="switchTab('comunidad-estudiantes', this)" class="nav-item active">1. <span class="nav-hl-green">Comunidad</span> (Estudiantes)</button>
+                <button onclick="switchTab('comunidad-estudiantes', this)" class="nav-item active">1. <span class="nav-hl-green">Comunidad</span> (Partners de Estudio)</button>
                 <button onclick="switchTab('datos-registro', this)" class="nav-item">2. <span class="nav-hl-blue">Mi Perfil</span> & Biografía</button>
                 <button onclick="switchTab('estado-academico', this)" class="nav-item">3. <span class="nav-hl-pink">Escuelas</span> & LMS</button>
-                <button onclick="switchTab('course-match', this)" class="nav-item">4. Study <span class="nav-hl-green">Match (Tinder)</span></button>
-                <button onclick="switchTab('soportes-pago', this)" class="nav-item">5. Acceso <span class="nav-hl-blue">Moodle & Compras</span></button>
-                <button onclick="switchTab('seguridad-cred', this)" class="nav-item">6. <span class="nav-hl-yellow">Seguridad</span> & Sesión</button>
+                <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Acceso <span class="nav-hl-blue">Moodle & Compras</span></button>
+                <button onclick="switchTab('seguridad-cred', this)" class="nav-item">5. <span class="nav-hl-yellow">Seguridad</span> & Sesión</button>
             </nav>
         </div>
 
@@ -150,35 +157,44 @@
         </div>
     </aside>
 
-    <!-- CONTENIDO CENTRAL -->
+    <!-- ========================================== -->
+    <!-- 3. SECCIÓN: CONTENIDO CENTRAL Y PANELES   -->
+    <!-- ========================================== -->
     <main class="help-content-body">
         <div class="help-main-header">
             <h1>Panel de Control Académico</h1>
-            <p>Ecosistema de conexión para <span id="header-user-email">CampusLA</span>.</p>
+            <p>Ecosistema abierto de conexión multidisciplinaria para <span id="header-user-email">CampusLA</span>.</p>
         </div>
 
         <div class="master-content-card">
 
-            <!-- 1. VISTA PRINCIPAL: 5 CAJAS DE ESTUDIANTES AL DESEMBARCAR (COMUNIDAD) -->
+            <!-- PANEL 01: COMUNIDAD Y FILTROS POR ÁREAS -->
             <div id="comunidad-estudiantes" class="help-tab-pane active-pane">
                 <div class="sec-header">
                     <span class="sec-number">01</span>
-                    <h2>Comunidad Activa - <span class="nav-hl-green">Conoce a otros estudiantes</span></h2>
+                    <h2>Comunidad Activa - <span class="nav-hl-green">Busca tu Partner de Estudio</span></h2>
                 </div>
-                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Explora los perfiles de otros compañeros conectados en tiempo real y haz match para estudiar juntos:</p>
+                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés y encuentra compañeros conectados para repasar matemáticas, derecho, maestrías o idiomas:</p>
                 
-                <!-- Las 5 cajas de estudiantes solicitadas -->
-                <div class="feed-estudiantes-grid" id="grid5Estudiantes">
-                    <!-- Se inyectarán dinámicamente vía JS para asegurar las 5 cajas exactas -->
+                <!-- Filtros de Categorías -->
+                <div class="filter-container">
+                    <button class="filter-btn active-filter" onclick="filtrarEstudiantes('todos', this)">Todos</button>
+                    <button class="filter-btn" onclick="filtrarEstudiantes('Matemáticas', this)">Matemáticas & Exactas</button>
+                    <button class="filter-btn" onclick="filtrarEstudiantes('Derecho', this)">Derecho & Leyes</button>
+                    <button class="filter-btn" onclick="filtrarEstudiantes('Maestría', this)">Maestrías & Postgrados</button>
+                    <button class="filter-btn" onclick="filtrarEstudiantes('Sociales', this)">Ciencias Sociales</button>
+                    <button class="filter-btn" onclick="filtrarEstudiantes('Idiomas', this)">Idiomas & Certificaciones</button>
                 </div>
 
+                <div class="feed-estudiantes-grid" id="gridEstudiantes"></div>
+
                 <div style="background: #f0f2f5; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
-                    <p style="font-size: 13px; color: #4b4f56; margin: 0 0 10px 0;">¿Quieres aparecer tú también en esta vitrina y conectar con más gente?</p>
-                    <button class="btn-save-bio" onclick="switchTab('datos-registro', document.querySelectorAll('.nav-item')[1])">Actualizar mi Perfil y Biografía 🚀</button>
+                    <p style="font-size: 13px; color: #4b4f56; margin: 0 0 10px 0;">¿Quieres actualizar tu propia biografía y área de estudio para aparecer en la red?</p>
+                    <button class="btn-save-bio" onclick="switchTab('datos-registro', document.querySelectorAll('.nav-item')[1])">Actualizar mi Perfil 🚀</button>
                 </div>
             </div>
 
-            <!-- 2. DATOS Y PERFIL (LLENAR BIO Y FOTOS) -->
+            <!-- PANEL 02: PERFIL, FOTOS Y BIOGRAFÍA -->
             <div id="datos-registro" class="help-tab-pane">
                 <div class="sec-header">
                     <span class="sec-number">02</span>
@@ -218,8 +234,8 @@
                 </div>
 
                 <div class="bio-box">
-                    <label for="user-bio-input">Mi Biografía / Metas de Estudio para el Match</label>
-                    <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas..." oninput="guardarBioAuto()"></textarea>
+                    <label for="user-bio-input">Mi Biografía / Metas de Estudio (Indica tu área: Matemáticas, Derecho, Maestría, etc.)</label>
+                    <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas y qué estás estudiando..." oninput="guardarBioAuto()"></textarea>
                     <button class="btn-save-bio" onclick="guardarBioManual()">Guardar Biografía</button>
                 </div>
 
@@ -231,42 +247,16 @@
                 <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión Segura</button>
             </div>
 
-            <!-- 3. ESTADO ACADÉMICO -->
+            <!-- PANEL 03: ESTADO ACADÉMICO -->
             <div id="estado-academico" class="help-tab-pane">
                 <div class="sec-header"><span class="sec-number">03</span><h2><span class="nav-hl-pink">Escuelas</span> y Moodle LMS</h2></div>
                 <p>Programas activos y simuladores sincronizados en la red académica.</p>
             </div>
 
-            <!-- 4. STUDY MATCH ESTILO TINDER -->
-            <div id="course-match" class="help-tab-pane">
-                <div class="sec-header">
-                    <span class="sec-number">04</span>
-                    <h2>Study <span class="nav-hl-green">Match (Modo Tinder)</span></h2>
-                </div>
-                <p style="text-align: center; margin-bottom: 20px; font-size: 13px; color: #606770;">Desliza o presiona los botones para conectar con compañeros que comparten tu meta académica.</p>
-
-                <div class="tinder-wrapper" id="tinderAppContainer">
-                    <div class="tinder-card" id="tinderCard">
-                        <div class="tinder-img-container">
-                            <span class="tinder-badge" id="cardGoal">TOEFL ITP</span>
-                            <img id="cardImg" src="" alt="Compañero">
-                        </div>
-                        <div class="tinder-info">
-                            <h3 id="cardName">Nombre</h3>
-                            <p id="cardBio">Biografía de estudio...</p>
-                        </div>
-                        <div class="tinder-actions">
-                            <button class="btn-tinder btn-pass" onclick="tinderSwipe('pass')" title="Pasar">✕</button>
-                            <button class="btn-tinder btn-match-yes" onclick="tinderSwipe('match')" title="Estudiar Juntos">✓</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. ACCESO MOODLE Y COMPRAS -->
+            <!-- PANEL 04: MOODLE Y COMPRAS -->
             <div id="soportes-pago" class="help-tab-pane">
                 <div class="sec-header">
-                    <span class="sec-number">05</span>
+                    <span class="sec-number">04</span>
                     <h2>Acceso a <span class="nav-hl-blue">Moodle & Historial de Compras</span></h2>
                 </div>
                 
@@ -276,7 +266,7 @@
                     <a href="https://escuelaandina.campuslatinoamerica.edu.co" target="_blank" class="btn-moodle">Ingresar a Moodle LMS 🚀</a>
                 </div>
 
-                <h3 style="font-size: 14px; color: var(--primary-blue); margin-top: 25px; margin-bottom: 10px;">Mis Compras y Exámenes Adquiridos</h3>
+                <h3 style="font-size: 14px; color: var(--primary-blue); margin-top: 25px; margin-bottom: 10px;">Mis Compras y Programas Adquiridos</h3>
                 <table class="purchases-table">
                     <thead>
                         <tr>
@@ -287,7 +277,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Simulador Oficial TOEFL ITP / Oxford Test</td>
+                            <td>Simulador Oficial Académico / Posgrados</td>
                             <td>21/09/2026</td>
                             <td><span class="badge-status">Activo / Pagado</span></td>
                         </tr>
@@ -300,23 +290,25 @@
                 </table>
             </div>
 
-            <!-- 6. SEGURIDAD -->
+            <!-- PANEL 05: SEGURIDAD -->
             <div id="seguridad-cred" class="help-tab-pane">
-                <div class="sec-header"><span class="sec-number">06</span><h2><span class="nav-hl-yellow">Seguridad</span></h2></div>
+                <div class="sec-header"><span class="sec-number">05</span><h2><span class="nav-hl-yellow">Seguridad</span></h2></div>
                 <p>Sesión cifrada y protegida.</p>
             </div>
 
         </div>
     </main>
 
-    <!-- CHAT FLOTANTE -->
+    <!-- ========================================== -->
+    <!-- 4. SECCIÓN: CHAT FLOTANTE                   -->
+    <!-- ========================================== -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-header">
             <span id="chatCompanionName">Chat de Estudio</span>
             <button class="chat-close" onclick="cerrarChat()">✕</button>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="chat-msg incoming">¡Hiciste Match! Ya pueden coordinar sus prácticas de estudio.</div>
+            <div class="chat-msg incoming">¡Conexión establecida! Ya pueden coordinar sus sesiones de estudio multidisciplinarias.</div>
         </div>
         <div class="chat-footer">
             <input type="text" id="chatInput" placeholder="Escribe un mensaje..." onkeypress="if(event.key === 'Enter') enviarMensaje()">
@@ -324,16 +316,17 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT               -->
+    <!-- ========================================== -->
     <script>
-        const tinderCandidatos = [
-            { id: 1, nombre: "Camila Restrepo", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
-            { id: 2, nombre: "Mateo Gómez", goal: "Moodle & LMS", bio: "Apasionado por el desarrollo web y optimización educativa.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
-            { id: 3, nombre: "Lucía Fernández", goal: "Oxford Test", bio: "Docente de inglés y candidata a certificación oficial.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" },
-            { id: 4, nombre: "Andrés Felipe Ruiz", goal: "TOEFL ITP", bio: "Ingeniero buscando puntaje C1 en TOEFL.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300" },
-            { id: 5, nombre: "Valentina Mora", goal: "IELTS Academic", bio: "Practicando speaking y writing todas las tardes.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" }
+        const estudiantesComunidad = [
+            { id: 1, nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
+            { id: 2, nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
+            { id: 3, nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: "Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" },
+            { id: 4, nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300" },
+            { id: 5, nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" }
         ];
-
-        let currentIndex = 0;
 
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.help-tab-pane').forEach(pane => pane.classList.remove('active-pane'));
@@ -341,10 +334,6 @@
             
             document.getElementById(tabId).classList.add('active-pane');
             btnElement.classList.add('active');
-
-            if(tabId === 'course-match') {
-                cargarTarjetaTinder();
-            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -376,66 +365,42 @@
                 });
             }
 
-            // Renderizar exactamente las 5 cajas de estudiantes en la vista principal
-            renderizar5CajasEstudiantes();
+            renderizarEstudiantes(estudiantesComunidad);
         });
 
-        function renderizar5CajasEstudiantes() {
-            const grid = document.getElementById('grid5Estudiantes');
+        function renderizarEstudiantes(lista) {
+            const grid = document.getElementById('gridEstudiantes');
             grid.innerHTML = '';
-            tinderCandidatos.forEach(est => {
+            if(lista.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #606770; font-size: 13px;">No hay estudiantes en esta categoría por el momento.</p>';
+                return;
+            }
+            lista.forEach(est => {
                 const card = document.createElement('div');
                 card.className = 'estudiante-mini-card';
                 card.innerHTML = `
                     <div>
                         <img src="${est.img}" alt="${est.nombre}">
-                        <h4>${est.nombre}</h4>
+                        <span style="font-size:10px; background:#e7f3ff; color:var(--accent-blue); padding:2px 6px; border-radius:4px; font-weight:bold;">${est.goal}</span>
+                        <h4 style="margin-top:6px;">${est.nombre}</h4>
                         <p>${est.bio}</p>
                     </div>
-                    <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar</button>
+                    <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar Partner</button>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function cargarTarjetaTinder() {
-            const container = document.getElementById('tinderAppContainer');
-            if (currentIndex >= tinderCandidatos.length) {
-                container.innerHTML = `
-                    <div style="background:white; padding:40px; border-radius:12px; border:1px solid #ccd0d5; text-align:center; max-width:380px; width:100%;">
-                        <h3 style="color:var(--primary-blue); margin-top:0;">¡Estás al día!</h3>
-                        <p style="color:#606770; font-size:13px;">Has revisado todos los perfiles disponibles. Vuelve más tarde.</p>
-                        <button class="btn-save-bio" onclick="currentIndex=0; cargarTarjetaTinder();">Reiniciar Tarjetas</button>
-                    </div>
-                `;
-                return;
-            }
-            const c = tinderCandidatos[currentIndex];
-            container.innerHTML = `
-                <div class="tinder-card" id="tinderCard">
-                    <div class="tinder-img-container">
-                        <span class="tinder-badge">${c.goal}</span>
-                        <img src="${c.img}" alt="${c.nombre}">
-                    </div>
-                    <div class="tinder-info">
-                        <h3>${c.nombre}</h3>
-                        <p>"${c.bio}"</p>
-                    </div>
-                    <div class="tinder-actions">
-                        <button class="btn-tinder btn-pass" onclick="tinderSwipe('pass')" title="Pasar">✕</button>
-                        <button class="btn-tinder btn-match-yes" onclick="tinderSwipe('match')" title="Estudiar Juntos">✓</button>
-                    </div>
-                </div>
-            `;
-        }
+        function filtrarEstudiantes(categoria, btnElem) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
+            btnElem.classList.add('active-filter');
 
-        function tinderSwipe(accion) {
-            const c = tinderCandidatos[currentIndex];
-            if (accion === 'match') {
-                abrirChat(c.nombre);
+            if(categoria === 'todos') {
+                renderizarEstudiantes(estudiantesComunidad);
+            } else {
+                const filtrados = estudiantesComunidad.filter(est => est.categoria === categoria);
+                renderizarEstudiantes(filtrados);
             }
-            currentIndex++;
-            cargarTarjetaTinder();
         }
 
         function abrirChat(nombre) {
@@ -464,7 +429,7 @@
             setTimeout(() => {
                 const msgIn = document.createElement('div');
                 msgIn.className = 'chat-msg incoming';
-                msgIn.innerText = '¡Recibido! Nos ponemos de acuerdo para practicar.';
+                msgIn.innerText = '¡Recibido! Cuadrísimo el espacio para repasar y avanzar.';
                 chatBody.appendChild(msgIn);
                 chatBody.scrollTop = chatBody.scrollHeight;
             }, 1000);
