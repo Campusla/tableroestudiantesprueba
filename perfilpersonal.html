@@ -178,7 +178,7 @@
                 
                 <!-- Filtros de Categorías -->
                 <div class="filter-container">
-                    <button class="filter-btn active-filter" onclick="filtrarEstudiantes('todos', this)">Todos</button>
+                    <button class="filter-btn active-filter" onclick="filtrarEstudiantes('todos', this)">Rotar / Recomendados</button>
                     <button class="filter-btn" onclick="filtrarEstudiantes('Matemáticas', this)">Matemáticas & Exactas</button>
                     <button class="filter-btn" onclick="filtrarEstudiantes('Derecho', this)">Derecho & Leyes</button>
                     <button class="filter-btn" onclick="filtrarEstudiantes('Maestría', this)">Maestrías & Postgrados</button>
@@ -428,7 +428,10 @@
                 comunidadLocal = estudiantesComunidadBase;
             }
             estudiantesComunidad = comunidadLocal;
-            renderizarEstudiantes(estudiantesComunidad);
+            
+            // LÓGICA DE ROTACIÓN / RECOMENDACIÓN INTELIGENTE (Para que no se sature el dashboard)
+            // Tomamos una muestra aleatoria o rotativa de hasta 6 perfiles recomendados para la vista principal 'todos'
+            renderizarEstudiantesRotativos(estudiantesComunidad);
         }
 
         function renderizarEstudiantes(lista) {
@@ -454,12 +457,22 @@
             });
         }
 
+        // Función específica para rotar perfiles y evitar saturación en el dashboard principal
+        function renderizarEstudiantesRotativos(lista) {
+            // Mezclamos aleatoriamente la lista para ir rotando las recomendaciones en cada visita o clic
+            let listaMezclada = [...lista].sort(() => 0.5 - Math.random());
+            // Limitamos a máximo 6 perfiles visibles para mantener el dashboard limpio y ordenado
+            let recomendados = listaMezclada.slice(0, 6);
+            renderizarEstudiantes(recomendados);
+        }
+
         function filtrarEstudiantes(categoria, btnElem) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
             btnElem.classList.add('active-filter');
 
             if(categoria === 'todos') {
-                renderizarEstudiantes(estudiantesComunidad);
+                // Al hacer clic en "Todos", activamos la rotación inteligente de perfiles recomendados
+                renderizarEstudiantesRotativos(estudiantesComunidad);
             } else {
                 const filtrados = estudiantesComunidad.filter(est => est.categoria === categoria);
                 renderizarEstudiantes(filtrados);
@@ -501,19 +514,15 @@
         function actualizarFotoPrincipal(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const base64Img = e.target.result;
                 document.getElementById('user-avatar-img').src = base64Img;
-
+                
                 let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
                 sessionData.avatar = base64Img;
                 localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-
                 sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
-                cargarComunidadCompleta();
-                alert('¡Foto principal actualizada con éxito!');
             };
             reader.readAsDataURL(file);
         }
@@ -521,11 +530,9 @@
         function actualizarGaleria(event, index) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const base64Img = e.target.result;
-                
                 const imgElem = document.getElementById(`g-img-${index}`);
                 const textElem = document.getElementById(`g-text-${index}`);
                 imgElem.src = base64Img;
@@ -533,31 +540,29 @@
                 textElem.style.display = 'none';
 
                 let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                if (!sessionData.gallery) sessionData.gallery = [];
+                if(!sessionData.gallery) sessionData.gallery = [];
                 sessionData.gallery[index] = base64Img;
                 localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-                alert('¡Foto de galería guardada!');
             };
             reader.readAsDataURL(file);
         }
 
         function guardarBioAuto() {
-            let bioVal = document.getElementById('user-bio-input').value;
-            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            sessionData.bio = bioVal;
-            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-            sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
+            // Guardado automático ligero si se requiere
         }
 
         function guardarBioManual() {
-            guardarBioAuto();
-            cargarComunidadCompleta();
-            alert('¡Biografía y metas de estudio guardadas y sincronizadas en la red!');
+            const bioText = document.getElementById('user-bio-input').value.trim();
+            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            sessionData.bio = bioText;
+            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
+            
+            sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
+            alert('¡Biografía actualizada y sincronizada con éxito en la red de partners!');
         }
 
         function cerrarSesion() {
             localStorage.removeItem('cla_user_session');
-            alert('Sesión cerrada de forma segura.');
             window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
         }
     </script>
