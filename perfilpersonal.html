@@ -814,4 +814,171 @@
         }
     });
 </script>
+<script>
+    // --- BLOQUE MAESTRO DEFINITIVO: PERFIL, 4 FOTOS Y CHAT PERSISTENTE POR PAREJA ---
+    
+    function abrirPerfilEstudiante(nombreEstudiante) {
+        let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+        let estudiante = comunidadLocal.find(e => e.nombre === nombreEstudiante);
+
+        if (!estudiante) {
+            let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            if (session.nombre === nombreEstudiante) {
+                estudiante = {
+                    nombre: session.nombre,
+                    email: session.email || 'correo@cla.edu',
+                    bio: session.bio || 'Sin biografía registrada.',
+                    intereses: session.intereses || '-',
+                    deportes: session.deportes || '-',
+                    libros: session.libros || '-',
+                    img: session.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
+                    gallery: session.gallery || ["", "", "", ""]
+                };
+            } else {
+                return;
+            }
+        }
+
+        const modalAvatar = document.getElementById('preview-modal-avatar');
+        const modalName = document.getElementById('preview-modal-name');
+        const modalEmail = document.getElementById('preview-modal-email');
+        const modalBio = document.getElementById('preview-modal-bio');
+        const modalIntereses = document.getElementById('preview-modal-intereses');
+        const modalDeportes = document.getElementById('preview-modal-deportes');
+        const modalLibros = document.getElementById('preview-modal-libros');
+
+        if (modalAvatar) modalAvatar.src = estudiante.img || estudiante.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300";
+        if (modalName) modalName.innerText = estudiante.nombre || 'Estudiante CLA';
+        if (modalEmail) modalEmail.innerText = estudiante.email || estudiante.id || 'estudiante@cla.edu';
+        if (modalBio) modalBio.innerText = estudiante.bio || 'Sin biografía registrada.';
+        if (modalIntereses) modalIntereses.innerText = estudiante.intereses || '-';
+        if (modalDeportes) modalDeportes.innerText = estudiante.deportes || '-';
+        if (modalLibros) modalLibros.innerText = estudiante.libros || '-';
+
+        for (let i = 0; i < 4; i++) {
+            const previewImg = document.getElementById(`preview-g-${i}`);
+            if (previewImg) {
+                if (estudiante.gallery && estudiante.gallery[i]) {
+                    previewImg.src = estudiante.gallery[i];
+                    previewImg.style.display = 'block';
+                } else {
+                    previewImg.style.display = 'none';
+                }
+            }
+        }
+
+        const modalContent = document.querySelector('#profilePreviewModal .modal-content, #profilePreviewModal > div');
+        if (modalContent) {
+            let btnConectarModal = document.getElementById('btn-conectar-modal-dinamico');
+            if (!btnConectarModal) {
+                btnConectarModal = document.createElement('button');
+                btnConectarModal.id = 'btn-conectar-modal-dinamico';
+                btnConectarModal.className = 'btn-conectar-mini';
+                btnConectarModal.style.cssText = 'width: 100%; margin-top: 20px; padding: 12px; font-size: 15px; cursor: pointer;';
+                modalContent.appendChild(btnConectarModal);
+            }
+            btnConectarModal.innerHTML = `Conectar con ${estudiante.nombre} 💬`;
+            btnConectarModal.onclick = function() {
+                if(typeof cerrarModalPerfilCompleto === 'function') cerrarModalPerfilCompleto();
+                iniciarChatConUsuario(estudiante.nombre);
+            };
+        }
+
+        const modalPerfil = document.getElementById('profilePreviewModal');
+        if (modalPerfil) {
+            modalPerfil.style.display = 'flex';
+        }
+    }
+
+    function iniciarChatConUsuario(nombreCompañero) {
+        const session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+        const miNombre = session.nombre || 'Usuario';
+        
+        const chatKey = `cla_chat_${[miNombre, nombreCompañero].sort().join('_')}`;
+        
+        const chatModal = document.getElementById('chatModal');
+        const chatCompanion = document.getElementById('chatCompanionName');
+        const chatBody = document.getElementById('chatBody');
+
+        if(chatCompanion) chatCompanion.innerText = "Chat con " + nombreCompañero;
+        
+        if(chatBody) {
+            const mensajesGuardados = JSON.parse(localStorage.getItem(chatKey) || '[]');
+            chatBody.innerHTML = '';
+            
+            if(mensajesGuardados.length === 0) {
+                chatBody.innerHTML = `<div class="chat-msg incoming" style="text-align:center; color:#666;">Inicia una conversación con ${nombreCompañero}</div>`;
+            } else {
+                mensajesGuardados.forEach(m => {
+                    const clase = m.remitente === miNombre ? 'outgoing' : 'incoming';
+                    chatBody.innerHTML += `<div class="chat-msg ${clase}">${m.texto}</div>`;
+                });
+            }
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        if(chatModal) chatModal.style.display = 'flex';
+
+        window.chatActivoKey = chatKey;
+        window.chatDestinatario = nombreCompañero;
+        window.miNombreActual = miNombre;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputChat = document.getElementById('chatInput');
+
+        const enviarLogica = () => {
+            if(!inputChat || !window.chatActivoKey) return;
+            const texto = inputChat.value.trim();
+            if(!texto) return;
+
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML += `<div class="chat-msg outgoing">${texto}</div>`;
+            
+            let mensajesGuardados = JSON.parse(localStorage.getItem(window.chatActivoKey) || '[]');
+            mensajesGuardados.push({ remitente: window.miNombreActual, texto: texto, tiempo: Date.now() });
+            localStorage.setItem(window.chatActivoKey, JSON.stringify(mensajesGuardados));
+
+            inputChat.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            setTimeout(() => {
+                mensajesGuardados = JSON.parse(localStorage.getItem(window.chatActivoKey) || '[]');
+                const respuestaAuto = { remitente: window.chatDestinatario, texto: `¡Hola ${window.miNombreActual}! Recibí tu mensaje, hablemos por acá.`, tiempo: Date.now() };
+                mensajesGuardados.push(respuestaAuto);
+                localStorage.setItem(window.chatActivoKey, JSON.stringify(mensajesGuardados));
+
+                chatBody.innerHTML += `<div class="chat-msg incoming">${respuestaAuto.texto}</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1200);
+        };
+
+        if(inputChat) {
+            inputChat.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter') enviarLogica();
+            });
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.estudiante-mini-card img, .comunidad-card img')) {
+            const nombreH4 = e.target.closest('.estudiante-mini-card, .comunidad-card')?.querySelector('h4')?.innerText;
+            if (nombreH4) {
+                abrirPerfilEstudiante(nombreH4);
+            }
+        }
+        
+        if (e.target.matches('.btn-conectar-mini') && !e.target.id.includes('dinamico')) {
+            const card = e.target.closest('.estudiante-mini-card, .comunidad-card');
+            if(card) {
+                const nombreH4 = card.querySelector('h4')?.innerText;
+                if(nombreH4) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    iniciarChatConUsuario(nombreH4);
+                }
+            }
+        }
+    });
+</script>    
 </html>
