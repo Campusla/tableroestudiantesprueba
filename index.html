@@ -8,7 +8,6 @@
         body { font-family: Helvetica, Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 900px; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); align-items: center; }
         .intro-side { flex: 1; min-width: 280px; text-align: center; }
-        .intro-side img { width: 100%; max-width: 180px; filter: grayscale(100%) contrast(150%); margin-bottom: 20px; }
         .intro-side h2 { color: #003366; font-size: 22px; margin-bottom: 10px; }
         .intro-side p { color: #555; font-size: 14px; line-height: 1.5; }
         .form-side { flex: 1; min-width: 320px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; }
@@ -28,7 +27,6 @@
 
     <div class="main-container">
         <div class="intro-side">
-            <img src="https://campuslatinoamerica.edu.co/logosaliados/lennyfoto.png" alt="CampusLA Logo" onerror="this.src='https://via.placeholder.com/180x180?text=CampusLA'">
             <h2>Ecosistema Educativo CLA</h2>
             <p>Regístrate una sola vez y obtén acceso inmediato a tu perfil personal, control de cursos en Moodle y simuladores oficiales.</p>
         </div>
@@ -99,14 +97,25 @@
             }, 600);
         });
 
-        // Botón de acceso directo para los que ya están registrados
+        // Botón de acceso directo mejorado sin bloqueos molestos
         document.getElementById('btn-login-direct').addEventListener('click', function(e) {
             e.preventDefault();
             const savedSession = localStorage.getItem('cla_user_session');
+            
             if (savedSession) {
                 window.location.href = 'https://campusla.github.io/Ecosistemausuarios/perfilpersonal.html';
             } else {
-                alert('No hay una sesión activa en este navegador. Por favor regístrate primero o ingresa tus datos.');
+                const correoIngresado = prompt('No hay sesión activa. Ingresa tu correo electrónico registrado para iniciar sesión:');
+                if (correoIngresado && correoIngresado.trim() !== '') {
+                    const restoredSession = {
+                        nombre: 'Estudiante CLA',
+                        email: correoIngresado.trim(),
+                        telefono: 'No especificado',
+                        fechaRegistro: new Date().toISOString()
+                    };
+                    localStorage.setItem('cla_user_session', JSON.stringify(restoredSession));
+                    window.location.href = 'https://campusla.github.io/Ecosistemausuarios/perfilpersonal.html';
+                }
             }
         });
     </script>
