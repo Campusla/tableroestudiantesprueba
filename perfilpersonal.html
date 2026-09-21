@@ -65,15 +65,15 @@
         /* Estudiantes Grid - 3 columnas */
         .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 30px; }
         .estudiante-mini-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
-        .estudiante-mini-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px auto; border: 2px solid var(--accent-blue); }
+        .estudiante-mini-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px auto; border: 2px solid var(--accent-blue); cursor: pointer; transition: transform 0.2s; }
+        .estudiante-mini-card img:hover { transform: scale(1.08); }
         .estudiante-mini-card h4 { font-size: 13px; margin: 0 0 4px 0; color: var(--primary-blue); }
         .estudiante-mini-card p { font-size: 11px; color: #606770; margin: 0 0 10px 0; min-height: 32px; }
         .btn-conectar-mini { background: var(--success-green); color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
         .btn-conectar-mini:hover { background: #059669; }
 
-        /* PERFIL MEJORADO Y AMPLIADO (Sin verse delgada ni apretada) */
+        /* PERFIL MEJORADO Y AMPLIADO */
         .profile-container-wide { display: flex; flex-direction: column; gap: 25px; }
-        
         .profile-avatar-container { display: flex; align-items: center; gap: 25px; background: #f0f2f5; padding: 20px 25px; border-radius: 10px; border: 1px solid #ccd0d5; }
         .profile-avatar { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); background: #ccc; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
         .profile-avatar:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,51,102,0.3); }
@@ -106,7 +106,7 @@
         .meta-label { font-weight: 700; color: #606770; width: 40%; background: #f9f9f9; }
         .meta-value { color: #1c1e21; font-weight: 500; }
 
-        /* MODAL DE VISTA PREVIA DE PERFIL Y GALERÍA (Al pinchar la foto main) */
+        /* MODAL DE VISTA PREVIA DE PERFIL Y GALERÍA (Tinder Style) */
         .profile-preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; box-sizing: border-box; }
         .profile-preview-content { background: white; width: 650px; max-width: 100%; border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; position: relative; }
         .modal-close-btn { position: absolute; top: 20px; right: 20px; background: #e4e6eb; border: none; font-size: 16px; font-weight: bold; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
@@ -114,7 +114,7 @@
         .preview-header-flex { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
         .preview-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); }
         .preview-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
-        .preview-gallery-item { height: 80px; border-radius: 6px; background: #eee; object-fit: cover; width: 100%; display: none; }
+        .preview-gallery-item { height: 90px; border-radius: 8px; background: #eee; object-fit: cover; width: 100%; display: none; border: 1px solid #ccd0d5; }
         .preview-info-block { background: #f0f2f5; padding: 12px 15px; border-radius: 8px; margin-top: 12px; font-size: 13px; }
 
         /* Moodle y Compras */
@@ -198,7 +198,7 @@
                     <span class="sec-number">01</span>
                     <h2>Comunidad Activa - <span class="nav-hl-green">Busca tu Partner de Estudio</span></h2>
                 </div>
-                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés o deja que el tablero rote perfiles automáticamente cada 12 segundos:</p>
+                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés o haz clic en la foto de cualquier compañero para ver su perfil completo estilo Tinder:</p>
                 
                 <!-- Filtros de Categorías y Botón de Rotación Directa -->
                 <div class="filter-container">
@@ -221,7 +221,7 @@
                 </div>
             </section>
 
-            <!-- PANEL 02: PERFIL, FOTOS Y BIOGRAFÍA (ANCHO Y MEJORADO) -->
+            <!-- PANEL 02: PERFIL, FOTOS Y BIOGRAFÍA -->
             <section id="datos-registro" class="help-tab-pane">
                 <div class="sec-header">
                     <span class="sec-number">02</span>
@@ -229,7 +229,7 @@
                 </div>
                 
                 <div class="profile-container-wide">
-                    <!-- Avatar Principal (Haz clic para abrir vista completa) -->
+                    <!-- Avatar Principal -->
                     <div class="profile-avatar-container">
                         <img id="user-avatar-img" src="https://via.placeholder.com/85" alt="Avatar Principal" class="profile-avatar" title="¡Haz clic para ver tu tarjeta completa y galería!" onclick="abrirModalPerfilCompleto()">
                         <div class="avatar-actions">
@@ -352,7 +352,7 @@
     </main>
 
     <!-- ========================================== -->
-    <!-- MODAL VISTA PREVIA PERFIL & GALERÍA       -->
+    <!-- MODAL VISTA PREVIA PERFIL & GALERÍA (Tinder)-->
     <!-- ========================================== -->
     <div class="profile-preview-modal" id="profilePreviewModal">
         <div class="profile-preview-content">
@@ -366,7 +366,7 @@
             </div>
 
             <div class="preview-info-block">
-                <strong>Biografía:</strong> <span id="preview-modal-bio">Sin biografía</span>
+                <strong>Biografía / Meta:</strong> <span id="preview-modal-bio">Sin biografía</span>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
@@ -375,7 +375,7 @@
                 <div class="preview-info-block" style="margin-top:0;"><strong>Libros:</strong> <span id="preview-modal-libros">-</span></div>
             </div>
 
-            <h4 style="margin: 20px 0 10px 0; font-size: 14px; color: var(--primary-blue);">Galería Académica (4 Fotos)</h4>
+            <h4 style="margin: 20px 0 10px 0; font-size: 14px; color: var(--primary-blue);">Galería Académica (Fotos de Perfil)</h4>
             <div class="preview-gallery-grid">
                 <img id="preview-g-0" class="preview-gallery-item" alt="Foto 1">
                 <img id="preview-g-1" class="preview-gallery-item" alt="Foto 2">
@@ -407,15 +407,15 @@
     <!-- ========================================== -->
     <script>
         const estudiantesComunidadBase = [
-            { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
-            { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
-            { id: "lucia@cla.edu", nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: "Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" },
-            { id: "andres@cla.edu", nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300" },
-            { id: "valentina@cla.edu", nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" },
-            { id: "carlos@cla.edu", nombre: "Carlos Eduardo Soto", categoria: "Matemáticas", goal: "Física Cuántica", bio: "Repasando laboratorios y física de campos avanzados.", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" },
-            { id: "pepe@cla.edu", nombre: "pepe", categoria: "Idiomas", goal: "Inglés e idiomas", bio: "Inglés e idiomas.", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300" },
-            { id: "marty@cla.edu", nombre: "Marty", categoria: "Maestría", goal: "Estudiante CLA", bio: "Estudiando y conectando en el ecosistema.", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300" },
-            { id: "hollman@cla.edu", nombre: "Hollman Alvarez", categoria: "Maestría", goal: "Finanzas y desarrollo", bio: "Finanzas y desarrollo", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300" }
+            { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300", intereses: "Idiomas, Viajes", deportes: "Yoga", libros: "El Principito", gallery: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300", "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300"] },
+            { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300", intereses: "Matemáticas, Física", deportes: "Fútbol", libros: "Cosmos", gallery: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300"] },
+            { id: "lucia@cla.edu", nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: "Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300", intereses: "Leyes, Política", deportes: "Tenis", libros: "Crimen y Castigo", gallery: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"] },
+            { id: "andres@cla.edu", nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300", intereses: "Negocios", deportes: "Gym", libros: "El Monje que Vendió su Ferrari", gallery: ["https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300"] },
+            { id: "valentina@cla.edu", nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300", intereses: "Sociología, Arte", deportes: "Danza", libros: "Sapiens", gallery: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300"] },
+            { id: "carlos@cla.edu", nombre: "Carlos Eduardo Soto", categoria: "Matemáticas", goal: "Física Cuántica", bio: "Repasando laboratorios y física de campos avanzados.", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300", intereses: "Astronomía", deportes: "Natación", libros: "Breve Historia del Tiempo", gallery: ["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300"] },
+            { id: "pepe@cla.edu", nombre: "pepe", categoria: "Idiomas", goal: "Inglés e idiomas", bio: "Inglés e idiomas avanzados.", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300", intereses: "Idiomas", deportes: "Running", libros: "1984", gallery: ["https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"] },
+            { id: "marty@cla.edu", nombre: "Marty", categoria: "Maestría", goal: "Estudiante CLA", bio: "Estudiando y conectando en el ecosistema.", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300", intereses: "Desarrollo", deportes: "Ciclismo", libros: "Clean Code", gallery: ["https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300"] },
+            { id: "hollman@cla.edu", nombre: "Hollman Alvarez", categoria: "Maestría", goal: "Finanzas y desarrollo", bio: "Finanzas y desarrollo de plataformas.", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300", intereses: "Finanzas, UX/UI", deportes: "Running", libros: "El Lobo de Wall Street", gallery: ["https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300"] }
         ];
 
         let estudiantesComunidad = [];
@@ -497,8 +497,14 @@
                 comunidadLocal[index].categoria = categoriaDetectada;
                 comunidadLocal[index].goal = bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA";
                 comunidadLocal[index].bio = bioTexto;
+                comunidadLocal[index].intereses = user.intereses || comunidadLocal[index].intereses || "-";
+                comunidadLocal[index].deportes = user.deportes || comunidadLocal[index].deportes || "-";
+                comunidadLocal[index].libros = user.libros || comunidadLocal[index].libros || "-";
                 if(user.avatar) {
                     comunidadLocal[index].img = user.avatar;
+                }
+                if(user.gallery) {
+                    comunidadLocal[index].gallery = user.gallery;
                 }
             } else {
                 comunidadLocal.push({
@@ -507,7 +513,11 @@
                     categoria: categoriaDetectada,
                     goal: bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA",
                     bio: bioTexto,
-                    img: user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
+                    img: user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
+                    intereses: user.intereses || "-",
+                    deportes: user.deportes || "-",
+                    libros: user.libros || "-",
+                    gallery: user.gallery || [user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"]
                 });
             }
             localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
@@ -537,10 +547,11 @@
             let seleccionados = copia.slice(0, 6);
 
             seleccionados.forEach(est => {
+                let identifier = est.email || est.id || est.nombre;
                 grid.innerHTML += `
                     <div class="estudiante-mini-card">
                         <div>
-                            <img src="${est.img}" alt="${est.nombre}">
+                            <img src="${est.img}" alt="${est.nombre}" title="Haz clic para ver perfil y galería" onclick="abrirModalComunidadPorId('${est.nombre}')">
                             <h4>${est.nombre}</h4>
                             <p><strong>${est.goal}</strong><br>${est.bio}</p>
                         </div>
@@ -564,7 +575,7 @@
                 grid.innerHTML += `
                     <div class="estudiante-mini-card">
                         <div>
-                            <img src="${est.img}" alt="${est.nombre}">
+                            <img src="${est.img}" alt="${est.nombre}" title="Haz clic para ver perfil y galería" onclick="abrirModalComunidadPorId('${est.nombre}')">
                             <h4>${est.nombre}</h4>
                             <p><strong>${est.goal}</strong><br>${est.bio}</p>
                         </div>
@@ -631,6 +642,7 @@
                     session.gallery[index] = base64Img;
                     localStorage.setItem('cla_user_session', JSON.stringify(session));
                     
+                    sincronizarUsuarioActualEnComunidad(session, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
                     alert(`¡Foto ${index + 1} de la galería guardada!`);
                 }
                 reader.readAsDataURL(file);
@@ -652,27 +664,51 @@
             alert('¡Biografía y datos guardados correctamente!');
         }
 
-        /* Funciones para abrir y cerrar el Modal del Perfil Completo */
+        /* Funciones para abrir y cerrar el Modal del Perfil Completo (Usuario propio o de comunidad) */
         function abrirModalPerfilCompleto() {
             const session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            
-            document.getElementById('preview-modal-avatar').src = session.avatar || document.getElementById('user-avatar-img').src;
-            document.getElementById('preview-modal-name').innerText = session.nombre || 'Estudiante CLA';
-            document.getElementById('preview-modal-email').innerText = session.email || 'correo@cla.edu';
-            document.getElementById('preview-modal-bio').innerText = session.bio || document.getElementById('user-bio-input').value || 'Sin biografía registrada.';
-            document.getElementById('preview-modal-intereses').innerText = session.intereses || document.getElementById('user-intereses').value || '-';
-            document.getElementById('preview-modal-deportes').innerText = session.deportes || document.getElementById('user-deportes').value || '-';
-            document.getElementById('preview-modal-libros').innerText = session.libros || document.getElementById('user-libros').value || '-';
+            poblarYMostrarModal(session.nombre || 'Estudiante CLA', session.email || 'correo@cla.edu', session.avatar || document.getElementById('user-avatar-img').src, session.bio || document.getElementById('user-bio-input').value, session.intereses || '-', session.deportes || '-', session.libros || '-', session.gallery || []);
+        }
 
-            // Cargar las 4 fotos de galería en el modal
+        function abrirModalComunidadPorId(nombreEstudiante) {
+            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+            let estudiante = comunidadLocal.find(e => e.nombre === nombreEstudiante);
+            
+            if(!estudiante) {
+                estudiante = estudiantesComunidadBase.find(e => e.nombre === nombreEstudiante) || {
+                    nombre: nombreEstudiante, email: "socio@cla.edu", img: "https://via.placeholder.com/85", bio: "Sin biografía", intereses: "-", deportes: "-", libros: "-", gallery: []
+                };
+            }
+
+            poblarYMostrarModal(
+                estudiante.nombre, 
+                estudiante.id || estudiante.email || "miembro@cla.edu", 
+                estudiante.img, 
+                estudiante.bio, 
+                estudiante.intereses || "Estudio, Networking", 
+                estudiante.deportes || "Deportes varios", 
+                estudiante.libros || "Lectura académica", 
+                estudiante.gallery || [estudiante.img]
+            );
+        }
+
+        function poblarYMostrarModal(nombre, email, avatar, bio, intereses, deportes, libros, gallery) {
+            document.getElementById('preview-modal-avatar').src = avatar;
+            document.getElementById('preview-modal-name').innerText = nombre;
+            document.getElementById('preview-modal-email').innerText = email;
+            document.getElementById('preview-modal-bio').innerText = bio || 'Sin biografía registrada.';
+            document.getElementById('preview-modal-intereses').innerText = intereses;
+            document.getElementById('preview-modal-deportes').innerText = deportes;
+            document.getElementById('preview-modal-libros').innerText = libros;
+
+            // Cargar las 4 fotos de galería en el modal estilo Tinder
             for(let i = 0; i < 4; i++) {
                 const previewImg = document.getElementById(`preview-g-${i}`);
-                const mainImg = document.getElementById(`g-img-${i}`);
-                if(mainImg && mainImg.style.display === 'block' && mainImg.src) {
-                    previewImg.src = mainImg.src;
+                if(gallery && gallery[i] && gallery[i] !== "") {
+                    previewImg.src = gallery[i];
                     previewImg.style.display = 'block';
-                } else if(session.gallery && session.gallery[i]) {
-                    previewImg.src = session.gallery[i];
+                } else if(i === 0 && avatar) {
+                    previewImg.src = avatar;
                     previewImg.style.display = 'block';
                 } else {
                     previewImg.style.display = 'none';
