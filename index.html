@@ -92,18 +92,19 @@
             .then(response => response.json())
             .catch(error => console.log('Aviso enviado a Gmail:', error));
 
+            // CORREGIDO: Redirige directamente al link exacto del repositorio de Ecosistemausuarios que me indicó
             setTimeout(() => {
-                window.location.href = 'perfilpersonal.html';
+                window.location.href = 'https://github.com/Campusla/Ecosistemausuarios/blob/main/perfilpersonal.html';
             }, 600);
         });
 
-        // Botón de inicio de sesión directo para cuando cierran sesión y caen aquí
+        // Botón de inicio de sesión directo
         document.getElementById('btn-login-direct').addEventListener('click', function(e) {
             e.preventDefault();
             const savedSession = localStorage.getItem('cla_user_session');
             
             if (savedSession) {
-                window.location.href = 'perfilpersonal.html';
+                window.location.href = 'https://github.com/Campusla/Ecosistemausuarios/blob/main/perfilpersonal.html';
             } else {
                 const correoIngresado = prompt('No hay sesión activa. Ingresa tu correo electrónico registrado para iniciar sesión:');
                 if (correoIngresado && correoIngresado.trim() !== '') {
@@ -114,7 +115,7 @@
                         fechaRegistro: new Date().toISOString()
                     };
                     localStorage.setItem('cla_user_session', JSON.stringify(restoredSession));
-                    window.location.href = 'perfilpersonal.html';
+                    window.location.href = 'https://github.com/Campusla/Ecosistemausuarios/blob/main/perfilpersonal.html';
                 }
             }
         });
