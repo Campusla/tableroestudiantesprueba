@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil Personal - CampusLA</title>
+    <title>CampusLA - Study Match & Panel Personal</title>
     <style>
-        :root { --sidebar-width: 280px; --primary-blue: #003366; --accent-blue: #385898; }
+        :root { --sidebar-width: 280px; --primary-blue: #003366; --accent-blue: #385898; --success-green: #10b981; }
         body { font-family: Helvetica, Arial, sans-serif; background: #e9ebee; color: #1c1e21; margin: 0; display: flex; min-height: 100vh; }
         
         /* Sidebar Fijo */
@@ -47,7 +47,7 @@
         .btn-upload { background: #fff; border: 1px solid #ccd0d5; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; color: #4b4f56; display: inline-block; }
         .btn-upload:hover { background: #e4e6eb; }
 
-        /* Galería de 4 Fotos estilo Tinder Académico */
+        /* Galería de 4 Fotos tipo Portafolio */
         .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
         .gallery-slot { height: 90px; background: #f0f2f5; border: 2px dashed #ccd0d5; border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; }
         .gallery-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
@@ -61,33 +61,44 @@
         .btn-save-bio { background: #003366; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; }
         .btn-save-bio:hover { background: #002244; }
 
-        /* Tablas y Cajas de Datos */
         .profile-meta-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .profile-meta-table tr td { padding: 12px; border-bottom: 1px solid #f0f2f5; font-size: 13.5px; }
         .meta-label { font-weight: 700; color: #606770; width: 45%; }
         .meta-value { color: #1c1e21; font-weight: 500; }
 
-        /* Estilos CourseMatch */
-        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; margin-top: 15px; }
-        .match-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 15px; text-align: center; }
-        .match-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #10b981; }
-        .match-card h4 { margin: 0 0 3px 0; font-size: 14px; color: var(--primary-blue); }
-        .match-card .match-bio { font-size: 11px; color: #606770; margin: 0 0 10px 0; font-style: italic; line-height: 1.3; }
-        .match-card p { font-size: 12px; color: #333; font-weight: bold; margin: 0 0 12px 0; }
-        .btn-match { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; }
-        .btn-match:hover { background: #059669; }
+        /* Estilos CourseMatch Avanzado */
+        .match-container { display: flex; flex-direction: column; gap: 20px; }
+        .match-filters { display: flex; gap: 10px; margin-bottom: 10px; }
+        .match-filters select, .match-filters input { padding: 8px; border: 1px solid #ccd0d5; border-radius: 6px; font-size: 13px; flex: 1; }
+        
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        .match-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+        .match-card img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px auto; border: 2px solid var(--success-green); }
+        .match-card h4 { margin: 0 0 4px 0; font-size: 14px; color: var(--primary-blue); }
+        .match-card .match-bio { font-size: 11.5px; color: #606770; margin: 0 0 10px 0; font-style: italic; line-height: 1.3; min-height: 30px; }
+        .match-badge-meta { background: #e7f3ff; color: #0066cc; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 12px; }
+        
+        .btn-match-action { background: var(--success-green); color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; width: 100%; transition: background 0.2s; }
+        .btn-match-action:hover { background: #059669; }
+        .btn-match-action.pending { background: #f59e0b; cursor: default; }
+        .btn-match-action.connected { background: var(--primary-blue); }
 
-        /* Chat Flotante Minimalista */
-        .chat-modal { position: fixed; bottom: 20px; right: 20px; width: 300px; background: white; border: 1px solid #ccd0d5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; flex-direction: column; z-index: 100; }
+        /* Modal para Ver Perfil Detallado de Otro Estudiante */
+        .profile-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; }
+        .profile-modal-content { background: white; width: 450px; max-width: 90%; border-radius: 8px; padding: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); position: relative; }
+        .profile-modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 16px; cursor: pointer; font-weight: bold; color: #606770; }
+
+        /* Chat Flotante Real */
+        .chat-modal { position: fixed; bottom: 20px; right: 20px; width: 320px; background: white; border: 1px solid #ccd0d5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; flex-direction: column; z-index: 100; }
         .chat-header { background: var(--primary-blue); color: white; padding: 10px 15px; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; }
         .chat-close { background: none; border: none; color: white; cursor: pointer; font-size: 14px; }
-        .chat-body { height: 180px; padding: 10px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 6px; background: #f9f9f9; }
-        .chat-msg { padding: 6px 10px; border-radius: 6px; max-width: 80%; }
+        .chat-body { height: 200px; padding: 10px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 8px; background: #f9f9f9; }
+        .chat-msg { padding: 6px 10px; border-radius: 6px; max-width: 80%; line-height: 1.4; }
         .chat-msg.incoming { background: #e4e6eb; align-self: flex-start; color: #333; }
         .chat-msg.outgoing { background: #e7f3ff; align-self: flex-end; color: #003366; }
         .chat-footer { display: flex; border-top: 1px solid #ccd0d5; padding: 8px; gap: 6px; background: white; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
         .chat-footer input { flex: 1; border: 1px solid #ccd0d5; border-radius: 4px; padding: 6px; font-size: 12px; outline: none; }
-        .chat-footer button { background: var(--primary-blue); color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .chat-footer button { background: var(--primary-blue); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
 
         .btn-logout { background: #fee2e2; color: #dc2626; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; }
         .btn-logout:hover { background: #fecaca; }
@@ -113,7 +124,7 @@
             <nav class="help-nav-menu">
                 <button onclick="switchTab('datos-registro', this)" class="nav-item active">1. <span class="nav-hl-blue">Datos</span> & Biografía</button>
                 <button onclick="switchTab('estado-academico', this)" class="nav-item">2. <span class="nav-hl-pink">Escuelas</span> & LMS</button>
-                <button onclick="switchTab('course-match', this)" class="nav-item">3. Course <span class="nav-hl-green">Match</span></button>
+                <button onclick="switchTab('course-match', this)" class="nav-item">3. Study <span class="nav-hl-green">Match</span></button>
                 <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Acceso a mi <span class="nav-hl-blue">curso / examen</span></button>
                 <button onclick="switchTab('seguridad-cred', this)" class="nav-item">5. <span class="nav-hl-yellow">Seguridad</span> & Sesión</button>
             </nav>
@@ -128,8 +139,8 @@
     <!-- CONTENIDO CENTRAL -->
     <main class="help-content-body">
         <div class="help-main-header">
-            <h1>Panel de Control Personal</h1>
-            <p>Gestiona tus accesos, biografía y conexiones en el ecosistema <span id="header-user-email">CampusLA</span>.</p>
+            <h1>Panel de Control Académico</h1>
+            <p>Ecosistema de conexión y estudio para <span id="header-user-email">CampusLA</span>.</p>
         </div>
 
         <div class="master-content-card">
@@ -140,9 +151,8 @@
                     <span class="sec-number">01</span>
                     <h2>Metadatos, <span class="nav-hl-blue">Galería y Biografía</span></h2>
                 </div>
-                <p>Personaliza tu presentación ante la comunidad académica (puedes guardar manualmente o se autoguarda).</p>
+                <p>Personaliza tu presentación ante los compañeros de Study Match.</p>
                 
-                <!-- SECCIÓN FOTO DE PERFIL PRINCIPAL -->
                 <div class="profile-avatar-container">
                     <img id="user-avatar-img" src="https://via.placeholder.com/70" alt="Avatar" class="profile-avatar">
                     <div class="avatar-actions">
@@ -152,7 +162,6 @@
                     </div>
                 </div>
 
-                <!-- GALERÍA DE 4 FOTOS (TIPO TINDER / PORTAFOLIO) -->
                 <label style="display:block; font-weight:700; color:#606770; font-size:13px; margin-bottom:8px;">Galería Académica (Hasta 4 fotos)</label>
                 <div class="gallery-grid">
                     <div class="gallery-slot" onclick="document.getElementById('gallery-file-0').click()">
@@ -177,10 +186,9 @@
                     </div>
                 </div>
 
-                <!-- BIOGRAFÍA PERSONAL CON BOTÓN DE GUARDADO EXPLÍCITO -->
                 <div class="bio-box">
-                    <label for="user-bio-input">Mi Biografía / Metas de Estudio</label>
-                    <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas, qué exámenes vas a presentar o qué metas tienes en CampusLA..." oninput="guardarBioAuto()"></textarea>
+                    <label for="user-bio-input">Mi Biografía / Metas de Estudio para el Match</label>
+                    <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas o qué examen vas a presentar..." oninput="guardarBioAuto()"></textarea>
                     <button class="btn-save-bio" onclick="guardarBioManual()">Guardar Biografía</button>
                 </div>
 
@@ -197,10 +205,6 @@
                         <td class="meta-label">Teléfono de Contacto</td>
                         <td class="meta-value" id="val-telefono">Cargando...</td>
                     </tr>
-                    <tr>
-                        <td class="meta-label">Fecha de Activación de Cuenta</td>
-                        <td class="meta-value" id="val-fecha">Cargando...</td>
-                    </tr>
                 </table>
 
                 <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión Segura</button>
@@ -214,33 +218,32 @@
                 </div>
                 <p>Tus programas activos y simuladores configurados:</p>
                 <ul style="padding-left: 20px; line-height: 1.8; color: #333;">
-                    <li><strong>Moodle LMS (Nueva Versión):</strong> Sincronizado y activo.</li>
-                    <li><strong>Simulador Oficial TOEFL ITP:</strong> Disponible en tu módulo de pruebas.</li>
+                    <li><strong>Moodle LMS (Escuela Andina):</strong> Sincronizado y activo.</li>
+                    <li><strong>Simulador Oficial TOEFL ITP / Pearson:</strong> Disponible.</li>
                 </ul>
             </div>
 
-            <!-- 3. COURSE MATCH -->
+            <!-- 3. STUDY MATCH CON FILTRO DE QUERY Y TARJETAS DINÁMICAS -->
             <div id="course-match" class="help-tab-pane">
                 <div class="sec-header">
                     <span class="sec-number">03</span>
-                    <h2>Course <span class="nav-hl-green">Match</span> & Comunidad Estudiantil</h2>
+                    <h2>Study <span class="nav-hl-green">Match</span> & Red Académica</h2>
                 </div>
-                <p>Conéctate con compañeros que comparten tus metas de certificación y estudio:</p>
+                <p>Filtra por examen o meta, revisa perfiles y envía invitaciones para habilitar el chat de estudio conjunto:</p>
                 
-                <div class="match-grid">
-                    <div class="match-card">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Camila">
-                        <h4>Camila Restrepo</h4>
-                        <div class="match-bio">"Preparando el TOEFL para intercambio. Busco alguien constante para practicar."</div>
-                        <p>Meta: TOEFL ITP</p>
-                        <button class="btn-match" onclick="abrirChat('Camila Restrepo')">Hacer Match & Chat</button>
+                <div class="match-container">
+                    <div class="match-filters">
+                        <input type="text" id="matchSearchInput" placeholder="Buscar por nombre, examen o habilidad (ej. TOEFL, Moodle)..." oninput="filtrarMatch()">
+                        <select id="matchFilterGoal" onchange="filtrarMatch()">
+                            <option value="ALL">Todas las Metas</option>
+                            <option value="TOEFL ITP">TOEFL ITP</option>
+                            <option value="Moodle & LMS">Moodle & LMS</option>
+                            <option value="Oxford Test">Oxford Test</option>
+                        </select>
                     </div>
-                    <div class="match-card">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" alt="Mateo">
-                        <h4>Mateo Gómez</h4>
-                        <div class="match-bio">"Apasionado por el desarrollo web, plataformas LMS y optimización."</div>
-                        <p>Meta: Moodle & LMS</p>
-                        <button class="btn-match" onclick="abrirChat('Mateo Gómez')">Hacer Match & Chat</button>
+
+                    <div class="match-grid" id="matchGridContainer">
+                        <!-- Las tarjetas se cargan dinámicamente mediante JS -->
                     </div>
                 </div>
             </div>
@@ -251,16 +254,16 @@
                     <span class="sec-number">04</span>
                     <h2>Acceso a mi <span class="nav-hl-blue">Curso / Examen</span></h2>
                 </div>
-                <p>Gestiona los accesos directos a tus plataformas de formación y plataformas de evaluación oficiales.</p>
+                <p>Gestiona los accesos directos a tus plataformas de formación y pruebas oficiales.</p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
                     <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccd0d5; text-align: center;">
                         <h4 style="color: var(--primary-blue); margin-top: 0;">Mi Curso Activo</h4>
-                        <p style="font-size: 13px; color: #606770;">Accede al contenido multimedia, clases en vivo y guías de estudio.</p>
+                        <p style="font-size: 13px; color: #606770;">Accede al contenido multimedia y guías de estudio.</p>
                         <a href="#" style="display: inline-block; background: #003366; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; margin-top: 10px;">Ingresar al Curso</a>
                     </div>
                     <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccd0d5; text-align: center;">
                         <h4 style="color: var(--primary-blue); margin-top: 0;">Mi Examen / Simulador</h4>
-                        <p style="font-size: 13px; color: #606770;">Presenta tus evaluaciones o conéctate con los vouchers autorizados.</p>
+                        <p style="font-size: 13px; color: #606770;">Presenta tus evaluaciones o conéctate con los vouchers.</p>
                         <a href="#" style="display: inline-block; background: #10b981; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; margin-top: 10px;">Acceder al Examen</a>
                     </div>
                 </div>
@@ -272,41 +275,66 @@
                     <span class="sec-number">05</span>
                     <h2><span class="nav-hl-yellow">Seguridad</span> y Dispositivos</h2>
                 </div>
-                <p>Tus sesiones operan bajo protocolos cifrados locales. Asegúrate de cerrar sesión al terminar en equipos compartidos.</p>
+                <p>Tus sesiones operan bajo protocolos cifrados locales.</p>
             </div>
 
         </div>
     </main>
 
-    <!-- CHAT FLOTANTE DE MATCH -->
+    <!-- MODAL PARA VER PERFIL DETALLADO DE OTRO ESTUDIANTE -->
+    <div class="profile-modal-overlay" id="profileModal">
+        <div class="profile-modal-content">
+            <button class="profile-modal-close" onclick="cerrarPerfilModal()">✕</button>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <img id="modalProfileImg" src="" alt="Perfil" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #003366; margin-bottom: 8px;">
+                <h3 id="modalProfileName" style="margin: 0; color: #003366; font-size: 18px;"></h3>
+                <span id="modalProfileGoal" class="match-badge-meta" style="margin-top: 5px;"></span>
+            </div>
+            <p style="font-size: 13px; color: #4b4f56; background: #f0f2f5; padding: 12px; border-radius: 6px; line-height: 1.4;" id="modalProfileBio"></p>
+            <div id="modalActionContainer" style="margin-top: 20px; text-align: center;">
+                <!-- Botón dinámico de match dentro del modal -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CHAT FLOTANTE DE STUDY MATCH -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-header">
             <span id="chatCompanionName">Chat de Estudio</span>
             <button class="chat-close" onclick="cerrarChat()">✕</button>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="chat-msg incoming">¡Hola! Vi que también estás estudiando en CampusLA. ¿Estudiamos juntos?</div>
+            <div class="chat-msg incoming">¡Match aceptado! Comencemos a coordinar las prácticas de estudio.</div>
         </div>
         <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Escribe un mensaje..." onkeypress="if(event.key === 'Enter') enviarMensaje()">
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje de estudio..." onkeypress="if(event.key === 'Enter') enviarMensaje()">
             <button onclick="enviarMensaje()">Enviar</button>
         </div>
     </div>
 
     <script>
-        // Lógica de Pestañas
+        // Base de datos simulada de compañeros para el Study Match
+        const comunidadEstudiantes = [
+            { id: 1, nombre: "Camila Restrepo", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional. Busco compañero constante.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150", status: "none" },
+            { id: 2, nombre: "Mateo Gómez", goal: "Moodle & LMS", bio: "Apasionado por el desarrollo web, optimización de plataformas y bases de datos.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150", status: "none" },
+            { id: 3, nombre: "Lucía Fernández", goal: "Oxford Test", bio: "Docente de inglés y candidata a certificación oficial en Oxford Test of English.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150", status: "none" },
+            { id: 4, nombre: "Andrés Felipe Ruiz", goal: "TOEFL ITP", bio: "Ingeniero buscando puntaje C1 en TOEFL. Practico en las noches.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150", status: "none" }
+        ];
+
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.help-tab-pane').forEach(pane => pane.classList.remove('active-pane'));
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active-pane');
             btnElement.classList.add('active');
+
+            if(tabId === 'course-match') {
+                renderizarMatchCards(comunidadEstudiantes);
+            }
         }
 
-        // Cargar datos de la sesión local al abrir el perfil
         window.addEventListener('DOMContentLoaded', () => {
             const sessionData = localStorage.getItem('cla_user_session');
-            
             if (!sessionData) {
                 alert('No hay una sesión activa. Redirigiendo al tablero...');
                 window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
@@ -314,26 +342,15 @@
             }
 
             const user = JSON.parse(sessionData);
-            
-            // Inyectar datos básicos
             document.getElementById('sidebar-user-name').innerText = user.nombre;
             document.getElementById('val-nombre').innerText = user.nombre;
             document.getElementById('val-email').innerText = user.email;
             document.getElementById('val-telefono').innerText = user.telefono || 'No especificado';
-            document.getElementById('val-fecha').innerText = user.fechaRegistro ? new Date(user.fechaRegistro).toLocaleString() : 'Reciente';
             document.getElementById('header-user-email').innerText = user.email;
 
-            // Cargar avatar principal guardado
-            if (user.avatar) {
-                document.getElementById('user-avatar-img').src = user.avatar;
-            }
+            if (user.avatar) document.getElementById('user-avatar-img').src = user.avatar;
+            if (user.bio) document.getElementById('user-bio-input').value = user.bio;
 
-            // Cargar biografía guardada
-            if (user.bio) {
-                document.getElementById('user-bio-input').value = user.bio;
-            }
-
-            // Cargar galería de fotos guardada
             if (user.gallery && Array.isArray(user.gallery)) {
                 user.gallery.forEach((imgData, index) => {
                     if (imgData) {
@@ -347,72 +364,112 @@
             }
         });
 
-        // Actualizar Foto Principal
-        function actualizarFotoPrincipal(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        // Renderizar Tarjetas de Study Match
+        function renderizarMatchCards(lista) {
+            const container = document.getElementById('matchGridContainer');
+            container.innerHTML = '';
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Image = e.target.result;
-                document.getElementById('user-avatar-img').src = base64Image;
-
-                let sessionData = localStorage.getItem('cla_user_session');
-                if (sessionData) {
-                    let user = JSON.parse(sessionData);
-                    user.avatar = base64Image;
-                    localStorage.setItem('cla_user_session', JSON.stringify(user));
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Actualizar Galería de 4 Fotos
-        function actualizarGaleria(event, index) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Image = e.target.result;
-                const imgElem = document.getElementById(`g-img-${index}`);
-                const textElem = document.getElementById(`g-text-${index}`);
-                
-                imgElem.src = base64Image;
-                imgElem.style.display = 'block';
-                textElem.style.display = 'none';
-
-                let sessionData = localStorage.getItem('cla_user_session');
-                if (sessionData) {
-                    let user = JSON.parse(sessionData);
-                    if (!user.gallery) user.gallery = ['', '', '', ''];
-                    user.gallery[index] = base64Image;
-                    localStorage.setItem('cla_user_session', JSON.stringify(user));
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Guardar Biografía Automático (en tiempo real)
-        function guardarBioAuto() {
-            const bioText = document.getElementById('user-bio-input').value;
-            let sessionData = localStorage.getItem('cla_user_session');
-            if (sessionData) {
-                let user = JSON.parse(sessionData);
-                user.bio = bioText;
-                localStorage.setItem('cla_user_session', JSON.stringify(user));
+            if(lista.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#606770;">No se encontraron compañeros con ese criterio.</p>';
+                return;
             }
+
+            lista.forEach(est => {
+                let btnText = 'Hacer Match de Estudio';
+                let btnClass = 'btn-match-action';
+                if(est.status === 'pending') {
+                    btnText = 'Invitación Enviada (Pendiente)';
+                    btnClass = 'btn-match-action pending';
+                } else if(est.status === 'connected') {
+                    btnText = 'Abrir Chat de Estudio';
+                    btnClass = 'btn-match-action connected';
+                }
+
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerHTML = `
+                    <div>
+                        <div onclick="verPerfilDetalle(${est.id})" style="cursor:pointer;">
+                            <img src="${est.img}" alt="${est.nombre}">
+                            <h4>${est.nombre}</h4>
+                            <span class="match-badge-meta">${est.goal}</span>
+                            <div class="match-bio">"${est.bio}"</div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="${btnClass}" onclick="gestionarMatch(${est.id})">${btnText}</button>
+                        <button style="background:transparent; border:none; color:#0066cc; font-size:11px; cursor:pointer; margin-top:6px;" onclick="verPerfilDetalle(${est.id})">Ver Perfil Completo</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        // Guardar Biografía Manual con Botón (para que se queden tranquilos)
-        function guardarBioManual() {
-            guardarBioAuto();
-            alert('¡Biografía guardada con éxito, mi bro!');
+        // Filtrar Query del Match
+        function filtrarMatch() {
+            const query = document.getElementById('matchSearchInput').value.toLowerCase();
+            const goalFilter = document.getElementById('matchFilterGoal').value;
+
+            const filtrados = comunidadEstudiantes.filter(est => {
+                const matchTexto = est.nombre.toLowerCase().includes(query) || est.bio.toLowerCase().includes(query) || est.goal.toLowerCase().includes(query);
+                const matchMeta = goalFilter === 'ALL' || est.goal === goalFilter;
+                return matchTexto && matchMeta;
+            });
+
+            renderizarMatchCards(filtrados);
         }
 
-        // Funciones del Chat CourseMatch
+        // Ver Perfil Detallado (Modal)
+        function verPerfilDetalle(id) {
+            const est = comunidadEstudiantes.find(e => e.id === id);
+            if(!est) return;
+
+            document.getElementById('modalProfileImg').src = est.img;
+            document.getElementById('modalProfileName').innerText = est.nombre;
+            document.getElementById('modalProfileGoal').innerText = est.goal;
+            document.getElementById('modalProfileBio').innerText = est.bio;
+
+            const actionContainer = document.getElementById('modalActionContainer');
+            if(est.status === 'connected') {
+                actionContainer.innerHTML = `<button class="btn-match-action connected" onclick="cerrarPerfilModal(); abrirChat('${est.nombre}');">Abrir Chat de Estudio</button>`;
+            } else if(est.status === 'pending') {
+                actionContainer.innerHTML = `<button class="btn-match-action pending">Invitación pendiente de respuesta</button>`;
+            } else {
+                actionContainer.innerHTML = `<button class="btn-match-action" onclick="cerrarPerfilModal(); gestionarMatch(${est.id});">Enviar Solicitud de Match</button>`;
+            }
+
+            document.getElementById('profileModal').style.display = 'flex';
+        }
+
+        function cerrarPerfilModal() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        // Lógica de Match e Invitación
+        function gestionarMatch(id) {
+            const est = comunidadEstudiantes.find(e => e.id === id);
+            if(!est) return;
+
+            if(est.status === 'none') {
+                est.status = 'pending';
+                alert(`¡Invitación enviada a ${est.nombre}! Cuando acepte el reto, se abrirá el chat de estudio.`);
+                // Simulación automática de aceptación de la otra persona a los 4 segundos para que pruebes la experiencia
+                setTimeout(() => {
+                    est.status = 'connected';
+                    renderizarMatchCards(comunidadEstudiantes);
+                }, 4000);
+            } else if(est.status === 'pending') {
+                alert('La invitación ya fue enviada. Esperando confirmación del compañero.');
+            } else if(est.status === 'connected') {
+                abrirChat(est.nombre);
+            }
+
+            renderizarMatchCards(comunidadEstudiantes);
+        }
+
+        // Gestión del Chat
         function abrirChat(nombre) {
-            document.getElementById('chatCompanionName').innerText = 'Chat con ' + nombre;
+            document.getElementById('chatCompanionName').innerText = 'Estudio Conjunto con ' + nombre;
             document.getElementById('chatModal').style.display = 'flex';
         }
 
@@ -438,13 +495,73 @@
             setTimeout(() => {
                 const msgIn = document.createElement('div');
                 msgIn.className = 'chat-msg incoming';
-                msgIn.innerText = '¡Genial! Nos vemos en el aula virtual para repasar.';
+                msgIn.innerText = '¡Excelente aporte! Dándole con toda a la meta académica.';
                 chatBody.appendChild(msgIn);
                 chatBody.scrollTop = chatBody.scrollHeight;
             }, 1000);
         }
 
-        // Función para cerrar sesión
+        // Manejo de Avatar Principal
+        function actualizarFotoPrincipal(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Image = e.target.result;
+                document.getElementById('user-avatar-img').src = base64Image;
+
+                let sessionData = localStorage.getItem('cla_user_session');
+                if (sessionData) {
+                    let user = JSON.parse(sessionData);
+                    user.avatar = base64Image;
+                    localStorage.setItem('cla_user_session', JSON.stringify(user));
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Manejo de Galería
+        function actualizarGaleria(event, index) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Image = e.target.result;
+                const imgElem = document.getElementById(`g-img-${index}`);
+                const textElem = document.getElementById(`g-text-${index}`);
+                
+                imgElem.src = base64Image;
+                imgElem.style.display = 'block';
+                textElem.style.display = 'none';
+
+                let sessionData = localStorage.getItem('cla_user_session');
+                if (sessionData) {
+                    let user = JSON.parse(sessionData);
+                    if (!user.gallery) user.gallery = ['', '', '', ''];
+                    user.gallery[index] = base64Image;
+                    localStorage.setItem('cla_user_session', JSON.stringify(user));
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function guardarBioAuto() {
+            const bioText = document.getElementById('user-bio-input').value;
+            let sessionData = localStorage.getItem('cla_user_session');
+            if (sessionData) {
+                let user = JSON.parse(sessionData);
+                user.bio = bioText;
+                localStorage.setItem('cla_user_session', JSON.stringify(user));
+            }
+        }
+
+        function guardarBioManual() {
+            guardarBioAuto();
+            alert('¡Biografía guardada con éxito, mi bro!');
+        }
+
         function cerrarSesion() {
             localStorage.removeItem('cla_user_session');
             window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
