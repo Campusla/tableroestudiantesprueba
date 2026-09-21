@@ -320,7 +320,7 @@
     <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT              -->
     <!-- ========================================== -->
     <script>
-        // Arreglo base completo inicial (solo se usa si no hay registros previos en localStorage)
+        // Arreglo base con los perfiles originales
         const estudiantesComunidadBase = [
             { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
             { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
@@ -377,15 +377,16 @@
         });
 
         function inicializarComunidad(user) {
-            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || 'null');
+            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
             
-            // Si es la primera vez que se carga en este navegador, guardamos la base inicial
-            if (!comunidadLocal) {
-                comunidadLocal = estudiantesComunidadBase;
-                localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
-            }
+            // Garantizamos que todos los perfiles base estén presentes sin eliminar los ya guardados o personalizados
+            estudiantesComunidadBase.forEach(baseItem => {
+                let existe = comunidadLocal.find(item => item.id === baseItem.id || item.nombre === baseItem.nombre);
+                if (!existe) {
+                    comunidadLocal.push(baseItem);
+                }
+            });
 
-            // Actualizamos o integramos al usuario activo actual en la comunidad sin tocar las fotos de los demás
             sincronizarUsuarioActualEnComunidad(user, comunidadLocal);
         }
 
@@ -402,7 +403,6 @@
             let index = comunidadLocal.findIndex(item => item.id === user.email || item.nombre === user.nombre);
             
             if(index >= 0) {
-                // Si ya existe, actualizamos texto y categoría, PERO PRESERVAMOS SU FOTO si ya tenía una personalizada
                 comunidadLocal[index].nombre = user.nombre;
                 comunidadLocal[index].categoria = categoriaDetectada;
                 comunidadLocal[index].goal = bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA";
@@ -411,9 +411,8 @@
                     comunidadLocal[index].img = user.avatar;
                 }
             } else {
-                // Si no existe, lo agregamos nuevo
                 comunidadLocal.push({
-                    id: user.email,
+                    id: user.email || "user@cla.edu",
                     nombre: user.nombre,
                     categoria: categoriaDetectada,
                     goal: bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA",
@@ -426,6 +425,10 @@
 
         function cargarComunidadCompleta() {
             let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+            // Asegurar respaldo si por alguna razón está vacío
+            if(comunidadLocal.length === 0) {
+                comunidadLocal = estudiantesComunidadBase;
+            }
             estudiantesComunidad = comunidadLocal;
             renderizarEstudiantes(estudiantesComunidad);
         }
