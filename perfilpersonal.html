@@ -58,6 +58,8 @@
         .bio-box { margin-bottom: 20px; }
         .bio-box label { display: block; font-weight: 700; color: #606770; font-size: 13px; margin-bottom: 6px; }
         .bio-textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #ccd0d5; border-radius: 6px; font-family: inherit; font-size: 13px; box-sizing: border-box; resize: vertical; }
+        .btn-save-bio { background: #003366; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+        .btn-save-bio:hover { background: #002244; }
 
         /* Tablas y Cajas de Datos */
         .profile-meta-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
@@ -112,7 +114,7 @@
                 <button onclick="switchTab('datos-registro', this)" class="nav-item active">1. <span class="nav-hl-blue">Datos</span> & Biografía</button>
                 <button onclick="switchTab('estado-academico', this)" class="nav-item">2. <span class="nav-hl-pink">Escuelas</span> & LMS</button>
                 <button onclick="switchTab('course-match', this)" class="nav-item">3. Course <span class="nav-hl-green">Match</span></button>
-                <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Compras & <span class="nav-hl-blue">Soportes</span></button>
+                <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Acceso a mi <span class="nav-hl-blue">curso / examen</span></button>
                 <button onclick="switchTab('seguridad-cred', this)" class="nav-item">5. <span class="nav-hl-yellow">Seguridad</span> & Sesión</button>
             </nav>
         </div>
@@ -138,7 +140,7 @@
                     <span class="sec-number">01</span>
                     <h2>Metadatos, <span class="nav-hl-blue">Galería y Biografía</span></h2>
                 </div>
-                <p>Personaliza tu presentación ante la comunidad académica (los cambios se guardan automáticamente).</p>
+                <p>Personaliza tu presentación ante la comunidad académica (puedes guardar manualmente o se autoguarda).</p>
                 
                 <!-- SECCIÓN FOTO DE PERFIL PRINCIPAL -->
                 <div class="profile-avatar-container">
@@ -175,10 +177,11 @@
                     </div>
                 </div>
 
-                <!-- BIOGRAFÍA PERSONAL -->
+                <!-- BIOGRAFÍA PERSONAL CON BOTÓN DE GUARDADO EXPLÍCITO -->
                 <div class="bio-box">
                     <label for="user-bio-input">Mi Biografía / Metas de Estudio</label>
-                    <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas, qué exámenes vas a presentar o qué metas tienes en CampusLA..." oninput="guardarBio()"></textarea>
+                    <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas, qué exámenes vas a presentar o qué metas tienes en CampusLA..." oninput="guardarBioAuto()"></textarea>
+                    <button class="btn-save-bio" onclick="guardarBioManual()">Guardar Biografía</button>
                 </div>
 
                 <table class="profile-meta-table">
@@ -242,15 +245,24 @@
                 </div>
             </div>
 
-            <!-- 4. COMPRAS Y SOPORTES -->
+            <!-- 4. ACCESO A MI CURSO / EXAMEN -->
             <div id="soportes-pago" class="help-tab-pane">
                 <div class="sec-header">
                     <span class="sec-number">04</span>
-                    <h2>Historial de <span class="nav-hl-blue">Pagos y Recibos</span></h2>
+                    <h2>Acceso a mi <span class="nav-hl-blue">Curso / Examen</span></h2>
                 </div>
-                <p>Aquí verás reflejados los comprobantes de tus matrículas y validaciones con pasarelas aliadas.</p>
-                <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px dashed #ccd0d5; text-align: center; color: #666;">
-                    No hay pagos pendientes. Tu cuenta se encuentra al día.
+                <p>Gestiona los accesos directos a tus plataformas de formación y plataformas de evaluación oficiales.</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccd0d5; text-align: center;">
+                        <h4 style="color: var(--primary-blue); margin-top: 0;">Mi Curso Activo</h4>
+                        <p style="font-size: 13px; color: #606770;">Accede al contenido multimedia, clases en vivo y guías de estudio.</p>
+                        <a href="#" style="display: inline-block; background: #003366; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; margin-top: 10px;">Ingresar al Curso</a>
+                    </div>
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccd0d5; text-align: center;">
+                        <h4 style="color: var(--primary-blue); margin-top: 0;">Mi Examen / Simulador</h4>
+                        <p style="font-size: 13px; color: #606770;">Presenta tus evaluaciones o conéctate con los vouchers autorizados.</p>
+                        <a href="#" style="display: inline-block; background: #10b981; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 12px; font-weight: bold; margin-top: 10px;">Acceder al Examen</a>
+                    </div>
                 </div>
             </div>
 
@@ -381,8 +393,8 @@
             reader.readAsDataURL(file);
         }
 
-        // Guardar Biografía en tiempo real
-        function guardarBio() {
+        // Guardar Biografía Automático (en tiempo real)
+        function guardarBioAuto() {
             const bioText = document.getElementById('user-bio-input').value;
             let sessionData = localStorage.getItem('cla_user_session');
             if (sessionData) {
@@ -390,6 +402,12 @@
                 user.bio = bioText;
                 localStorage.setItem('cla_user_session', JSON.stringify(user));
             }
+        }
+
+        // Guardar Biografía Manual con Botón (para que se queden tranquilos)
+        function guardarBioManual() {
+            guardarBioAuto();
+            alert('¡Biografía guardada con éxito, mi bro!');
         }
 
         // Funciones del Chat CourseMatch
