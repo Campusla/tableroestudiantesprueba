@@ -100,6 +100,10 @@
         .extra-info-box label { display: block; font-weight: 700; color: #606770; font-size: 12px; margin-bottom: 4px; }
         .extra-info-input { width: 100%; padding: 8px; border: 1px solid #ccd0d5; border-radius: 6px; font-family: inherit; font-size: 12px; box-sizing: border-box; }
 
+        /* Vista miniatura de las 4 fotos en el detalle del partner */
+        .partner-gallery-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0; }
+        .partner-gallery-preview img { width: 100%; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ccd0d5; }        
+
         /* Moodle y Compras */
         .moodle-access-box { background: #f0f2f5; border: 1px solid #ccd0d5; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 25px; }
         .moodle-access-box h3 { margin: 0 0 8px 0; color: var(--primary-blue); font-size: 16px; }
@@ -251,15 +255,15 @@
                 <div class="extra-info-grid" style="margin-top: 15px;">
                     <div class="extra-info-box">
                         <label for="user-intereses">Mis Intereses</label>
-                        <input type="text" id="user-intereses" class="extra-info-input" placeholder="Ej. Programación, Arte..." oninput="guardarBioAuto()">
+                        <input type="text" id="user-intereses" class="extra-info-input" placeholder="Ej. Programación, Arte...">
                     </div>
                     <div class="extra-info-box">
                         <label for="user-deportes">Mis Deportes</label>
-                        <input type="text" id="user-deportes" class="extra-info-input" placeholder="Ej. Fútbol, Ciclismo..." oninput="guardarBioAuto()">
+                        <input type="text" id="user-deportes" class="extra-info-input" placeholder="Ej. Fútbol, Ciclismo...">
                     </div>
                     <div class="extra-info-box">
                         <label for="user-libros">Libros Favoritos</label>
-                        <input type="text" id="user-libros" class="extra-info-input" placeholder="Ej. Sapiens, Cien Años..." oninput="guardarBioAuto()">
+                        <input type="text" id="user-libros" class="extra-info-input" placeholder="Ej. Sapiens, Cien Años...">
                     </div>
                 </div>
 
@@ -283,7 +287,7 @@
                     <span class="sec-number">04</span>
                     <h2>Acceso a <span class="nav-hl-blue">Moodle & Historial de Compras</span></h2>
                 </div>
-                
+        
                 <div class="moodle-access-box">
                     <h3>Plataforma de Entrenamiento Virtual (Moodle)</h3>
                     <p>Accede directamente a tus cursos interactivos y lecciones programadas en Escuela Andina.</p>
@@ -344,6 +348,7 @@
     <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT              -->
     <!-- ========================================== -->
     <script>
+        // Arreglo base con los perfiles originales
         const estudiantesComunidadBase = [
             { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
             { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
@@ -387,7 +392,6 @@
             if (user.intereses) document.getElementById('user-intereses').value = user.intereses;
             if (user.deportes) document.getElementById('user-deportes').value = user.deportes;
             if (user.libros) document.getElementById('user-libros').value = user.libros;
-            
             if (user.gallery && Array.isArray(user.gallery)) {
                 user.gallery.forEach((imgData, index) => {
                     if (imgData) {
@@ -402,6 +406,8 @@
 
             inicializarComunidad(user);
             cargarComunidadCompleta();
+
+            // INICIAR ROTACIÓN AUTOMÁTICA CADA 12 SEGUNDOS
             iniciarRotacionAutomatica();
         });
 
@@ -462,28 +468,29 @@
 
         function renderizarVistaActual() {
             if(categoriaActualFiltro === 'todos') {
-                renderizarEstudiantesRotativos(estudiantesComunidad);
+                renderizarEstudiantesRotativos();
             } else {
-                const filtrados = estudiantesComunidad.filter(est => est.categoria === categoriaActualFiltro);
-                renderizarEstudiantes(filtrados);
+                renderizarEstudiantesFiltrados(categoriaActualFiltro);
             }
         }
 
-        function renderizarEstudiantes(lista) {
-            const grid = document.getElementById('gridEstudiantes');
+        function renderizarEstudiantesRotativos() {
+            let grid = document.getElementById('gridEstudiantes');
             grid.innerHTML = '';
-            if(lista.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #606770; font-size: 13px;">No hay estudiantes en esta categoría por el momento.</p>';
-                return;
-            }
-            lista.forEach(est => {
-                const card = document.createElement('div');
+            
+            // Mezclar aleatoriamente y tomar 3
+            let mezcla = [...estudiantesComunidad].sort(() => 0.5 - Math.random());
+            let seleccionados = mezcla.slice(0, 3);
+
+            seleccionados.forEach(est => {
+                let card = document.createElement('div');
                 card.className = 'estudiante-mini-card';
                 card.innerHTML = `
                     <div>
                         <img src="${est.img}" alt="${est.nombre}">
                         <h4>${est.nombre}</h4>
-                        <p><strong>${est.goal}</strong><br>${est.bio}</p>
+                        <span class="brand-badge" style="margin-bottom:6px; display:inline-block;">${est.categoria}</span>
+                        <p><strong>Meta:</strong> ${est.goal}<br>${est.bio}</p>
                     </div>
                     <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>
                 `;
@@ -491,37 +498,55 @@
             });
         }
 
-        function renderizarEstudiantesRotativos(lista) {
-            // Seleccionar aleatoriamente 3 estudiantes para mostrar en el grid rotativo
-            let copia = [...lista].sort(() => 0.5 - Math.random());
-            let seleccion = copia.slice(0, 3);
-            renderizarEstudiantes(seleccion);
+        function renderizarEstudiantesFiltrados(categoria) {
+            let grid = document.getElementById('gridEstudiantes');
+            grid.innerHTML = '';
+            
+            let filtrados = estudiantesComunidad.filter(est => est.categoria === categoria);
+
+            if(filtrados.length === 0) {
+                grid.innerHTML = `<p style="grid-column: span 3; text-align:center; color:#606770;">No hay partners registrados en esta categoría todavía.</p>`;
+                return;
+            }
+
+            filtrados.forEach(est => {
+                let card = document.createElement('div');
+                card.className = 'estudiante-mini-card';
+                card.innerHTML = `
+                    <div>
+                        <img src="${est.img}" alt="${est.nombre}">
+                        <h4>${est.nombre}</h4>
+                        <span class="brand-badge" style="margin-bottom:6px; display:inline-block;">${est.categoria}</span>
+                        <p><strong>Meta:</strong> ${est.goal}<br>${est.bio}</p>
+                    </div>
+                    <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        function filtrarEstudiantes(cat, btnElem) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
+        function filtrarEstudiantes(categoria, btnElem) {
+            document.querySelectorAll('.filter-container .filter-btn').forEach(b => {
+                if(!b.innerText.includes('DESCUBRE')) b.classList.remove('active-filter');
+            });
             btnElem.classList.add('active-filter');
-            categoriaActualFiltro = cat;
             
-            if(cat === 'todos') {
+            categoriaActualFiltro = categoria;
+
+            if(categoria === 'todos') {
                 iniciarRotacionAutomatica();
+                renderizarEstudiantesRotativos();
             } else {
                 detenerRotacionAutomatica();
-            }
-            renderizarVistaActual();
-        }
-
-        function recargarRotacionDirecta() {
-            if(categoriaActualFiltro === 'todos') {
-                renderizarEstudiantesRotativos(estudiantesComunidad);
+                renderizarEstudiantesFiltrados(categoria);
             }
         }
 
         function iniciarRotacionAutomatica() {
-            detenerRotacionAutomatica();
+            if(intervaloRotacion) clearInterval(intervaloRotacion);
             intervaloRotacion = setInterval(() => {
                 if(categoriaActualFiltro === 'todos') {
-                    renderizarEstudiantesRotativos(estudiantesComunidad);
+                    renderizarEstudiantesRotativos();
                 }
             }, 12000);
         }
@@ -533,6 +558,13 @@
             }
         }
 
+        function recargarRotacionDirecta() {
+            if(categoriaActualFiltro === 'todos') {
+                renderizarEstudiantesRotativos();
+            }
+        }
+
+        // Funciones de Actualización de Perfil y Galería
         function actualizarFotoPrincipal(event) {
             const file = event.target.files[0];
             if(file) {
@@ -540,8 +572,11 @@
                 reader.onload = function(e) {
                     const base64Img = e.target.result;
                     document.getElementById('user-avatar-img').src = base64Img;
-                    actualizarSesionLocal('avatar', base64Img);
-                }
+                    let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+                    session.avatar = base64Img;
+                    localStorage.setItem('cla_user_session', JSON.stringify(session));
+                    sincronizarUsuarioActualEnComunidad(session, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
+                };
                 reader.readAsDataURL(file);
             }
         }
@@ -558,42 +593,30 @@
                     imgElem.style.display = 'block';
                     textElem.style.display = 'none';
 
-                    let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                    if(!sessionData.gallery) sessionData.gallery = [];
-                    sessionData.gallery[index] = base64Img;
-                    localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-                }
+                    let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+                    if(!session.gallery) session.gallery = [];
+                    session.gallery[index] = base64Img;
+                    localStorage.setItem('cla_user_session', JSON.stringify(session));
+                };
                 reader.readAsDataURL(file);
             }
         }
 
         function guardarBioAuto() {
             let bioVal = document.getElementById('user-bio-input').value;
-            let interesesVal = document.getElementById('user-intereses').value;
-            let deportesVal = document.getElementById('user-deportes').value;
-            let librosVal = document.getElementById('user-libros').value;
-
-            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            sessionData.bio = bioVal;
-            sessionData.intereses = interesesVal;
-            sessionData.deportes = deportesVal;
-            sessionData.libros = librosVal;
-            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-            sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
+            let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            session.bio = bioVal;
+            localStorage.setItem('cla_user_session', JSON.stringify(session));
+            sincronizarUsuarioActualEnComunidad(session, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
         }
 
         function guardarBioManual() {
             guardarBioAuto();
-            alert('¡Biografía e información adicional guardadas con éxito!');
+            alert('¡Biografía y metadatos actualizados correctamente en la red!');
+            cargarComunidadCompleta();
         }
 
-        function actualizarSesionLocal(key, value) {
-            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            sessionData[key] = value;
-            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-            sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
-        }
-
+        // Chat Flotante
         function abrirChat(nombrePartner) {
             document.getElementById('chatCompanionName').innerText = "Chat con " + nombrePartner;
             document.getElementById('chatModal').style.display = 'flex';
@@ -604,34 +627,30 @@
         }
 
         function enviarMensaje() {
-            const input = document.getElementById('chatInput');
-            const texto = input.value.trim();
-            if(!texto) return;
-
-            const chatBody = document.getElementById('chatBody');
-            
-            const msgOut = document.createElement('div');
-            msgOut.className = 'chat-msg outgoing';
-            msgOut.innerText = texto;
-            chatBody.appendChild(msgOut);
-
-            input.value = '';
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            setTimeout(() => {
-                const msgIn = document.createElement('div');
-                msgIn.className = 'chat-msg incoming';
-                msgIn.innerText = "¡Mensaje recibido! Estaremos coordinando la sesión de estudio en breve.";
-                chatBody.appendChild(msgIn);
+            let input = document.getElementById('chatInput');
+            let texto = input.value.trim();
+            if(texto !== '') {
+                let chatBody = document.getElementById('chatBody');
+                let msgOut = document.createElement('div');
+                msgOut.className = 'chat-msg outgoing';
+                msgOut.innerText = texto;
+                chatBody.appendChild(msgOut);
+                input.value = '';
                 chatBody.scrollTop = chatBody.scrollHeight;
-            }, 1000);
+
+                setTimeout(() => {
+                    let msgIn = document.createElement('div');
+                    msgIn.className = 'chat-msg incoming';
+                    msgIn.innerText = '¡Mensaje recibido! Nos pondremos en contacto pronto para la sesión de estudio.';
+                    chatBody.appendChild(msgIn);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }, 1000);
+            }
         }
 
         function cerrarSesion() {
-            if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                localStorage.removeItem('cla_user_session');
-                window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
-            }
+            localStorage.removeItem('cla_user_session');
+            window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
         }
     </script>
 </body>
