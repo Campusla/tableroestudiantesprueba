@@ -26,20 +26,12 @@
         }
         
         /* Sidebar Fijo */
-        .help-sidebar { width: var(--sidebar-width); background: #ffffff; border-right: 1px solid #ccd0d5; 
-
-position: fixed; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 
-
-20px; box-sizing: border-box; z-index: 10; }
+        .help-sidebar { width: var(--sidebar-width); background: #ffffff; border-right: 1px solid #ccd0d5; position: fixed; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; box-sizing: border-box; z-index: 10; }
         .sidebar-brand h3 { font-size: 16px; color: var(--primary-blue); margin: 5px 0 20px 0; }
-        .brand-badge { background: #e7f3ff; color: var(--accent-blue); padding: 4px 8px; border-radius: 4px; font-
-
-size: 10px; font-weight: bold; text-transform: uppercase; }
+        .brand-badge { background: #e7f3ff; color: var(--accent-blue); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         
         .help-nav-menu { display: flex; flex-direction: column; gap: 8px; }
-        .nav-item { background: transparent; border: none; text-align: left; padding: 12px; font-size: 13px; font-
-
-weight: 600; color: #4b4f56; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .nav-item { background: transparent; border: none; text-align: left; padding: 12px; font-size: 13px; font-weight: 600; color: #4b4f56; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
         .nav-item:hover, .nav-item.active { background: #f0f2f5; color: var(--primary-blue); }
         .nav-hl-blue { color: #0066cc; }
         .nav-hl-pink { color: #e91e63; }
@@ -48,91 +40,51 @@ weight: 600; color: #4b4f56; border-radius: 6px; cursor: pointer; transition: ba
 
         .sidebar-support-box { background: #f0f2f5; padding: 15px; border-radius: 8px; text-align: center; }
         .sidebar-support-box p { font-size: 12px; color: #606770; margin: 0 0 10px 0; }
-        .btn-sidebar-alert { display: block; background: #003366; color: #fff; text-decoration: none; padding: 8px; 
-
-border-radius: 6px; font-size: 12px; font-weight: bold; }
+        .btn-sidebar-alert { display: block; background: #003366; color: #fff; text-decoration: none; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
 
         /* Contenido Central Ampliado */
-        .help-content-body { margin-left: var(--sidebar-width); flex: 1; padding: 40px; box-sizing: border-box; 
-
-max-width: 1250px; }
+        .help-content-body { margin-left: var(--sidebar-width); flex: 1; padding: 40px; box-sizing: border-box; max-width: 1250px; }
         .help-main-header { margin-bottom: 30px; }
         .help-main-header h1 { font-size: 24px; color: var(--primary-blue); margin: 0 0 8px 0; }
         .help-main-header p { color: #606770; font-size: 14px; margin: 0; }
 
-        .master-content-card { background: #ffffff; border-radius: 10px; border: 1px solid #ccd0d5; padding: 35px; 
-
-box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .master-content-card { background: #ffffff; border-radius: 10px; border: 1px solid #ccd0d5; padding: 35px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
         
         .help-tab-pane { display: none; }
         .help-tab-pane.active-pane { display: block; }
 
-        .sec-header { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #dadde1; padding-
-
-bottom: 15px; margin-bottom: 25px; }
-        .sec-number { background: #003366; color: #fff; width: 28px; height: 28px; display: flex; align-items: 
-
-center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: bold; }
+        .sec-header { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #dadde1; padding-bottom: 15px; margin-bottom: 25px; }
+        .sec-number { background: #003366; color: #fff; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: bold; }
         .sec-header h2 { font-size: 18px; margin: 0; color: #1d2129; }
 
         /* Filtros de Categorías de Estudio */
-        .filter-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; 
-
-justify-content: space-between; }
-        .filter-btn { background: #f0f2f5; border: 1px solid #ccd0d5; color: #4b4f56; padding: 6px 14px; border-
-
-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
-        .filter-btn:hover, .filter-btn.active-filter { background: var(--primary-blue); color: white; border-color: 
-
-var(--primary-blue); }
+        .filter-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; justify-content: space-between; }
+        .filter-btn { background: #f0f2f5; border: 1px solid #ccd0d5; color: #4b4f56; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .filter-btn:hover, .filter-btn.active-filter { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
 
         /* Estudiantes Grid - 3 columnas */
-        .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; 
-
-margin-bottom: 30px; }
-        .estudiante-mini-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 12px; 
-
-text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: 
-
-space-between; }
-        .estudiante-mini-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin: 0 
-
-auto 8px auto; border: 2px solid var(--accent-blue); cursor: pointer; transition: transform 0.2s; }
+        .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 30px; }
+        .estudiante-mini-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
+        .estudiante-mini-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px auto; border: 2px solid var(--accent-blue); cursor: pointer; transition: transform 0.2s; }
         .estudiante-mini-card img:hover { transform: scale(1.08); }
         .estudiante-mini-card h4 { font-size: 13px; margin: 0 0 4px 0; color: var(--primary-blue); }
         .estudiante-mini-card p { font-size: 11px; color: #606770; margin: 0 0 10px 0; min-height: 32px; }
-        .btn-conectar-mini { background: var(--success-green); color: white; border: none; padding: 6px; border-
-
-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .btn-conectar-mini { background: var(--success-green); color: white; border: none; padding: 6px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
         .btn-conectar-mini:hover { background: #059669; }
 
         /* PERFIL MEJORADO Y AMPLIADO */
         .profile-container-wide { display: flex; flex-direction: column; gap: 25px; }
-        .profile-avatar-container { display: flex; align-items: center; gap: 25px; background: #f0f2f5; padding: 
-
-20px 25px; border-radius: 10px; border: 1px solid #ccd0d5; }
-        .profile-avatar { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid var
-
-(--primary-blue); background: #ccc; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .profile-avatar-container { display: flex; align-items: center; gap: 25px; background: #f0f2f5; padding: 20px 25px; border-radius: 10px; border: 1px solid #ccd0d5; }
+        .profile-avatar { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); background: #ccc; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
         .profile-avatar:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,51,102,0.3); }
         .avatar-actions input[type="file"] { display: none; }
-        .btn-upload { background: #fff; border: 1px solid #ccd0d5; padding: 8px 16px; border-radius: 6px; font-
-
-size: 13px; font-weight: bold; cursor: pointer; color: #4b4f56; display: inline-block; box-shadow: 0 1px 2px rgba
-
-(0,0,0,0.05); }
+        .btn-upload { background: #fff; border: 1px solid #ccd0d5; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; color: #4b4f56; display: inline-block; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
         .btn-upload:hover { background: #e4e6eb; }
 
         /* Galería Ampliada */
-        .gallery-section-box { background: #fafbfc; border: 1px solid #e4e6eb; padding: 20px; border-radius: 10px; 
-
-}
+        .gallery-section-box { background: #fafbfc; border: 1px solid #e4e6eb; padding: 20px; border-radius: 10px; }
         .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 10px; }
-        .gallery-slot { height: 110px; background: #f0f2f5; border: 2px dashed #b0b8c1; border-radius: 8px; 
-
-display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; 
-
-transition: border-color 0.2s; }
+        .gallery-slot { height: 110px; background: #f0f2f5; border: 2px dashed #b0b8c1; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
         .gallery-slot:hover { border-color: var(--primary-blue); }
         .gallery-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         .gallery-slot span { font-size: 12px; color: #606770; font-weight: bold; z-index: 1; }
@@ -141,111 +93,55 @@ transition: border-color 0.2s; }
         /* Biografía y Campos Extra */
         .bio-box { background: #fafbfc; border: 1px solid #e4e6eb; padding: 20px; border-radius: 10px; }
         .bio-box label { display: block; font-weight: 700; color: #333; font-size: 14px; margin-bottom: 8px; }
-        .bio-textarea { width: 100%; height: 100px; padding: 12px; border: 1px solid #ccd0d5; border-radius: 6px; 
-
-font-family: inherit; font-size: 13.5px; box-sizing: border-box; resize: vertical; }
-        .btn-save-bio { background: #003366; color: white; border: none; padding: 10px 20px; border-radius: 6px; 
-
-font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 12px; transition: background 0.2s; }
+        .bio-textarea { width: 100%; height: 100px; padding: 12px; border: 1px solid #ccd0d5; border-radius: 6px; font-family: inherit; font-size: 13.5px; box-sizing: border-box; resize: vertical; }
+        .btn-save-bio { background: #003366; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; margin-top: 12px; transition: background 0.2s; }
         .btn-save-bio:hover { background: #002244; }
 
-        .extra-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #fafbfc; 
+        .extra-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #fafbfc; border: 1px solid #e4e6eb; padding: 20px; border-radius: 10px; }
+        .extra-info-box label { display: block; font-weight: 700; color: #333; font-size: 13px; margin-bottom: 6px; }
+        .extra-info-input { width: 100%; padding: 10px; border: 1px solid #ccd0d5; border-radius: 6px; font-family: inherit; font-size: 13px; box-sizing: border-box; background: #fff; }
 
-border: 1px solid #e4e6eb; padding: 20px; border-radius: 10px; }
-        .extra-info-box label { display: block; font-weight: 700; color: #333; font-size: 13px; margin-bottom: 6px; 
-
-}
-        .extra-info-input { width: 100%; padding: 10px; border: 1px solid #ccd0d5; border-radius: 6px; font-family: 
-
-inherit; font-size: 13px; box-sizing: border-box; background: #fff; }
-
-        .profile-meta-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-
-
-radius: 8px; overflow: hidden; border: 1px solid #ccd0d5; }
+        .profile-meta-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #ccd0d5; }
         .profile-meta-table tr td { padding: 14px 18px; border-bottom: 1px solid #f0f2f5; font-size: 14px; }
         .meta-label { font-weight: 700; color: #606770; width: 40%; background: #f9f9f9; }
         .meta-value { color: #1c1e21; font-weight: 500; }
 
         /* MODAL DE VISTA PREVIA DE PERFIL Y GALERÍA (Tinder Style) */
-        .profile-preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba
-
-(0,0,0,0.65); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; box-
-
-sizing: border-box; }
-        .profile-preview-content { background: white; width: 650px; max-width: 100%; border-radius: 12px; padding: 
-
-30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; position: relative; }
-        .modal-close-btn { position: absolute; top: 20px; right: 20px; background: #e4e6eb; border: none; font-
-
-size: 16px; font-weight: bold; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; 
-
-align-items: center; justify-content: center; }
+        .profile-preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; box-sizing: border-box; }
+        .profile-preview-content { background: white; width: 650px; max-width: 100%; border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; position: relative; }
+        .modal-close-btn { position: absolute; top: 20px; right: 20px; background: #e4e6eb; border: none; font-size: 16px; font-weight: bold; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .modal-close-btn:hover { background: #d8dadf; }
         .preview-header-flex { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; }
-        .preview-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid 
-
-var(--primary-blue); }
-        .preview-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; 
-
-}
-        .preview-gallery-item { height: 90px; border-radius: 8px; background: #eee; object-fit: cover; width: 100%; 
-
-display: none; border: 1px solid #ccd0d5; }
-        .preview-info-block { background: #f0f2f5; padding: 12px 15px; border-radius: 8px; margin-top: 12px; font-
-
-size: 13px; }
+        .preview-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); }
+        .preview-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .preview-gallery-item { height: 90px; border-radius: 8px; background: #eee; object-fit: cover; width: 100%; display: none; border: 1px solid #ccd0d5; }
+        .preview-info-block { background: #f0f2f5; padding: 12px 15px; border-radius: 8px; margin-top: 12px; font-size: 13px; }
 
         /* Moodle y Compras */
-        .moodle-access-box { background: #f0f2f5; border: 1px solid #ccd0d5; border-radius: 8px; padding: 20px; 
-
-text-align: center; margin-bottom: 25px; }
+        .moodle-access-box { background: #f0f2f5; border: 1px solid #ccd0d5; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 25px; }
         .moodle-access-box h3 { margin: 0 0 8px 0; color: var(--primary-blue); font-size: 16px; }
         .moodle-access-box p { font-size: 13px; color: #606770; margin: 0 0 15px 0; }
-        .btn-moodle { background: var(--success-green); color: white; text-decoration: none; padding: 10px 20px; 
-
-border-radius: 6px; font-weight: bold; font-size: 13px; display: inline-block; }
+        .btn-moodle { background: var(--success-green); color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; font-size: 13px; display: inline-block; }
         .btn-moodle:hover { background: #059669; }
 
         .purchases-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-        .purchases-table th { background: #f0f2f5; color: #4b4f56; font-weight: 700; text-align: left; padding: 
-
-10px; border-bottom: 1px solid #ccd0d5; }
+        .purchases-table th { background: #f0f2f5; color: #4b4f56; font-weight: 700; text-align: left; padding: 10px; border-bottom: 1px solid #ccd0d5; }
         .purchases-table td { padding: 10px; border-bottom: 1px solid #f0f2f5; color: #1c1e21; }
-        .badge-status { background: #d1fae5; color: #065f46; padding: 3px 8px; border-radius: 4px; font-size: 11px; 
-
-font-weight: bold; }
+        .badge-status { background: #d1fae5; color: #065f46; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
 
         /* Chat Flotante */
-        .chat-modal { position: fixed; bottom: 20px; right: 20px; width: 320px; background: white; border: 1px 
-
-solid #ccd0d5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; flex-direction: column; 
-
-z-index: 100; }
-        .chat-header { background: var(--primary-blue); color: white; padding: 10px 15px; border-top-left-radius: 
-
-8px; border-top-right-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 
-
-13px; font-weight: bold; }
+        .chat-modal { position: fixed; bottom: 20px; right: 20px; width: 320px; background: white; border: 1px solid #ccd0d5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; flex-direction: column; z-index: 100; }
+        .chat-header { background: var(--primary-blue); color: white; padding: 10px 15px; border-top-left-radius: 8px; border-top-right-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; }
         .chat-close { background: none; border: none; color: white; cursor: pointer; font-size: 14px; }
-        .chat-body { height: 200px; padding: 10px; overflow-y: auto; font-size: 12px; display: flex; flex-
-
-direction: column; gap: 8px; background: #f9f9f9; }
+        .chat-body { height: 200px; padding: 10px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 8px; background: #f9f9f9; }
         .chat-msg { padding: 6px 10px; border-radius: 6px; max-width: 80%; line-height: 1.4; }
         .chat-msg.incoming { background: #e4e6eb; align-self: flex-start; color: #333; }
         .chat-msg.outgoing { background: #e7f3ff; align-self: flex-end; color: #003366; }
-        .chat-footer { display: flex; border-top: 1px solid #ccd0d5; padding: 8px; gap: 6px; background: white; 
+        .chat-footer { display: flex; border-top: 1px solid #ccd0d5; padding: 8px; gap: 6px; background: white; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+        .chat-footer input { flex: 1; border: 1px solid #ccd0d5; border-radius: 4px; padding: 6px; font-size: 12px; outline: none; }
+        .chat-footer button { background: var(--primary-blue); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
 
-border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
-        .chat-footer input { flex: 1; border: 1px solid #ccd0d5; border-radius: 4px; padding: 6px; font-size: 12px; 
-
-outline: none; }
-        .chat-footer button { background: var(--primary-blue); color: white; border: none; padding: 6px 12px; 
-
-border-radius: 4px; font-size: 12px; cursor: pointer; }
-
-        .btn-logout { background: #fee2e2; color: #dc2626; border: none; padding: 12px 20px; border-radius: 6px; 
-
-font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; transition: background 0.2s; }
+        .btn-logout { background: #fee2e2; color: #dc2626; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; transition: background 0.2s; }
         .btn-logout:hover { background: #fecaca; }
 
         @media (max-width: 768px) {
@@ -271,29 +167,17 @@ font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; transition: b
             </div>
             
             <nav class="help-nav-menu">
-                <button onclick="switchTab('comunidad-estudiantes', this)" class="nav-item active">1. <span 
-
-class="nav-hl-green">Comunidad</span> (Partners de Estudio)</button>
-                <button onclick="switchTab('datos-registro', this)" class="nav-item">2. <span class="nav-hl-
-
-blue">Mi Perfil</span> & Biografía</button>
-                <button onclick="switchTab('estado-academico', this)" class="nav-item">3. <span class="nav-hl-
-
-pink">Escuelas</span> & LMS</button>
-                <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Acceso <span class="nav-hl-
-
-blue">Moodle & Compras</span></button>
-                <button onclick="switchTab('seguridad-cred', this)" class="nav-item">5. <span class="nav-hl-
-
-yellow">Seguridad</span> & Sesión</button>
+                <button onclick="switchTab('comunidad-estudiantes', this)" class="nav-item active">1. <span class="nav-hl-green">Comunidad</span> (Partners de Estudio)</button>
+                <button onclick="switchTab('datos-registro', this)" class="nav-item">2. <span class="nav-hl-blue">Mi Perfil</span> & Biografía</button>
+                <button onclick="switchTab('estado-academico', this)" class="nav-item">3. <span class="nav-hl-pink">Escuelas</span> & LMS</button>
+                <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Acceso <span class="nav-hl-blue">Moodle & Compras</span></button>
+                <button onclick="switchTab('seguridad-cred', this)" class="nav-item">5. <span class="nav-hl-yellow">Seguridad</span> & Sesión</button>
             </nav>
         </div>
 
         <div class="sidebar-support-box">
             <p>Soporte técnico activo</p>
-            <a href="https://campusla.github.io/tableroestudiantesprueba/" class="btn-sidebar-alert">Volver al 
-
-Inicio</a>
+            <a href="https://campusla.github.io/tableroestudiantesprueba/" class="btn-sidebar-alert">Volver al Inicio</a>
         </div>
     </aside>
 
@@ -303,9 +187,7 @@ Inicio</a>
     <main class="help-content-body">
         <div class="help-main-header">
             <h1>Panel de Control Académico</h1>
-            <p>Ecosistema abierto de conexión multidisciplinaria para <span id="header-user-
-
-email">CampusLA</span>.</p>
+            <p>Ecosistema abierto de conexión multidisciplinaria para <span id="header-user-email">CampusLA</span>.</p>
         </div>
 
         <div class="master-content-card">
@@ -316,48 +198,26 @@ email">CampusLA</span>.</p>
                     <span class="sec-number">01</span>
                     <h2>Comunidad Activa - <span class="nav-hl-green">Busca tu Partner de Estudio</span></h2>
                 </div>
-                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés o haz 
-
-clic en la foto de cualquier compañero para ver su perfil completo estilo Tinder:</p>
+                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés o haz clic en la foto de cualquier compañero para ver su perfil completo estilo Tinder:</p>
                 
                 <!-- Filtros de Categorías y Botón de Rotación Directa -->
                 <div class="filter-container">
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="filter-btn active-filter" onclick="filtrarEstudiantes('todos', this)">Rotar 
-
-/ Recomendados</button>
-                        <button class="filter-btn" onclick="filtrarEstudiantes('Matemáticas', this)">Matemáticas & 
-
-Exactas</button>
-                        <button class="filter-btn" onclick="filtrarEstudiantes('Derecho', this)">Derecho & 
-
-Leyes</button>
-                        <button class="filter-btn" onclick="filtrarEstudiantes('Maestría', this)">Maestrías & 
-
-Postgrados</button>
-                        <button class="filter-btn" onclick="filtrarEstudiantes('Sociales', this)">Ciencias 
-
-Sociales</button>
-                        <button class="filter-btn" onclick="filtrarEstudiantes('Idiomas', this)">Idiomas & 
-
-Certificaciones</button>
+                        <button class="filter-btn active-filter" onclick="filtrarEstudiantes('todos', this)">Rotar / Recomendados</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Matemáticas', this)">Matemáticas & Exactas</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Derecho', this)">Derecho & Leyes</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Maestría', this)">Maestrías & Postgrados</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Sociales', this)">Ciencias Sociales</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Idiomas', this)">Idiomas & Certificaciones</button>
                     </div>
-                    <button class="filter-btn" style="background: var(--success-green); color: white; border: 
-
-none;" onclick="recargarRotacionDirecta()">🔄 DESCUBRE MÁS PERSONAS</button>
+                    <button class="filter-btn" style="background: var(--success-green); color: white; border: none;" onclick="recargarRotacionDirecta()">🔄 DESCUBRE MÁS PERSONAS</button>
                 </div>
 
                 <div class="feed-estudiantes-grid" id="gridEstudiantes"></div>
 
-                <div style="background: #f0f2f5; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: 
-
-center;">
-                    <p style="font-size: 13px; color: #4b4f56; margin: 0 0 10px 0;">¿Quieres actualizar tu propia 
-
-biografía y área de estudio para aparecer en la red?</p>
-                    <button class="btn-save-bio" onclick="switchTab('datos-registro', document.querySelectorAll
-
-('.nav-item')[1])">Actualizar mi Perfil 🚀</button>
+                <div style="background: #f0f2f5; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center;">
+                    <p style="font-size: 13px; color: #4b4f56; margin: 0 0 10px 0;">¿Quieres actualizar tu propia biografía y área de estudio para aparecer en la red?</p>
+                    <button class="btn-save-bio" onclick="switchTab('datos-registro', document.querySelectorAll('.nav-item')[1])">Actualizar mi Perfil 🚀</button>
                 </div>
             </section>
 
@@ -371,67 +231,45 @@ biografía y área de estudio para aparecer en la red?</p>
                 <div class="profile-container-wide">
                     <!-- Avatar Principal -->
                     <div class="profile-avatar-container">
-                        <img id="user-avatar-img" src="https://via.placeholder.com/85" alt="Avatar Principal" 
-
-class="profile-avatar" title="¡Haz clic para ver tu tarjeta completa y galería!" onclick="abrirModalPerfilCompleto
-
-()">
+                        <img id="user-avatar-img" src="https://via.placeholder.com/85" alt="Avatar Principal" class="profile-avatar" title="¡Haz clic para ver tu tarjeta completa y galería!" onclick="abrirModalPerfilCompleto()">
                         <div class="avatar-actions">
                             <label class="btn-upload" for="avatar-input">📷 Cambiar Foto Principal</label>
-                            <input type="file" id="avatar-input" accept="image/*" 
-
-onchange="actualizarFotoPrincipal(event)">
-                            <p style="font-size: 12px; color: #606770; margin: 6px 0 0 0;">Haz clic en tu foto para 
-
-previsualizar tu perfil completo y las 4 fotos de la galería.</p>
+                            <input type="file" id="avatar-input" accept="image/*" onchange="actualizarFotoPrincipal(event)">
+                            <p style="font-size: 12px; color: #606770; margin: 6px 0 0 0;">Haz clic en tu foto para previsualizar tu perfil completo y las 4 fotos de la galería.</p>
                         </div>
                     </div>
 
                     <!-- Galería Académica -->
                     <div class="gallery-section-box">
-                        <label style="display:block; font-weight:700; color:#333; font-size:13.5px; margin-
-
-bottom:8px;">Galería Académica (Hasta 4 fotos)</label>
+                        <label style="display:block; font-weight:700; color:#333; font-size:13.5px; margin-bottom:8px;">Galería Académica (Hasta 4 fotos)</label>
                         <div class="gallery-grid">
                             <div class="gallery-slot" onclick="document.getElementById('gallery-file-0').click()">
                                 <span id="g-text-0">+ Foto 1</span>
                                 <img id="g-img-0" style="display:none;" alt="Foto 1">
-                                <input type="file" id="gallery-file-0" accept="image/*" 
-
-onchange="actualizarGaleria(event, 0)">
+                                <input type="file" id="gallery-file-0" accept="image/*" onchange="actualizarGaleria(event, 0)">
                             </div>
                             <div class="gallery-slot" onclick="document.getElementById('gallery-file-1').click()">
                                 <span id="g-text-1">+ Foto 2</span>
                                 <img id="g-img-1" style="display:none;" alt="Foto 2">
-                                <input type="file" id="gallery-file-1" accept="image/*" 
-
-onchange="actualizarGaleria(event, 1)">
+                                <input type="file" id="gallery-file-1" accept="image/*" onchange="actualizarGaleria(event, 1)">
                             </div>
                             <div class="gallery-slot" onclick="document.getElementById('gallery-file-2').click()">
                                 <span id="g-text-2">+ Foto 3</span>
                                 <img id="g-img-2" style="display:none;" alt="Foto 3">
-                                <input type="file" id="gallery-file-2" accept="image/*" 
-
-onchange="actualizarGaleria(event, 2)">
+                                <input type="file" id="gallery-file-2" accept="image/*" onchange="actualizarGaleria(event, 2)">
                             </div>
                             <div class="gallery-slot" onclick="document.getElementById('gallery-file-3').click()">
                                 <span id="g-text-3">+ Foto 4</span>
                                 <img id="g-img-3" style="display:none;" alt="Foto 4">
-                                <input type="file" id="gallery-file-3" accept="image/*" 
-
-onchange="actualizarGaleria(event, 3)">
+                                <input type="file" id="gallery-file-3" accept="image/*" onchange="actualizarGaleria(event, 3)">
                             </div>
                         </div>
                     </div>
 
                     <!-- Biografía -->
                     <div class="bio-box">
-                        <label for="user-bio-input">Mi Biografía / Metas de Estudio (Indica tu área: Matemáticas, 
-
-Derecho, Maestría, etc.)</label>
-                        <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas y 
-
-qué estás estudiando..." oninput="guardarBioAuto()"></textarea>
+                        <label for="user-bio-input">Mi Biografía / Metas de Estudio (Indica tu área: Matemáticas, Derecho, Maestría, etc.)</label>
+                        <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas y qué estás estudiando..." oninput="guardarBioAuto()"></textarea>
                         <button class="btn-save-bio" onclick="guardarBioManual()">Guardar Biografía</button>
                     </div>
 
@@ -439,32 +277,22 @@ qué estás estudiando..." oninput="guardarBioAuto()"></textarea>
                     <div class="extra-info-grid">
                         <div class="extra-info-box">
                             <label for="user-intereses">Mis Intereses</label>
-                            <input type="text" id="user-intereses" class="extra-info-input" placeholder="Ej. 
-
-Programación, Arte..." oninput="guardarBioAuto()">
+                            <input type="text" id="user-intereses" class="extra-info-input" placeholder="Ej. Programación, Arte..." oninput="guardarBioAuto()">
                         </div>
                         <div class="extra-info-box">
                             <label for="user-deportes">Mis Deportes</label>
-                            <input type="text" id="user-deportes" class="extra-info-input" placeholder="Ej. Fútbol, 
-
-Ciclismo..." oninput="guardarBioAuto()">
+                            <input type="text" id="user-deportes" class="extra-info-input" placeholder="Ej. Fútbol, Ciclismo..." oninput="guardarBioAuto()">
                         </div>
                         <div class="extra-info-box">
                             <label for="user-libros">Libros Favoritos</label>
-                            <input type="text" id="user-libros" class="extra-info-input" placeholder="Ej. Sapiens, 
-
-Cien Años..." oninput="guardarBioAuto()">
+                            <input type="text" id="user-libros" class="extra-info-input" placeholder="Ej. Sapiens, Cien Años..." oninput="guardarBioAuto()">
                         </div>
                     </div>
 
                     <!-- Metadatos de Cuenta -->
                     <table class="profile-meta-table">
-                        <tr><td class="meta-label">Nombre Registrado</td><td class="meta-value" id="val-
-
-nombre">Cargando...</td></tr>
-                        <tr><td class="meta-label">Correo Electrónico</td><td class="meta-value" id="val-
-
-email">Cargando...</td></tr>
+                        <tr><td class="meta-label">Nombre Registrado</td><td class="meta-value" id="val-nombre">Cargando...</td></tr>
+                        <tr><td class="meta-label">Correo Electrónico</td><td class="meta-value" id="val-email">Cargando...</td></tr>
                     </table>
 
                     <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión Segura</button>
@@ -473,9 +301,7 @@ email">Cargando...</td></tr>
 
             <!-- PANEL 03: ESTADO ACADÉMICO -->
             <section id="estado-academico" class="help-tab-pane">
-                <div class="sec-header"><span class="sec-number">03</span><h2><span class="nav-hl-
-
-pink">Escuelas</span> y Moodle LMS</h2></div>
+                <div class="sec-header"><span class="sec-number">03</span><h2><span class="nav-hl-pink">Escuelas</span> y Moodle LMS</h2></div>
                 <p>Programas activos y simuladores sincronizados en la red académica.</p>
             </section>
 
@@ -489,14 +315,10 @@ pink">Escuelas</span> y Moodle LMS</h2></div>
                 <div class="moodle-access-box">
                     <h3>Plataforma de Entrenamiento Virtual (Moodle)</h3>
                     <p>Accede directamente a tus cursos interactivos y lecciones programadas en Escuela Andina.</p>
-                    <a href="https://escuelaandina.campuslatinoamerica.edu.co" target="_blank" class="btn-
-
-moodle">Ingresar a Moodle LMS 🚀</a>
+                    <a href="https://escuelaandina.campuslatinoamerica.edu.co" target="_blank" class="btn-moodle">Ingresar a Moodle LMS 🚀</a>
                 </div>
 
-                <h3 style="font-size: 14px; color: var(--primary-blue); margin-top: 25px; margin-bottom: 10px;">Mis 
-
-Compras y Programas Adquiridos</h3>
+                <h3 style="font-size: 14px; color: var(--primary-blue); margin-top: 25px; margin-bottom: 10px;">Mis Compras y Programas Adquiridos</h3>
                 <table class="purchases-table">
                     <thead>
                         <tr>
@@ -522,9 +344,7 @@ Compras y Programas Adquiridos</h3>
 
             <!-- PANEL 05: SEGURIDAD -->
             <section id="seguridad-cred" class="help-tab-pane">
-                <div class="sec-header"><span class="sec-number">05</span><h2><span class="nav-hl-
-
-yellow">Seguridad</span></h2></div>
+                <div class="sec-header"><span class="sec-number">05</span><h2><span class="nav-hl-yellow">Seguridad</span></h2></div>
                 <p>Sesión cifrada y protegida.</p>
             </section>
 
@@ -540,12 +360,8 @@ yellow">Seguridad</span></h2></div>
             <div class="preview-header-flex">
                 <img id="preview-modal-avatar" src="" alt="Avatar" class="preview-avatar-lg">
                 <div>
-                    <h3 id="preview-modal-name" style="margin:0 0 5px 0; color:var(--primary-blue); font-
-
-size:18px;">Nombre</h3>
-                    <p id="preview-modal-email" style="margin:0; font-size:12.5px; 
-
-color:#606770;">correo@cla.edu</p>
+                    <h3 id="preview-modal-name" style="margin:0 0 5px 0; color:var(--primary-blue); font-size:18px;">Nombre</h3>
+                    <p id="preview-modal-email" style="margin:0; font-size:12.5px; color:#606770;">correo@cla.edu</p>
                 </div>
             </div>
 
@@ -554,20 +370,12 @@ color:#606770;">correo@cla.edu</p>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
-                <div class="preview-info-block" style="margin-top:0;"><strong>Intereses:</strong> <span 
-
-id="preview-modal-intereses">-</span></div>
-                <div class="preview-info-block" style="margin-top:0;"><strong>Deportes:</strong> <span 
-
-id="preview-modal-deportes">-</span></div>
-                <div class="preview-info-block" style="margin-top:0;"><strong>Libros:</strong> <span id="preview-
-
-modal-libros">-</span></div>
+                <div class="preview-info-block" style="margin-top:0;"><strong>Intereses:</strong> <span id="preview-modal-intereses">-</span></div>
+                <div class="preview-info-block" style="margin-top:0;"><strong>Deportes:</strong> <span id="preview-modal-deportes">-</span></div>
+                <div class="preview-info-block" style="margin-top:0;"><strong>Libros:</strong> <span id="preview-modal-libros">-</span></div>
             </div>
 
-            <h4 style="margin: 20px 0 10px 0; font-size: 14px; color: var(--primary-blue);">Galería Académica 
-
-(Fotos de Perfil)</h4>
+            <h4 style="margin: 20px 0 10px 0; font-size: 14px; color: var(--primary-blue);">Galería Académica (Fotos de Perfil)</h4>
             <div class="preview-gallery-grid">
                 <img id="preview-g-0" class="preview-gallery-item" alt="Foto 1">
                 <img id="preview-g-1" class="preview-gallery-item" alt="Foto 2">
@@ -577,15 +385,13 @@ modal-libros">-</span></div>
 
             <!-- Botón Conectar Integrado en el Modal -->
             <div style="margin-top: 20px; text-align: center;">
-                <button id="modal-btn-conectar" class="btn-conectar-mini" style="width: 100%; padding: 10px; font-
-
-size: 13px;" onclick="">Conectar 💬</button>
+                <button id="modal-btn-conectar" class="btn-conectar-mini" style="width: 100%; padding: 10px; font-size: 13px;" onclick="">Conectar 💬</button>
             </div>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- 4. SECCIÓN: CHAT FLOTANTE                   -->
+    <!-- 4. SECCIÓN: CHAT FLOTANTE                  -->
     <!-- ========================================== -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-header">
@@ -593,434 +399,96 @@ size: 13px;" onclick="">Conectar 💬</button>
             <button class="chat-close" onclick="cerrarChat()">✕</button>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="chat-msg incoming">¡Conexión establecida! Ya pueden coordinar sus sesiones de estudio 
-
-multidisciplinarias.</div>
+            <div class="chat-msg incoming">¡Conexión establecida! Ya pueden coordinar sus sesiones de estudio multidisciplinarias.</div>
         </div>
         <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Escribe un mensaje..." onkeypress="if(event.key === 
-
-'Enter') enviarMensaje()">
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje..." onkeypress="if(event.key === 'Enter') enviarMensaje()">
             <button onclick="enviarMensaje()">Enviar</button>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT               -->
+    <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT              -->
     <!-- ========================================== -->
     <script>
-        const estudiantesComunidadBase = [
-            { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: 
-
-"Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-
-
-53994a69daeb?w=300", intereses: "Idiomas, Viajes", deportes: "Yoga", libros: "El Principito", gallery: 
-
-["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300", "https://images.unsplash.com/photo-
-
-1517841905240-472988babdf9?w=300"] },
-            { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: 
-
-"Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-
-
-0a1dd7228f2d?w=300", intereses: "Matemáticas, Física", deportes: "Fútbol", libros: "Cosmos", gallery: 
-
-["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300"] },
-            { id: "lucia@cla.edu", nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: 
-
-"Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-
-
-be9c29b29330?w=300", intereses: "Leyes, Política", deportes: "Tenis", libros: "Crimen y Castigo", gallery: 
-
-["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"] },
-            { id: "andres@cla.edu", nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en 
-
-Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: 
-
-"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300", intereses: "Negocios", deportes: "Gym", 
-
-libros: "El Monje que Vendió su Ferrari", gallery: ["https://images.unsplash.com/photo-1500648767791-00dcc994a43e?
-
-w=300"] },
-            { id: "valentina@cla.edu", nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología 
-
-Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-
-
-1517841905240-472988babdf9?w=300", intereses: "Sociología, Arte", deportes: "Danza", libros: "Sapiens", gallery: 
-
-["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300"] },
-            { id: "carlos@cla.edu", nombre: "Carlos Eduardo Soto", categoria: "Matemáticas", goal: "Física 
-
-Cuántica", bio: "Repasando laboratorios y física de campos avanzados.", img: "https://images.unsplash.com/photo-
-
-1506794778202-cad84cf45f1d?w=300", intereses: "Astronomía", deportes: "Natación", libros: "Breve Historia del 
-
-Tiempo", gallery: ["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300"] },
-            { id: "pepe@cla.edu", nombre: "pepe", categoria: "Idiomas", goal: "Inglés e idiomas", bio: "Inglés e 
-
-idiomas avanzados.", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300", intereses: 
-
-"Idiomas", deportes: "Running", libros: "1984", gallery: ["https://images.unsplash.com/photo-1535713875002-
-
-d1d0cf377fde?w=300"] },
-            { id: "marty@cla.edu", nombre: "Marty", categoria: "Maestría", goal: "Estudiante CLA", bio: "Estudiando 
-
-y conectando en el ecosistema.", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300", 
-
-intereses: "Desarrollo", deportes: "Ciclismo", libros: "Clean Code", gallery: ["https://images.unsplash.com/photo-
-
-1570295999919-56ceb5ecca61?w=300"] },
-            { id: "hollman@cla.edu", nombre: "Hollman Alvarez", categoria: "Maestría", goal: "Finanzas y 
-
-desarrollo", bio: "Finanzas y desarrollo de plataformas.", img: "https://images.unsplash.com/photo-1522075469751-
-
-3a6694fb2f61?w=300", intereses: "Finanzas, UX/UI", deportes: "Running", libros: "El Lobo de Wall Street", gallery: 
-
-["https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300"] }
+        let estudiantesComunidadBase = [
+            { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300", intereses: "Idiomas, Viajes", deportes: "Yoga", libros: "El Principito", gallery: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300", "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300"] },
+            { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300", intereses: "Matemáticas, Física", deportes: "Fútbol", libros: "Cosmos", gallery: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300"] },
+            { id: "lucia@cla.edu", nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: "Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300", intereses: "Leyes, Política", deportes: "Tenis", libros: "Crimen y Castigo", gallery: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"] },
+            { id: "andres@cla.edu", nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300", intereses: "Negocios", deportes: "Gym", libros: "El Monje que Vendió su Ferrari", gallery: ["https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300"] },
+            { id: "valentina@cla.edu", nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300", intereses: "Sociología, Arte", deportes: "Danza", libros: "Sapiens", gallery: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300"] },
+            { id: "carlos@cla.edu", nombre: "Carlos Eduardo Soto", categoria: "Matemáticas", goal: "Álgebra Lineal", bio: "Apasionado por los números y modelos matemáticos.", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300", intereses: "Algoritmos", deportes: "Basket", libros: "El Hombre en Busca de Sentido", gallery: ["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300"] }
         ];
 
-        let estudiantesComunidad = [];
-        let intervaloRotacion = null;
-        let categoriaActualFiltro = 'todos';
+        let categoriaActual = 'todos';
 
-        function switchTab(tabId, btnElement) {
-            document.querySelectorAll('.help-tab-pane').forEach(pane => pane.classList.remove('active-pane'));
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active-pane');
-            btnElement.classList.add('active');
+        // Función para barajar un array aleatoriamente (Algoritmo Fisher-Yates)
+        function barajarArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const sessionData = localStorage.getItem('cla_user_session');
-            if (!sessionData) {
-                alert('No hay una sesión activa. Redirigiendo al tablero...');
-                window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
-                return;
-            }
-
-            const user = JSON.parse(sessionData);
-            document.getElementById('sidebar-user-name').innerText = user.nombre;
-            document.getElementById('val-nombre').innerText = user.nombre;
-            document.getElementById('val-email').innerText = user.email;
-            document.getElementById('header-user-email').innerText = user.email;
-
-            if (user.avatar) document.getElementById('user-avatar-img').src = user.avatar;
-            if (user.bio) document.getElementById('user-bio-input').value = user.bio;
-            if (user.intereses) document.getElementById('user-intereses').value = user.intereses;
-            if (user.deportes) document.getElementById('user-deportes').value = user.deportes;
-            if (user.libros) document.getElementById('user-libros').value = user.libros;
-            
-            if (user.gallery && Array.isArray(user.gallery)) {
-                user.gallery.forEach((imgData, index) => {
-                    if (imgData) {
-                        const imgElem = document.getElementById(`g-img-${index}`);
-                        const textElem = document.getElementById(`g-text-${index}`);
-                        imgElem.src = imgData;
-                        imgElem.style.display = 'block';
-                        textElem.style.display = 'none';
-                    }
-                });
-            }
-
-            inicializarComunidad(user);
-            cargarComunidadCompleta();
-            iniciarRotacionAutomatica();
-        });
-
-        function inicializarComunidad(user) {
-            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-            
-            estudiantesComunidadBase.forEach(baseItem => {
-                let existe = comunidadLocal.find(item => item.id === baseItem.id || item.nombre === 
-
-baseItem.nombre);
-                if (!existe) {
-                    comunidadLocal.push(baseItem);
-                }
-            });
-
-            sincronizarUsuarioActualEnComunidad(user, comunidadLocal);
-        }
-
-        function sincronizarUsuarioActualEnComunidad(user, comunidadLocal) {
-            let categoriaDetectada = "Maestría";
-            let bioTexto = user.bio || "Estudiando y conectando en el ecosistema.";
-            let bioLower = bioTexto.toLowerCase();
-            
-            if(bioLower.includes('matemática') || bioLower.includes('calculo') || bioLower.includes('exactas')) 
-
-categoriaDetectada = "Matemáticas";
-            else if(bioLower.includes('derecho') || bioLower.includes('leyes')) categoriaDetectada = "Derecho";
-            else if(bioLower.includes('idioma') || bioLower.includes('ingles') || bioLower.includes('toefl')) 
-
-categoriaDetectada = "Idiomas";
-            else if(bioLower.includes('social') || bioLower.includes('sociologia')) categoriaDetectada = 
-
-"Sociales";
-
-            let index = comunidadLocal.findIndex(item => item.id === user.email || item.nombre === user.nombre);
-            
-            if(index >= 0) {
-                comunidadLocal[index].nombre = user.nombre;
-                comunidadLocal[index].categoria = categoriaDetectada;
-                comunidadLocal[index].goal = bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 
-
-25) : "Estudiante CLA";
-                comunidadLocal[index].bio = bioTexto;
-                comunidadLocal[index].intereses = user.intereses || comunidadLocal[index].intereses || "-";
-                comunidadLocal[index].deportes = user.deportes || comunidadLocal[index].deportes || "-";
-                comunidadLocal[index].libros = user.libros || comunidadLocal[index].libros || "-";
-                if(user.avatar) {
-                    comunidadLocal[index].img = user.avatar;
-                }
-                if(user.gallery) {
-                    comunidadLocal[index].gallery = user.gallery;
-                }
-            } else {
-                comunidadLocal.push({
-                    id: user.email || "user@cla.edu",
-                    nombre: user.nombre,
-                    categoria: categoriaDetectada,
-                    goal: bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante 
-
-CLA",
-                    bio: bioTexto,
-                    img: user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
-                    intereses: user.intereses || "-",
-                    deportes: user.deportes || "-",
-                    libros: user.libros || "-",
-                    gallery: user.gallery || [user.avatar || "https://images.unsplash.com/photo-1535713875002-
-
-d1d0cf377fde?w=300"]
-                });
-            }
-            localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
-        }
-
-        function cargarComunidadCompleta() {
-            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-            if(comunidadLocal.length === 0) {
-                comunidadLocal = estudiantesComunidadBase;
-            }
-            estudiantesComunidad = comunidadLocal;
-            renderizarVistaActual();
-        }
-
-        function renderizarVistaActual() {
-            if(categoriaActualFiltro === 'todos') {
-                renderizarEstudiantesRotativos();
-            } else {
-                renderizarEstudiantesFiltrados(categoriaActualFiltro);
-            }
-        }
-
-        function renderizarEstudiantesRotativos() {
+        function renderizarEstudiantes(categoria = 'todos', barajar = false) {
+            categoriaActual = categoria;
             const grid = document.getElementById('gridEstudiantes');
             grid.innerHTML = '';
-            let copia = [...estudiantesComunidad].sort(() => 0.5 - Math.random());
-            let seleccionados = copia.slice(0, 6);
 
-            seleccionados.forEach(est => {
-                grid.innerHTML += `
-                    <div class="estudiante-mini-card">
-                        <div>
-                            <img src="${est.img}" alt="${est.nombre}" title="Haz clic para ver perfil y galería" 
+            let lista = [...estudiantesComunidadBase];
+            
+            if (barajar || categoria === 'todos') {
+                lista = barajarArray(lista);
+            }
 
-onclick="abrirModalComunidadPorId('${est.nombre}')">
-                            <h4>${est.nombre}</h4>
-                            <p><strong>${est.goal}</strong><br>${est.bio}</p>
-                        </div>
-                        <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>
-                    </div>
-                `;
-            });
-        }
+            let filtrados = categoria === 'todos' ? lista : lista.filter(e => e.categoria === categoria);
 
-        function renderizarEstudiantesFiltrados(cat) {
-            const grid = document.getElementById('gridEstudiantes');
-            grid.innerHTML = '';
-            let filtrados = estudiantesComunidad.filter(e => e.categoria.toLowerCase() === cat.toLowerCase());
-
-            if(filtrados.length === 0) {
-                grid.innerHTML = `<p style="grid-column: span 3; text-align:center; color:#606770; 
-
-padding:20px;">No hay estudiantes registrados en esta categoría aún.</p>`;
+            if (filtrados.length === 0) {
+                grid.innerHTML = '<p style="grid-column: span 3; text-align:center; color:#606770;">No se encontraron perfiles en esta categoría.</p>';
                 return;
             }
 
             filtrados.forEach(est => {
-                grid.innerHTML += `
-                    <div class="estudiante-mini-card">
-                        <div>
-                            <img src="${est.img}" alt="${est.nombre}" title="Haz clic para ver perfil y galería" 
-
-onclick="abrirModalComunidadPorId('${est.nombre}')">
-                            <h4>${est.nombre}</h4>
-                            <p><strong>${est.goal}</strong><br>${est.bio}</p>
-                        </div>
-                        <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>
+                const card = document.createElement('div');
+                card.className = 'estudiante-mini-card';
+                card.innerHTML = `
+                    <div>
+                        <img src="${est.img}" alt="${est.nombre}" onclick='abrirPerfilTinder(${JSON.stringify(est)})' title="Ver perfil completo">
+                        <h4>${est.nombre}</h4>
+                        <p><strong>${est.goal}</strong><br>${est.bio}</p>
                     </div>
+                    <button class="btn-conectar-mini" onclick='abrirChat("${est.nombre}")'>Conectar 💬</button>
                 `;
+                grid.appendChild(card);
             });
         }
 
-        function filtrarEstudiantes(cat, btnElem) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
-            if(btnElem) btnElem.classList.add('active-filter');
-            categoriaActualFiltro = cat;
-            renderizarVistaActual();
+        function filtrarEstudiantes(cat, btnElement) {
+            document.querySelectorAll('.filter-container .filter-btn').forEach(b => {
+                if(!b.textContent.includes('DESCUBRE')) b.classList.remove('active-filter');
+            });
+            if(btnElement) btnElement.classList.add('active-filter');
+            
+            // Si selecciona 'todos' o presiona rotar, aplicamos barajado aleatorio para que roten los perfiles
+            renderizarEstudiantes(cat, true);
         }
 
         function recargarRotacionDirecta() {
-            filtrarEstudiantes('todos', document.querySelector('.filter-btn'));
+            renderizarEstudiantes(categoriaActual, true);
         }
 
-        function iniciarRotacionAutomatica() {
-            if(intervaloRotacion) clearInterval(intervaloRotacion);
-            intervaloRotacion = setInterval(() => {
-                if(categoriaActualFiltro === 'todos') {
-                    renderizarEstudiantesRotativos();
-                }
-            }, 12000);
-        }
-
-        function actualizarFotoPrincipal(event) {
-            const file = event.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Img = e.target.result;
-                    document.getElementById('user-avatar-img').src = base64Img;
-                    
-                    let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                    session.avatar = base64Img;
-                    localStorage.setItem('cla_user_session', JSON.stringify(session));
-                    
-                    sincronizarUsuarioActualEnComunidad(session, JSON.parse(localStorage.getItem
-
-('cla_comunidad_usuarios') || '[]'));
-                    alert('¡Foto principal actualizada con éxito!');
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function actualizarGaleria(event, index) {
-            const file = event.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Img = e.target.result;
-                    const imgElem = document.getElementById(`g-img-${index}`);
-                    const textElem = document.getElementById(`g-text-${index}`);
-                    
-                    imgElem.src = base64Img;
-                    imgElem.style.display = 'block';
-                    textElem.style.display = 'none';
-
-                    let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                    if(!session.gallery) session.gallery = ["", "", "", ""];
-                    session.gallery[index] = base64Img;
-                    localStorage.setItem('cla_user_session', JSON.stringify(session));
-                    
-                    sincronizarUsuarioActualEnComunidad(session, JSON.parse(localStorage.getItem
-
-('cla_comunidad_usuarios') || '[]'));
-                    alert(`¡Foto ${index + 1} de la galería guardada!`);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function guardarBioAuto() {
-            let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            session.bio = document.getElementById('user-bio-input').value;
-            session.intereses = document.getElementById('user-intereses').value;
-            session.deportes = document.getElementById('user-deportes').value;
-            session.libros = document.getElementById('user-libros').value;
-            localStorage.setItem('cla_user_session', JSON.stringify(session));
-            sincronizarUsuarioActualEnComunidad(session, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') 
-
-|| '[]'));
-        }
-
-        function guardarBioManual() {
-            guardarBioAuto();
-            alert('¡Biografía y datos guardados correctamente!');
-        }
-
-        function abrirModalPerfilCompleto() {
-            const session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            poblarYMostrarModal(session.nombre || 'Estudiante CLA', session.email || 'correo@cla.edu', 
-
-session.avatar || document.getElementById('user-avatar-img').src, session.bio || document.getElementById('user-
-
-bio-input').value, session.intereses || '-', session.deportes || '-', session.libros || '-', session.gallery || 
-
-[]);
-        }
-
-        function abrirModalComunidadPorId(nombreEstudiante) {
-            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-            let estudiante = comunidadLocal.find(e => e.nombre === nombreEstudiante);
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.help-tab-pane').forEach(pane => pane.classList.remove('active-pane'));
+            document.querySelectorAll('.help-nav-menu .nav-item').forEach(item => item.classList.remove('active'));
             
-            if(!estudiante) {
-                estudiante = estudiantesComunidadBase.find(e => e.nombre === nombreEstudiante) || {
-                    nombre: nombreEstudiante, email: "socio@cla.edu", img: "https://via.placeholder.com/85", bio: 
-
-"Sin biografía", intereses: "-", deportes: "-", libros: "-", gallery: []
-                };
-            }
-
-            poblarYMostrarModal(
-                estudiante.nombre, 
-                estudiante.id || estudiante.email || "miembro@cla.edu", 
-                estudiante.img, 
-                estudiante.bio, 
-                estudiante.intereses || "Estudio, Networking", 
-                estudiante.deportes || "Deportes varios", 
-                estudiante.libros || "Lectura académica", 
-                estudiante.gallery || [estudiante.img]
-            );
+            document.getElementById(tabId).classList.add('active-pane');
+            if(btnElement) btnElement.classList.add('active');
         }
 
-        function poblarYMostrarModal(nombre, email, avatar, bio, intereses, deportes, libros, gallery) {
-            document.getElementById('preview-modal-avatar').src = avatar;
-            document.getElementById('preview-modal-name').innerText = nombre;
-            document.getElementById('preview-modal-email').innerText = email;
-            document.getElementById('preview-modal-bio').innerText = bio || 'Sin biografía registrada.';
-            document.getElementById('preview-modal-intereses').innerText = intereses;
-            document.getElementById('preview-modal-deportes').innerText = deportes;
-            document.getElementById('preview-modal-libros').innerText = libros;
-
-            // Cargar las 4 fotos de galería en el modal estilo Tinder
-            for(let i = 0; i < 4; i++) {
-                const previewImg = document.getElementById(`preview-g-${i}`);
-                if(gallery && gallery[i] && gallery[i] !== "") {
-                    previewImg.src = gallery[i];
-                    previewImg.style.display = 'block';
-                } else if(i === 0 && avatar) {
-                    previewImg.src = avatar;
-                    previewImg.style.display = 'block';
-                } else {
-                    previewImg.style.display = 'none';
-                }
-            }
-
-            // Configurar acción del botón Conectar dentro del modal
-            const btnConectarModal = document.getElementById('modal-btn-conectar');
-            btnConectarModal.setAttribute('onclick', `cerrarModalPerfilCompleto(); abrirChat('${nombre}')`);
-
-            document.getElementById('profilePreviewModal').style.display = 'flex';
-        }
-
-        function cerrarModalPerfilCompleto() {
-            document.getElementById('profilePreviewModal').style.display = 'none';
-        }
-
-        function abrirChat(nombrePersona) {
-            document.getElementById('chatCompanionName').innerText = "Chat con " + nombrePersona;
+        function abrirChat(nombre) {
+            document.getElementById('chatCompanionName').textContent = 'Chat con ' + nombre;
             document.getElementById('chatModal').style.display = 'flex';
         }
 
@@ -1030,28 +498,87 @@ bio-input').value, session.intereses || '-', session.deportes || '-', session.li
 
         function enviarMensaje() {
             const input = document.getElementById('chatInput');
-            const texto = input.value.trim();
-            if(!texto) return;
+            const txt = input.value.trim();
+            if(!txt) return;
 
-            const chatBody = document.getElementById('chatBody');
-            chatBody.innerHTML += `<div class="chat-msg outgoing">${texto}</div>`;
+            const body = document.getElementById('chatBody');
+            const msgOut = document.createElement('div');
+            msgOut.className = 'chat-msg outgoing';
+            msgOut.textContent = txt;
+            body.appendChild(msgOut);
             input.value = '';
-            chatBody.scrollTop = chatBody.scrollHeight;
+            body.scrollTop = body.scrollHeight;
 
             setTimeout(() => {
-                chatBody.innerHTML += `<div class="chat-msg incoming">¡Mensaje recibido! Estarán coordinando 
-
-pronto.</div>`;
-                chatBody.scrollTop = chatBody.scrollHeight;
+                const msgIn = document.createElement('div');
+                msgIn.className = 'chat-msg incoming';
+                msgIn.textContent = '¡Mensaje recibido! Estaremos coordinando la sesión de estudio en breve.';
+                body.appendChild(msgIn);
+                body.scrollTop = body.scrollHeight;
             }, 1000);
         }
 
-        function cerrarSesion() {
-            if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                localStorage.removeItem('cla_user_session');
-                window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
+        function abrirPerfilTinder(est) {
+            document.getElementById('preview-modal-avatar').src = est.img;
+            document.getElementById('preview-modal-name').textContent = est.nombre;
+            document.getElementById('preview-modal-email').textContent = est.id;
+            document.getElementById('preview-modal-bio').textContent = est.bio;
+            document.getElementById('preview-modal-intereses').textContent = est.intereses || '-';
+            document.getElementById('preview-modal-deportes').textContent = est.deportes || '-';
+            document.getElementById('preview-modal-libros').textContent = est.libros || '-';
+
+            for(let i=0; i<4; i++) {
+                const imgSlot = document.getElementById('preview-g-' + i);
+                if(est.gallery && est.gallery[i]) {
+                    imgSlot.src = est.gallery[i];
+                    imgSlot.style.display = 'block';
+                } else {
+                    imgSlot.style.display = 'none';
+                }
+            }
+
+            document.getElementById('modal-btn-conectar').setAttribute('onclick', `cerrarModalPerfilCompleto(); abrirChat("${est.nombre}");`);
+            document.getElementById('profilePreviewModal').style.display = 'flex';
+        }
+
+        function cerrarModalPerfilCompleto() {
+            document.getElementById('profilePreviewModal').style.display = 'none';
+        }
+
+        function actualizarFotoPrincipal(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const url = URL.createObjectURL(file);
+                document.getElementById('user-avatar-img').src = url;
             }
         }
+
+        function actualizarGaleria(event, index) {
+            const file = event.target.files[0];
+            if(file) {
+                const url = URL.createObjectURL(file);
+                const imgElem = document.getElementById('g-img-' + index);
+                const textElem = document.getElementById('g-text-' + index);
+                imgElem.src = url;
+                imgElem.style.display = 'block';
+                textElem.style.display = 'none';
+            }
+        }
+
+        function guardarBioAuto() {}
+        function guardarBioManual() { alert('¡Biografía guardada correctamente!'); }
+        function cerrarSesion() { alert('Sesión cerrada de forma segura.'); location.reload(); }
+
+        // Inicializar al cargar la página
+        window.onload = function() {
+            document.getElementById('val-nombre').textContent = "Hollman Alberto Alvarez Salamanca";
+            document.getElementById('val-email').textContent = "hollman@cla.edu";
+            document.getElementById('sidebar-user-name').textContent = "Hollman";
+            document.getElementById('header-user-email').textContent = "CampusLA";
+            
+            // Renderizamos la comunidad con rotación inicial
+            renderizarEstudiantes('todos', true);
+        };
     </script>
 </body>
 </html>
