@@ -94,14 +94,11 @@
         .profile-meta-table tr td { padding: 12px; border-bottom: 1px solid #f0f2f5; font-size: 13.5px; }
         .meta-label { font-weight: 700; color: #606770; width: 45%; }
         .meta-value { color: #1c1e21; font-weight: 500; }
+        
         /* Estilos para Intereses, Deportes y Libros en el Perfil */
-.extra-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-.extra-info-box label { display: block; font-weight: 700; color: #606770; font-size: 12px; margin-bottom: 4px; }
-.extra-info-input { width: 100%; padding: 8px; border: 1px solid #ccd0d5; border-radius: 6px; font-family: inherit; font-size: 12px; box-sizing: border-box; }
-
-/* Vista miniatura de las 4 fotos en el detalle del partner */
-.partner-gallery-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 10px 0; }
-.partner-gallery-preview img { width: 100%; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ccd0d5; }        
+        .extra-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .extra-info-box label { display: block; font-weight: 700; color: #606770; font-size: 12px; margin-bottom: 4px; }
+        .extra-info-input { width: 100%; padding: 8px; border: 1px solid #ccd0d5; border-radius: 6px; font-family: inherit; font-size: 12px; box-sizing: border-box; }
 
         /* Moodle y Compras */
         .moodle-access-box { background: #f0f2f5; border: 1px solid #ccd0d5; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 25px; }
@@ -249,19 +246,20 @@
                     <textarea id="user-bio-input" class="bio-textarea" placeholder="Escribe a qué te dedicas y qué estás estudiando..." oninput="guardarBioAuto()"></textarea>
                     <button class="btn-save-bio" onclick="guardarBioManual()">Guardar Biografía</button>
                 </div>
+
                 <!-- Nuevos campos para Intereses, Deportes y Libros -->
                 <div class="extra-info-grid" style="margin-top: 15px;">
                     <div class="extra-info-box">
                         <label for="user-intereses">Mis Intereses</label>
-                        <input type="text" id="user-intereses" class="extra-info-input" placeholder="Ej. Programación, Arte...">
+                        <input type="text" id="user-intereses" class="extra-info-input" placeholder="Ej. Programación, Arte..." oninput="guardarBioAuto()">
                     </div>
                     <div class="extra-info-box">
                         <label for="user-deportes">Mis Deportes</label>
-                        <input type="text" id="user-deportes" class="extra-info-input" placeholder="Ej. Fútbol, Ciclismo...">
+                        <input type="text" id="user-deportes" class="extra-info-input" placeholder="Ej. Fútbol, Ciclismo..." oninput="guardarBioAuto()">
                     </div>
                     <div class="extra-info-box">
                         <label for="user-libros">Libros Favoritos</label>
-                        <input type="text" id="user-libros" class="extra-info-input" placeholder="Ej. Sapiens, Cien Años...">
+                        <input type="text" id="user-libros" class="extra-info-input" placeholder="Ej. Sapiens, Cien Años..." oninput="guardarBioAuto()">
                     </div>
                 </div>
 
@@ -346,7 +344,6 @@
     <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT              -->
     <!-- ========================================== -->
     <script>
-        // Arreglo base con los perfiles originales
         const estudiantesComunidadBase = [
             { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
             { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
@@ -387,9 +384,10 @@
 
             if (user.avatar) document.getElementById('user-avatar-img').src = user.avatar;
             if (user.bio) document.getElementById('user-bio-input').value = user.bio;
-if (user.intereses) document.getElementById('user-intereses').value = user.intereses;
-if (user.deportes) document.getElementById('user-deportes').value = user.deportes;
-if (user.libros) document.getElementById('user-libros').value = user.libros;
+            if (user.intereses) document.getElementById('user-intereses').value = user.intereses;
+            if (user.deportes) document.getElementById('user-deportes').value = user.deportes;
+            if (user.libros) document.getElementById('user-libros').value = user.libros;
+            
             if (user.gallery && Array.isArray(user.gallery)) {
                 user.gallery.forEach((imgData, index) => {
                     if (imgData) {
@@ -404,8 +402,6 @@ if (user.libros) document.getElementById('user-libros').value = user.libros;
 
             inicializarComunidad(user);
             cargarComunidadCompleta();
-
-            // INICIAR ROTACIÓN AUTOMÁTICA CADA 12 SEGUNDOS
             iniciarRotacionAutomatica();
         });
 
@@ -486,48 +482,120 @@ if (user.libros) document.getElementById('user-libros').value = user.libros;
                 card.innerHTML = `
                     <div>
                         <img src="${est.img}" alt="${est.nombre}">
-                        <span style="font-size:10px; background:#e7f3ff; color:var(--accent-blue); padding:2px 6px; border-radius:4px; font-weight:bold;">${est.goal}</span>
-                        <h4 style="margin-top:6px;">${est.nombre}</h4>
-                        <p>${est.bio}</p>
+                        <h4>${est.nombre}</h4>
+                        <p><strong>${est.goal}</strong><br>${est.bio}</p>
                     </div>
-                    <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar Partner</button>
+                    <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>
                 `;
                 grid.appendChild(card);
             });
         }
 
         function renderizarEstudiantesRotativos(lista) {
-            let listaMezclada = [...lista].sort(() => 0.5 - Math.random());
-            let recomendados = listaMezclada.slice(0, 6);
-            renderizarEstudiantes(recomendados);
+            // Seleccionar aleatoriamente 3 estudiantes para mostrar en el grid rotativo
+            let copia = [...lista].sort(() => 0.5 - Math.random());
+            let seleccion = copia.slice(0, 3);
+            renderizarEstudiantes(seleccion);
         }
 
-        function filtrarEstudiantes(categoria, btnElem) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
-            if(btnElem) btnElem.classList.add('active-filter');
-
-            categoriaActualFiltro = categoria;
+        function filtrarEstudiantes(cat, btnElem) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
+            btnElem.classList.add('active-filter');
+            categoriaActualFiltro = cat;
+            
+            if(cat === 'todos') {
+                iniciarRotacionAutomatica();
+            } else {
+                detenerRotacionAutomatica();
+            }
             renderizarVistaActual();
         }
 
         function recargarRotacionDirecta() {
-            // Vuelve a la pestaña de todos y rota inmediatamente
-            const botonTodos = document.querySelectorAll('.filter-btn')[0];
-            filtrarEstudiantes('todos', botonTodos);
+            if(categoriaActualFiltro === 'todos') {
+                renderizarEstudiantesRotativos(estudiantesComunidad);
+            }
         }
 
         function iniciarRotacionAutomatica() {
-            if(intervaloRotacion) clearInterval(intervaloRotacion);
-            // Rota automáticamente cada 12 segundos solo si está en la vista general de recomendados
+            detenerRotacionAutomatica();
             intervaloRotacion = setInterval(() => {
                 if(categoriaActualFiltro === 'todos') {
-                    renderizarVistaActual();
+                    renderizarEstudiantesRotativos(estudiantesComunidad);
                 }
-            }, 30000);
+            }, 12000);
         }
 
-        function abrirChat(nombre) {
-            document.getElementById('chatCompanionName').innerText = 'Chat con ' + nombre;
+        function detenerRotacionAutomatica() {
+            if(intervaloRotacion) {
+                clearInterval(intervaloRotacion);
+                intervaloRotacion = null;
+            }
+        }
+
+        function actualizarFotoPrincipal(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Img = e.target.result;
+                    document.getElementById('user-avatar-img').src = base64Img;
+                    actualizarSesionLocal('avatar', base64Img);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function actualizarGaleria(event, index) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Img = e.target.result;
+                    const imgElem = document.getElementById(`g-img-${index}`);
+                    const textElem = document.getElementById(`g-text-${index}`);
+                    imgElem.src = base64Img;
+                    imgElem.style.display = 'block';
+                    textElem.style.display = 'none';
+
+                    let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+                    if(!sessionData.gallery) sessionData.gallery = [];
+                    sessionData.gallery[index] = base64Img;
+                    localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function guardarBioAuto() {
+            let bioVal = document.getElementById('user-bio-input').value;
+            let interesesVal = document.getElementById('user-intereses').value;
+            let deportesVal = document.getElementById('user-deportes').value;
+            let librosVal = document.getElementById('user-libros').value;
+
+            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            sessionData.bio = bioVal;
+            sessionData.intereses = interesesVal;
+            sessionData.deportes = deportesVal;
+            sessionData.libros = librosVal;
+            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
+            sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
+        }
+
+        function guardarBioManual() {
+            guardarBioAuto();
+            alert('¡Biografía e información adicional guardadas con éxito!');
+        }
+
+        function actualizarSesionLocal(key, value) {
+            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            sessionData[key] = value;
+            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
+            sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
+        }
+
+        function abrirChat(nombrePartner) {
+            document.getElementById('chatCompanionName').innerText = "Chat con " + nombrePartner;
             document.getElementById('chatModal').style.display = 'flex';
         }
 
@@ -537,13 +605,14 @@ if (user.libros) document.getElementById('user-libros').value = user.libros;
 
         function enviarMensaje() {
             const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if(!text) return;
+            const texto = input.value.trim();
+            if(!texto) return;
 
             const chatBody = document.getElementById('chatBody');
+            
             const msgOut = document.createElement('div');
             msgOut.className = 'chat-msg outgoing';
-            msgOut.innerText = text;
+            msgOut.innerText = texto;
             chatBody.appendChild(msgOut);
 
             input.value = '';
@@ -552,68 +621,17 @@ if (user.libros) document.getElementById('user-libros').value = user.libros;
             setTimeout(() => {
                 const msgIn = document.createElement('div');
                 msgIn.className = 'chat-msg incoming';
-                msgIn.innerText = '¡Recibido! Cuadrísimo el espacio para repasar y avanzar.';
+                msgIn.innerText = "¡Mensaje recibido! Estaremos coordinando la sesión de estudio en breve.";
                 chatBody.appendChild(msgIn);
                 chatBody.scrollTop = chatBody.scrollHeight;
             }, 1000);
         }
 
-        function actualizarFotoPrincipal(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Img = e.target.result;
-                document.getElementById('user-avatar-img').src = base64Img;
-                
-                let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                sessionData.avatar = base64Img;
-                localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-                sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function actualizarGaleria(event, index) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Img = e.target.result;
-                const imgElem = document.getElementById(`g-img-${index}`);
-                const textElem = document.getElementById(`g-text-${index}`);
-                imgElem.src = base64Img;
-                imgElem.style.display = 'block';
-                textElem.style.display = 'none';
-
-                let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                if(!sessionData.gallery) sessionData.gallery = [];
-                sessionData.gallery[index] = base64Img;
-                localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function guardarBioAuto() {}
-
-        function guardarBioManual() {
-            const bioText = document.getElementById('user-bio-input').value.trim();
-            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            sessionData.bio = bioText;
-            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-            sessionData.intereses = document.getElementById('user-intereses').value.trim();
-    sessionData.deportes = document.getElementById('user-deportes').value.trim();
-    sessionData.libros = document.getElementById('user-libros').value.trim();
-    
-    localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
-
-    sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios')) || '[]');
-    alert('¡Biografía actualizada y sincronizada con éxito en la red de partners!');
-}
-
         function cerrarSesion() {
-            localStorage.removeItem('cla_user_session');
-            window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
+            if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                localStorage.removeItem('cla_user_session');
+                window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
+            }
         }
     </script>
 </body>
