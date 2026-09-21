@@ -729,7 +729,7 @@
     </script>
 </body>
 <script>
-    // --- BLOQUE MAESTRO PARA ABRIR PERFIL Y 4 FOTOS DE LA COMUNIDAD ---
+    // --- BLOQUE MAESTRO ACTUALIZADO CON BOTÓN DE CONECTAR ---
     function abrirPerfilEstudiante(nombreEstudiante) {
         let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
         let estudiante = comunidadLocal.find(e => e.nombre === nombreEstudiante);
@@ -780,6 +780,24 @@
             }
         }
 
+        // Inyectar o asegurar el botón de Conectar dinámicamente dentro del modal si no existe
+        const modalContent = document.querySelector('#profilePreviewModal .modal-content, #profilePreviewModal > div');
+        if (modalContent) {
+            let btnConectarModal = document.getElementById('btn-conectar-modal-dinamico');
+            if (!btnConectarModal) {
+                btnConectarModal = document.createElement('button');
+                btnConectarModal.id = 'btn-conectar-modal-dinamico';
+                btnConectarModal.className = 'btn-conectar-mini';
+                btnConectarModal.style.cssText = 'width: 100%; margin-top: 20px; padding: 12px; font-size: 15px; cursor: pointer;';
+                modalContent.appendChild(btnConectarModal);
+            }
+            btnConectarModal.innerHTML = `Conectar con ${estudiante.nombre} 💬`;
+            btnConectarModal.onclick = function() {
+                cerrarModalPerfilCompleto();
+                abrirChat(estudiante.nombre);
+            };
+        }
+
         const modalPerfil = document.getElementById('profilePreviewModal');
         if (modalPerfil) {
             modalPerfil.style.display = 'flex';
@@ -795,5 +813,5 @@
             }
         }
     });
-</script>    
+</script>
 </html>
