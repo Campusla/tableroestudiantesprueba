@@ -728,4 +728,72 @@
         }
     </script>
 </body>
+<script>
+    // --- BLOQUE MAESTRO PARA ABRIR PERFIL Y 4 FOTOS DE LA COMUNIDAD ---
+    function abrirPerfilEstudiante(nombreEstudiante) {
+        let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+        let estudiante = comunidadLocal.find(e => e.nombre === nombreEstudiante);
+
+        if (!estudiante) {
+            let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            if (session.nombre === nombreEstudiante) {
+                estudiante = {
+                    nombre: session.nombre,
+                    email: session.email || 'correo@cla.edu',
+                    bio: session.bio || 'Sin biografía registrada.',
+                    intereses: session.intereses || '-',
+                    deportes: session.deportes || '-',
+                    libros: session.libros || '-',
+                    img: session.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
+                    gallery: session.gallery || ["", "", "", ""]
+                };
+            } else {
+                return;
+            }
+        }
+
+        const modalAvatar = document.getElementById('preview-modal-avatar');
+        const modalName = document.getElementById('preview-modal-name');
+        const modalEmail = document.getElementById('preview-modal-email');
+        const modalBio = document.getElementById('preview-modal-bio');
+        const modalIntereses = document.getElementById('preview-modal-intereses');
+        const modalDeportes = document.getElementById('preview-modal-deportes');
+        const modalLibros = document.getElementById('preview-modal-libros');
+
+        if (modalAvatar) modalAvatar.src = estudiante.img || estudiante.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300";
+        if (modalName) modalName.innerText = estudiante.nombre || 'Estudiante CLA';
+        if (modalEmail) modalEmail.innerText = estudiante.email || estudiante.id || 'estudiante@cla.edu';
+        if (modalBio) modalBio.innerText = estudiante.bio || 'Sin biografía registrada.';
+        if (modalIntereses) modalIntereses.innerText = estudiante.intereses || '-';
+        if (modalDeportes) modalDeportes.innerText = estudiante.deportes || '-';
+        if (modalLibros) modalLibros.innerText = estudiante.libros || '-';
+
+        for (let i = 0; i < 4; i++) {
+            const previewImg = document.getElementById(`preview-g-${i}`);
+            if (previewImg) {
+                if (estudiante.gallery && estudiante.gallery[i]) {
+                    previewImg.src = estudiante.gallery[i];
+                    previewImg.style.display = 'block';
+                } else {
+                    previewImg.style.display = 'none';
+                }
+            }
+        }
+
+        const modalPerfil = document.getElementById('profilePreviewModal');
+        if (modalPerfil) {
+            modalPerfil.style.display = 'flex';
+        }
+    }
+
+    // Automatizador para que cualquier tarjeta de la comunidad active el modal al hacer clic en su foto
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.estudiante-mini-card img, .comunidad-card img')) {
+            const nombreH4 = e.target.closest('.estudiante-mini-card, .comunidad-card')?.querySelector('h4')?.innerText;
+            if (nombreH4) {
+                abrirPerfilEstudiante(nombreH4);
+            }
+        }
+    });
+</script>    
 </html>
