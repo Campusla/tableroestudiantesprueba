@@ -62,7 +62,7 @@
         .filter-btn { background: #f0f2f5; border: 1px solid #ccd0d5; color: #4b4f56; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .filter-btn:hover, .filter-btn.active-filter { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
 
-        /* Estudiantes Grid - 3 columnas */
+        /* Estudiantes Grid - 3 columnas (Siempre 6 cuadros por defecto) */
         .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 30px; }
         .estudiante-mini-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
         .estudiante-mini-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px auto; border: 2px solid var(--accent-blue); cursor: pointer; transition: transform 0.2s; }
@@ -192,13 +192,13 @@
 
         <div class="master-content-card">
 
-            <!-- PANEL 01: COMUNIDAD Y FILTROS POR ÁREAS -->
+            <!-- PANEL 01: COMUNIDAD Y FILTROS POR ÁREAS (6 CUADROS POR DEFECTO) -->
             <section id="comunidad-estudiantes" class="help-tab-pane active-pane">
                 <div class="sec-header">
                     <span class="sec-number">01</span>
                     <h2>Comunidad Activa - <span class="nav-hl-green">Busca tu Partner de Estudio</span></h2>
                 </div>
-                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés o haz clic en la foto de cualquier compañero para ver su perfil completo estilo Tinder:</p>
+                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Los 6 perfiles predeterminados rotan automáticamente cada 20 segundos o puedes cambiarlos al instante:</p>
                 
                 <!-- Filtros de Categorías y Botón de Rotación Directa -->
                 <div class="filter-container">
@@ -411,6 +411,7 @@
     <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT              -->
     <!-- ========================================== -->
     <script>
+        // Los 6 cuadros / perfiles predeterminados de la comunidad
         let estudiantesComunidadBase = [
             { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300", intereses: "Idiomas, Viajes", deportes: "Yoga", libros: "El Principito", gallery: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300", "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300"] },
             { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300", intereses: "Matemáticas, Física", deportes: "Fútbol", libros: "Cosmos", gallery: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300"] },
@@ -422,7 +423,7 @@
 
         let categoriaActual = 'todos';
 
-        // Función para barajar un array aleatoriamente (Algoritmo Fisher-Yates)
+        // Función para barajar los 6 cuadros aleatoriamente (Fisher-Yates)
         function barajarArray(array) {
             let arr = [...array];
             for (let i = arr.length - 1; i > 0; i--) {
@@ -471,13 +472,17 @@
             });
             if(btnElement) btnElement.classList.add('active-filter');
             
-            // Si selecciona 'todos' o presiona rotar, aplicamos barajado aleatorio para que roten los perfiles
             renderizarEstudiantes(cat, true);
         }
 
         function recargarRotacionDirecta() {
             renderizarEstudiantes(categoriaActual, true);
         }
+
+        // ROTACIÓN AUTOMÁTICA DE LOS 6 CUADROS CADA 20 SEGUNDOS
+        setInterval(() => {
+            renderizarEstudiantes(categoriaActual, true);
+        }, 20000);
 
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.help-tab-pane').forEach(pane => pane.classList.remove('active-pane'));
@@ -569,14 +574,13 @@
         function guardarBioManual() { alert('¡Biografía guardada correctamente!'); }
         function cerrarSesion() { alert('Sesión cerrada de forma segura.'); location.reload(); }
 
-        // Inicializar al cargar la página
+        // Inicializar al cargar la página con los 6 cuadros
         window.onload = function() {
             document.getElementById('val-nombre').textContent = "Hollman Alberto Alvarez Salamanca";
             document.getElementById('val-email').textContent = "hollman@cla.edu";
             document.getElementById('sidebar-user-name').textContent = "Hollman";
             document.getElementById('header-user-email').textContent = "CampusLA";
             
-            // Renderizamos la comunidad con rotación inicial
             renderizarEstudiantes('todos', true);
         };
     </script>
