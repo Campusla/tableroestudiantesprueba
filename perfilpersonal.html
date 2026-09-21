@@ -428,12 +428,31 @@
             btnElement.classList.add('active');
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+       window.addEventListener('DOMContentLoaded', () => {
             const sessionData = localStorage.getItem('cla_user_session');
             if (!sessionData) {
                 alert('No hay una sesión activa. Redirigiendo al tablero...');
                 window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
                 return;
+            }
+
+            const user = JSON.parse(sessionData);
+            
+            // Rellenar datos del usuario autenticado en el panel
+            document.getElementById('val-nombre').innerText = user.nombre || 'Estudiante CLA';
+            document.getElementById('val-email').innerText = user.email || 'correo@cla.edu';
+            document.getElementById('sidebar-user-name').innerText = user.nombre || 'Mi Panel';
+            document.getElementById('header-user-email').innerText = user.email || 'CampusLA';
+            document.getElementById('user-welcome-badge').innerText = "ESTUDIANTE ACTIVO";
+            
+            document.getElementById('preview-modal-name').innerText = user.nombre || 'Estudiante CLA';
+            document.getElementById('preview-modal-email').innerText = user.email || 'correo@cla.edu';
+
+            // AQUÍ METEMOS LA LLAMADA A NUESTRA FUNCIÓN SEGURA
+            cargarRegistrosSeguro((registrosAdaptados) => {
+                estudiantesComunidad = [...registrosAdaptados, ...estudiantesComunidadBase];
+                filtrarEstudiantes(categoriaActualFiltro);
+            });
             }
 
             const user = JSON.parse(sessionData);
