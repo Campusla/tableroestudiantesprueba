@@ -3,88 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusLA - Registro y Acceso</title>
+    <title>CampusLA - Tablero del Estudiante</title>
     <style>
-        body { font-family: Helvetica, Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 40px; display: 
-
-flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 900px; background: #fff; padding: 
-
-40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); align-items: center; }
+        body { font-family: Helvetica, Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        
+        /* Contenedores principales */
+        .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 900px; width: 100%; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); align-items: center; }
+        .dashboard-container { display: none; width: 100%; max-width: 800px; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        
+        /* Estilos del Formulario */
         .intro-side { flex: 1; min-width: 280px; text-align: center; }
-        .intro-side img { width: 100%; max-width: 180px; filter: grayscale(100%) contrast(150%); margin-bottom: 
-
-20px; }
+        .intro-side img { width: 100%; max-width: 180px; filter: grayscale(100%) contrast(150%); margin-bottom: 20px; }
         .intro-side h2 { color: #003366; font-size: 22px; margin-bottom: 10px; }
         .intro-side p { color: #555; font-size: 14px; line-height: 1.5; }
-        .form-side { flex: 1; min-width: 320px; background: #ffffff; padding: 30px; border-radius: 12px; border: 
-
-1px solid #e2e8f0; }
-        .form-side h3 { color: #003366; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 18px; 
-
-}
+        .form-side { flex: 1; min-width: 320px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .form-side h3 { color: #003366; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 18px; }
         .input-group { display: flex; flex-direction: column; gap: 12px; }
-        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccd0d5; border-radius: 6px; box-sizing: 
-
-border-box; font-size: 14px; }
-        .terms-box { height: 90px; overflow-y: auto; border: 1px solid #eee; padding: 10px; background: #f9f9f9; 
-
-border-radius: 6px; font-size: 11px; color: #444; margin-top: 5px; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccd0d5; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        .terms-box { height: 90px; overflow-y: auto; border: 1px solid #eee; padding: 10px; background: #f9f9f9; border-radius: 6px; font-size: 11px; color: #444; margin-top: 5px; }
         .terms-box label { display: block; margin-bottom: 6px; cursor: pointer; }
-        .btn-register { background-color: #39ff14 !important; color: #000 !important; border: none; font-weight: 
-
-bold; padding: 14px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 15px; box-shadow: 0 4px 12px 
-
-rgba(57, 255, 20, 0.4); text-transform: uppercase; margin-top: 15px; transition: transform 0.2s; }
+        .btn-register { background-color: #39ff14 !important; color: #000 !important; border: none; font-weight: bold; padding: 14px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 15px; box-shadow: 0 4px 12px rgba(57, 255, 20, 0.4); text-transform: uppercase; margin-top: 15px; transition: transform 0.2s; }
         .btn-register:hover { transform: translateY(-2px); }
+
+        /* Estilos del Dashboard / Consola */
+        h2 { color: #003366; }
+        .btn-logout { background-color: #ffcccc !important; color: #990000 !important; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 14px; transition: background 0.2s; }
+        .btn-logout:hover { background-color: #ffb3b3 !important; }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
+    <!-- VISTA 1: FORMULARIO DE REGISTRO -->
+    <div id="view-register" class="main-container">
         <div class="intro-side">
-            <img src="https://campuslatinoamerica.edu.co/logosaliados/lennyfoto.png" alt="CampusLA Logo" 
-
-onerror="this.src='https://via.placeholder.com/180x180?text=CampusLA'">
+            <img src="https://campuslatinoamerica.edu.co/logosaliados/lennyfoto.png" alt="CampusLA Logo" onerror="this.src='https://via.placeholder.com/180x180?text=CampusLA'">
             <h2>Ecosistema Educativo CLA</h2>
-            <p>Regístrate una sola vez y obtén acceso inmediato a tu perfil personal, control de cursos en Moodle y 
-
-simuladores oficiales.</p>
+            <p>Regístrate una sola vez y obtén acceso inmediato a tu perfil personal, control de cursos y simuladores oficiales.</p>
         </div>
 
         <div class="form-side">
             <h3>¡Regístrate Ahora!</h3>
-            <!-- autocomplete="off" para evitar que el navegador meta nombres por defecto como Marty -->
             <form id="regForm" autocomplete="off">
-                <input type="hidden" name="_subject" value="¡Nuevo Registro en CampusLA!">
+                <input type="hidden" name="_subject" value="¡Nuevo Registro en Tablero Estudiantes!">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="hidden" name="producto_id" id="producto_id" value="general">
 
                 <div class="input-group">
-                    <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required 
-
-autocomplete="off">
-                    <input type="email" name="email" id="email" placeholder="Correo electrónico" required 
-
-autocomplete="off">
-                    <input type="tel" name="telefono" id="telefono" placeholder="Teléfono" required 
-
-autocomplete="off">
-                    <input type="password" name="clave" id="clave" placeholder="Contraseña" required 
-
-autocomplete="new-password">
+                    <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required autocomplete="off">
+                    <input type="email" name="email" id="email" placeholder="Correo electrónico" required autocomplete="off">
+                    <input type="tel" name="telefono" id="telefono" placeholder="Teléfono" required autocomplete="off">
+                    <input type="password" name="clave" id="clave" placeholder="Contraseña" required autocomplete="new-password">
                     
                     <div class="terms-box">
                         <label>
-                            <input type="checkbox" id="acepto_datos" required> Autorizo el tratamiento de datos 
-
-según la Política de Privacidad.
+                            <input type="checkbox" id="acepto_datos" required> Autorizo el tratamiento de datos según la Política de Privacidad.
                         </label>
                         <label>
-                            <input type="checkbox" id="acepto_terminos" required> Acepto los Términos y Condiciones 
-
-del servicio.
+                            <input type="checkbox" id="acepto_terminos" required> Acepto los Términos y Condiciones del servicio.
                         </label>
                     </div>
                 </div>
@@ -94,17 +70,41 @@ del servicio.
         </div>
     </div>
 
+    <!-- VISTA 2: CONSOLA / DASHBOARD PERSONAL (Se muestra tras registrarse o si ya hay sesión) -->
+    <div id="view-dashboard" class="dashboard-container">
+        <h2>Consola Personal del Estudiante</h2>
+        <p>Bienvenido a tu centro de control en CampusLA, <span id="user-name-display" style="font-weight: bold;">Estudiante</span>. Administra tu formación y accesos.</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        
+        <div>
+            <p><strong>Estado de Cuenta:</strong> <span style="color: #28a745; font-weight: bold;">● Activo y Verificado</span></p>
+            <p><strong>Correo Registrado:</strong> <span id="user-email-display"></span></p>
+        </div>
+
+        <button id="btnCerrarSesion" class="btn-logout">Cerrar Sesión</button>
+    </div>
+
     <script>
-        // Limpiar campos al cargar para que no arrastren nada raro
+        // Referencias a las vistas
+        const viewRegister = document.getElementById('view-register');
+        const viewDashboard = document.getElementById('view-dashboard');
+
+        // 1. Al cargar la página, verificamos si ya existe una sesión guardada
         window.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('regForm').reset();
-            const urlParams = new URLSearchParams(window.location.search);
-            const prodParam = urlParams.get('producto');
-            if (prodParam) {
-                document.getElementById('producto_id').value = prodParam;
+            const sesionActiva = localStorage.getItem('cla_user_session');
+            if (sesionActiva) {
+                mostrarDashboard(JSON.parse(sesionActiva));
+            } else {
+                document.getElementById('regForm').reset();
+                const urlParams = new URLSearchParams(window.location.search);
+                const prodParam = urlParams.get('producto');
+                if (prodParam) {
+                    document.getElementById('producto_id').value = prodParam;
+                }
             }
         });
 
+        // 2. Manejo del formulario de registro
         document.getElementById('regForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -117,6 +117,7 @@ del servicio.
             const telefonoVal = document.getElementById('telefono').value;
             const productoVal = document.getElementById('producto_id').value;
 
+            // Guardar sesión local
             const userSession = {
                 nombre: nombreVal,
                 email: emailVal,
@@ -126,17 +127,46 @@ del servicio.
             };
             localStorage.setItem('cla_user_session', JSON.stringify(userSession));
 
+            // Disparar correo a FormSubmit en segundo plano sin bloquear la interfaz
             const formData = new FormData(this);
             fetch("https://formsubmit.co/ajax/eatramites1@gmail.com", {
                 method: "POST",
                 body: formData
             })
             .then(response => response.json())
-            .catch(error => console.log('Error:', error));
+            .catch(error => console.log('Error en correo:', error));
 
+            // Transición instantánea a la consola visual sin errores 404
             setTimeout(() => {
-                window.location.replace('perfilpersonal.html');
-            }, 600);
+                mostrarDashboard(userSession);
+            }, 500);
+        });
+
+        // Función para cambiar a la vista de la consola
+        function mostrarDashboard(usuario) {
+            viewRegister.style.display = 'none';
+            viewDashboard.style.display = 'block';
+            
+            const elementoNombre = document.getElementById('user-name-display');
+            const elementoEmail = document.getElementById('user-email-display');
+            
+            if (elementoNombre) elementoNombre.innerText = usuario.nombre;
+            if (elementoEmail) elementoEmail.innerText = usuario.email;
+        }
+
+        // 3. Botón de cierre de sesión (Limpia todo y regresa al formulario)
+        document.getElementById('btnCerrarSesion').addEventListener('click', function() {
+            localStorage.removeItem('cla_user_session');
+            localStorage.clear();
+            
+            // Ocultar dashboard y mostrar formulario limpio
+            viewDashboard.style.display = 'none';
+            viewRegister.style.display = 'flex';
+            document.getElementById('regForm').reset();
+            
+            const btn = document.getElementById('main-register-btn');
+            btn.innerText = 'Registrarse Ahora';
+            btn.disabled = false;
         });
     </script>
 </body>
