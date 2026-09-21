@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusLA - Study Match </title>
+    <title>CampusLA - Panel de Control Académico</title>
     <style>
         :root { --sidebar-width: 280px; --primary-blue: #003366; --accent-blue: #385898; --success-green: #10b981; --danger-red: #ef4444; }
         body { font-family: Helvetica, Arial, sans-serif; background: #e9ebee; color: #1c1e21; margin: 0; display: flex; min-height: 100vh; }
@@ -64,7 +64,19 @@
         .meta-label { font-weight: 700; color: #606770; width: 45%; }
         .meta-value { color: #1c1e21; font-weight: 500; }
 
-        /* ESTILO TINDER DE ESTUDIO (SWIPE CARD) */
+        /* Estilos sección 4: Moodle y Compras */
+        .moodle-access-box { background: #f0f2f5; border: 1px solid #ccd0d5; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 25px; }
+        .moodle-access-box h3 { margin: 0 0 8px 0; color: var(--primary-blue); font-size: 16px; }
+        .moodle-access-box p { font-size: 13px; color: #606770; margin: 0 0 15px 0; }
+        .btn-moodle { background: var(--success-green); color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; font-size: 13px; display: inline-block; }
+        .btn-moodle:hover { background: #059669; }
+
+        .purchases-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        .purchases-table th { background: #f0f2f5; color: #4b4f56; font-weight: 700; text-align: left; padding: 10px; border-bottom: 1px solid #ccd0d5; }
+        .purchases-table td { padding: 10px; border-bottom: 1px solid #f0f2f5; color: #1c1e21; }
+        .badge-status { background: #d1fae5; color: #065f46; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+
+        /* ESTILO TINDER DE ESTUDIO */
         .tinder-wrapper { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
         .tinder-card { width: 100%; max-width: 380px; background: white; border-radius: 12px; border: 1px solid #ccd0d5; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden; position: relative; text-align: center; }
         .tinder-img-container { width: 100%; height: 260px; position: relative; background: #000; }
@@ -119,7 +131,7 @@
                 <button onclick="switchTab('datos-registro', this)" class="nav-item active">1. <span class="nav-hl-blue">Datos</span> & Biografía</button>
                 <button onclick="switchTab('estado-academico', this)" class="nav-item">2. <span class="nav-hl-pink">Escuelas</span> & LMS</button>
                 <button onclick="switchTab('course-match', this)" class="nav-item">3. Study <span class="nav-hl-green">Match (Tinder)</span></button>
-                <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Acceso a mi <span class="nav-hl-blue">curso / examen</span></button>
+                <button onclick="switchTab('soportes-pago', this)" class="nav-item">4. Acceso <span class="nav-hl-blue">Moodle & Compras</span></button>
                 <button onclick="switchTab('seguridad-cred', this)" class="nav-item">5. <span class="nav-hl-yellow">Seguridad</span> & Sesión</button>
             </nav>
         </div>
@@ -195,7 +207,7 @@
             <!-- 2. ESTADO ACADÉMICO -->
             <div id="estado-academico" class="help-tab-pane">
                 <div class="sec-header"><span class="sec-number">02</span><h2><span class="nav-hl-pink">Escuelas</span> y Moodle LMS</h2></div>
-                <p>Programas activos y simuladores sincronizados.</p>
+                <p>Programas activos y simuladores sincronizados en la red académica.</p>
             </div>
 
             <!-- 3. STUDY MATCH ESTILO TINDER -->
@@ -207,7 +219,6 @@
                 <p style="text-align: center; margin-bottom: 20px; font-size: 13px; color: #606770;">Desliza o presiona los botones para conectar con compañeros que comparten tu meta académica.</p>
 
                 <div class="tinder-wrapper" id="tinderAppContainer">
-                    <!-- Tarjeta dinámica de Tinder -->
                     <div class="tinder-card" id="tinderCard">
                         <div class="tinder-img-container">
                             <span class="tinder-badge" id="cardGoal">TOEFL ITP</span>
@@ -225,16 +236,47 @@
                 </div>
             </div>
 
-            <!-- 4. SOPORTES Y PAGOS / CURSOS -->
+            <!-- 4. ACCESO MOODLE Y COMPRAS (ACTUALIZADO) -->
             <div id="soportes-pago" class="help-tab-pane">
-                <div class="sec-header"><span class="sec-number">04</span><h2>Acceso a mi <span class="nav-hl-blue">curso / examen</span></h2></div>
-                <p>Tus accesos directos configurados.</p>
+                <div class="sec-header">
+                    <span class="sec-number">04</span>
+                    <h2>Acceso a <span class="nav-hl-blue">Moodle & Historial de Compras</span></h2>
+                </div>
+                
+                <div class="moodle-access-box">
+                    <h3>Plataforma de Entrenamiento Virtual (Moodle)</h3>
+                    <p>Accede directamente a tus cursos interactivos y lecciones programadas en Escuela Andina.</p>
+                    <a href="https://escuelaandina.campuslatinoamerica.edu.co" target="_blank" class="btn-moodle">Ingresar a Moodle LMS 🚀</a>
+                </div>
+
+                <h3 style="font-size: 14px; color: var(--primary-blue); margin-top: 25px; margin-bottom: 10px;">Mis Compras y Exámenes Adquiridos</h3>
+                <table class="purchases-table">
+                    <thead>
+                        <tr>
+                            <th>Concepto / Curso</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Simulador Oficial TOEFL ITP / Oxford Test</td>
+                            <td>21/09/2026</td>
+                            <td><span class="badge-status">Activo / Pagado</span></td>
+                        </tr>
+                        <tr>
+                            <td>Acceso a Escuela Andina - Moodle LMS</td>
+                            <td>21/09/2026</td>
+                            <td><span class="badge-status">Habilitado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- 5. SEGURIDAD -->
             <div id="seguridad-cred" class="help-tab-pane">
                 <div class="sec-header"><span class="sec-number">05</span><h2><span class="nav-hl-yellow">Seguridad</span></h2></div>
-                <p>Sesión cifrada.</p>
+                <p>Sesión cifrada y protegida.</p>
             </div>
 
         </div>
@@ -256,7 +298,6 @@
     </div>
 
     <script>
-        // Lista de candidatos para el motor tipo Tinder
         const tinderCandidatos = [
             { id: 1, nombre: "Camila Restrepo", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional. Busco compañero constante.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
             { id: 2, nombre: "Mateo Gómez", goal: "Moodle & LMS", bio: "Apasionado por el desarrollo web y optimización de plataformas educativas.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
@@ -308,7 +349,6 @@
             }
         });
 
-        // Motor Tinder: Cargar Tarjeta Actual
         function cargarTarjetaTinder() {
             const container = document.getElementById('tinderAppContainer');
             
@@ -342,20 +382,15 @@
             `;
         }
 
-        // Motor Tinder: Acción de Swipe (Pasar o Match)
         function tinderSwipe(accion) {
             const c = tinderCandidatos[currentIndex];
-            
             if (accion === 'match') {
-                // ¡Hubo Match! Abrimos el chat de inmediato
                 abrirChat(c.nombre);
             }
-
             currentIndex++;
             cargarTarjetaTinder();
         }
 
-        // Gestión del Chat
         function abrirChat(nombre) {
             document.getElementById('chatCompanionName').innerText = 'Match Académico con ' + nombre;
             document.getElementById('chatModal').style.display = 'flex';
@@ -389,7 +424,6 @@
             }, 1000);
         }
 
-        // Funciones de Guardado de Perfil
         function actualizarFotoPrincipal(event) {
             const file = event.target.files[0];
             if (!file) return;
