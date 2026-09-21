@@ -34,10 +34,6 @@
         <div class="form-side">
             <h3>¡Regístrate Ahora!</h3>
             <form id="regForm">
-                <input type="hidden" name="_subject" value="¡Nuevo Registro en CampusLA!">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_captcha" value="false">
-
                 <div class="input-group">
                     <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required>
                     <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
@@ -64,16 +60,17 @@
     </div>
 
     <script>
-        document.getElementById('regForm').addEventListener('submit', function(e) {
+        document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const btn = document.getElementById('main-register-btn');
-            btn.innerText = 'CONFIGURANDO TU PERFIL...';
+            btn.innerText = 'GUARDANDO EN PRODUCCIÓN...';
             btn.disabled = true;
 
             const nombreVal = document.getElementById('nombre').value;
             const emailVal = document.getElementById('email').value;
             const telefonoVal = document.getElementById('telefono').value;
+            const claveVal = document.getElementById('clave').value;
 
             const userSession = {
                 nombre: nombreVal,
@@ -82,18 +79,33 @@
                 fechaRegistro: new Date().toISOString()
             };
             
-            // Guardar sesión para que perfilpersonal.html la lea correctamente
+            // Guardar sesión local para el perfil
             localStorage.setItem('cla_user_session', JSON.stringify(userSession));
 
-            const formData = new FormData(this);
-            fetch("https://formsubmit.co/ajax/eatramites1@gmail.com", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .catch(error => console.log('Aviso enviado a Gmail:', error));
+            // Preparamos los datos para enviarlos al PHP del cPanel que inserta en registros_landing
+            const datosRegistro = {
+                nombre: nombreVal,
+                email: emailVal,
+                telefono: telefonoVal,
+                clave: claveVal
+            };
 
-            // REDIRECCIÓN CORREGIDA: Apunta directo al archivo local de la misma ruta (GitHub Pages)
+            try {
+                const response = await fetch("https://campuslatinoamerica.edu.co/Redsocial/guardar_registro.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datosRegistro)
+                });
+                
+                const resultado = await response.json();
+                console.log('Respuesta de la BD:', resultado);
+            } catch (error) {
+                console.error('Error al guardar en la base de datos:', error);
+            }
+
+            // Redirección directa al perfil personal en GitHub Pages
             setTimeout(() => {
                 window.location.href = 'perfilpersonal.html';
             }, 600);
