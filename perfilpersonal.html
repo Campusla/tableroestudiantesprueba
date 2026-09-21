@@ -979,5 +979,61 @@
                 }
             }
         }
+    <!-- ========================================== -->
+    <!-- MÓDULO AISLADO: CARGA SEGURA DESDE cPanel  -->
+    <!-- ========================================== -->
+    <script>
+        // Función blindada para traer los registros de registros_landing sin tocar lo demás
+        async function cargarRegistrosSeguro(callbackExito) {
+            try {
+                const response = await fetch('https://campuslatinoamerica.edu.co/Redsocial/obtener_estudiantes.php', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    cache: 'no-cache'
+                });
+                
+                if (!response.ok) throw new Error('Error en la respuesta del servidor');
+                
+                const datosBD = await response.json();
+                if (Array.isArray(datosBD) && datosBD.length > 0) {
+                    const adaptados = datosBD.map(reg => ({
+                        id: reg.email || "user@cla.edu",
+                        nombre: reg.nombre || "Estudiante CLA",
+                        categoria: "Maestría",
+                        goal: "Ecosistema Académico",
+                        bio: "Estudiante activo conectado en la red de CampusLA.",
+                        img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
+                    }));
+                    callbackExito(adaptados);
+                }
+            } catch (error) {
+                console.warn("Aviso de respaldo: Manteniendo datos locales estables.", error);
+            }
+        }
+    </script>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.estudiante-mini-card img, .comunidad-card img')) {
+                const nombreH4 = e.target.closest('.estudiante-mini-card, .comunidad-card')?.querySelector('h4')?.innerText;
+                if (nombreH4) {
+                    abrirPerfilEstudiante(nombreH4);
+                }
+            }
+            
+            if (e.target.matches('.btn-conectar-mini') && !e.target.id.includes('dinamico')) {
+                const card = e.target.closest('.estudiante-mini-card, .comunidad-card');
+                if(card) {
+                    const nombreH4 = card.querySelector('h4')?.innerText;
+                    if(nombreH4) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        iniciarChatConUsuario(nombreH4);
+                    }
+                }
+            }
+        });
+    </script>
+</html>    
     });
 </html>
