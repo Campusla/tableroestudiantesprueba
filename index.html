@@ -32,9 +32,7 @@
 
         <div class="form-side">
             <h3>¡Regístrate Ahora!</h3>
-            <!-- Apuntando directo a FormSubmit para que te llegue el correo a eatramites1@gmail.com -->
             <form id="regForm">
-                <!-- Parámetros ocultos para FormSubmit -->
                 <input type="hidden" name="_subject" value="¡Nuevo Registro en CampusLA!">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_captcha" value="false">
@@ -62,7 +60,7 @@
 
     <script>
         document.getElementById('regForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Evitamos que la página haga el submit tradicional en bruto
+            e.preventDefault();
 
             const btn = document.getElementById('main-register-btn');
             btn.innerText = 'CONFIGURANDO TU PERFIL...';
@@ -72,7 +70,6 @@
             const emailVal = document.getElementById('email').value;
             const telefonoVal = document.getElementById('telefono').value;
 
-            // 1. Guardamos la sesión localmente
             const userSession = {
                 nombre: nombreVal,
                 email: emailVal,
@@ -81,7 +78,6 @@
             };
             localStorage.setItem('cla_user_session', JSON.stringify(userSession));
 
-            // 2. Disparamos el correo a FormSubmit por detrás (hacia eatramites1@gmail.com)
             const formData = new FormData(this);
             fetch("https://formsubmit.co/ajax/eatramites1@gmail.com", {
                 method: "POST",
@@ -90,9 +86,8 @@
             .then(response => response.json())
             .catch(error => console.log('Aviso enviado a Gmail:', error));
 
-            // 3. Redirigimos de forma segura a la raíz del repositorio sin romper con archivos inexistentes
             setTimeout(() => {
-                window.location.href = './';
+                window.location.href = 'perfilpersonal.html';
             }, 600);
         });
     </script>
