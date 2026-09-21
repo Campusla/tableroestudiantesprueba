@@ -980,5 +980,26 @@
             }
         }
     });
-</script>    
+</script> 
+script_actualizacion_comunidad = () => {
+    let comunidad = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+    let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+    
+    if (session.nombre) {
+        let existe = comunidad.find(u => u.nombre === session.nombre);
+        if (!existe) {
+            comunidad.push({
+                nombre: session.nombre,
+                email: session.email || 'estudiante@cla.edu',
+                bio: session.bio || 'Estudiando y conectando en el ecosistema.',
+                intereses: session.intereses || '-',
+                deportes: session.deportes || '-',
+                libros: session.libros || '-',
+                img: session.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
+            });
+            localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidad));
+        }
+    }
+}
+script_actualizacion_comunidad();    
 </html>
