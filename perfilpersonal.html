@@ -137,7 +137,7 @@
     <!-- ========================================== -->
     <aside class="help-sidebar">
         <div>
-            <div>
+            <div class="sidebar-brand">
                 <span class="brand-badge" id="user-welcome-badge">ESTUDIANTE CLA</span>
                 <h3 id="sidebar-user-name">Mi Panel</h3>
             </div>
@@ -379,7 +379,6 @@
         function inicializarComunidad(user) {
             let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
             
-            // Garantizamos que todos los perfiles base estén presentes sin eliminar los ya guardados o personalizados
             estudiantesComunidadBase.forEach(baseItem => {
                 let existe = comunidadLocal.find(item => item.id === baseItem.id || item.nombre === baseItem.nombre);
                 if (!existe) {
@@ -425,7 +424,6 @@
 
         function cargarComunidadCompleta() {
             let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-            // Asegurar respaldo si por alguna razón está vacío
             if(comunidadLocal.length === 0) {
                 comunidadLocal = estudiantesComunidadBase;
             }
@@ -503,22 +501,19 @@
         function actualizarFotoPrincipal(event) {
             const file = event.target.files[0];
             if (!file) return;
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                const nuevaFoto = e.target.result;
-                document.getElementById('user-avatar-img').src = nuevaFoto;
-                
-                let user = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                user.avatar = nuevaFoto;
-                localStorage.setItem('cla_user_session', JSON.stringify(user));
+                const base64Img = e.target.result;
+                document.getElementById('user-avatar-img').src = base64Img;
 
-                let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-                let index = comunidadLocal.findIndex(item => item.id === user.email || item.nombre === user.nombre);
-                if(index >= 0) {
-                    comunidadLocal[index].img = nuevaFoto;
-                    localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
-                }
+                let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+                sessionData.avatar = base64Img;
+                localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
+
+                sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
                 cargarComunidadCompleta();
+                alert('¡Foto principal actualizada con éxito!');
             };
             reader.readAsDataURL(file);
         }
@@ -526,44 +521,43 @@
         function actualizarGaleria(event, index) {
             const file = event.target.files[0];
             if (!file) return;
+
             const reader = new FileReader();
             reader.onload = function(e) {
+                const base64Img = e.target.result;
+                
                 const imgElem = document.getElementById(`g-img-${index}`);
                 const textElem = document.getElementById(`g-text-${index}`);
-                imgElem.src = e.target.result;
+                imgElem.src = base64Img;
                 imgElem.style.display = 'block';
                 textElem.style.display = 'none';
 
-                let user = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                if (!user.gallery) user.gallery = ["", "", "", ""];
-                user.gallery[index] = e.target.result;
-                localStorage.setItem('cla_user_session', JSON.stringify(user));
+                let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+                if (!sessionData.gallery) sessionData.gallery = [];
+                sessionData.gallery[index] = base64Img;
+                localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
+                alert('¡Foto de galería guardada!');
             };
             reader.readAsDataURL(file);
         }
 
         function guardarBioAuto() {
-            let bioText = document.getElementById('user-bio-input').value;
-            let user = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            user.bio = bioText;
-            localStorage.setItem('cla_user_session', JSON.stringify(user));
-            
-            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-            let index = comunidadLocal.findIndex(item => item.id === user.email || item.nombre === user.nombre);
-            if(index >= 0) {
-                comunidadLocal[index].bio = bioText;
-                localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
-            }
-            cargarComunidadCompleta();
+            let bioVal = document.getElementById('user-bio-input').value;
+            let sessionData = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            sessionData.bio = bioVal;
+            localStorage.setItem('cla_user_session', JSON.stringify(sessionData));
+            sincronizarUsuarioActualEnComunidad(sessionData, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
         }
 
         function guardarBioManual() {
             guardarBioAuto();
-            alert('¡Biografía actualizada y sincronizada con éxito en la red de estudio!');
+            cargarComunidadCompleta();
+            alert('¡Biografía y metas de estudio guardadas y sincronizadas en la red!');
         }
 
         function cerrarSesion() {
             localStorage.removeItem('cla_user_session');
+            alert('Sesión cerrada de forma segura.');
             window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
         }
     </script>
