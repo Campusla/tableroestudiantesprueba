@@ -1,14 +1,3 @@
-<?php
-// ==========================================
-// SECCIÓN PHP: Lógica de Matches y Datos Dinámicos
-// ==========================================
-$matches = [
-    ["nombre" => "Sofía R.", "rol" => "Estudiante Activo", "foto" => "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"],
-    ["nombre" => "Carlos M.", "rol" => "Tutor Verificado", "foto" => "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"],
-    ["nombre" => "Andrea L.", "rol" => "Especialista UX", "foto" => "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150"],
-    ["nombre" => "David K.", "rol" => "Desarrollador Full-Stack", "foto" => "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"]
-];
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,7 +20,7 @@ $matches = [
         /* Contenedor Principal */
         .main-container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
 
-        /* SECCIÓN: Prueba Social e Impacto Inmediato (Arriba de todo) */
+        /* SECCIÓN: Prueba Social e Impacto Inmediato */
         .section-social-proof {
             background: #ffffff;
             padding: 2.5rem 2rem;
@@ -108,14 +97,8 @@ $matches = [
         <!-- ========================================== -->
         <section class="section-social-proof">
             <h2>Lo que respaldan nuestros miembros y matches recientes</h2>
-            <div class="faces-grid">
-                <?php foreach ($matches as $match): ?>
-                    <div class="face-card">
-                        <img src="<?php echo htmlspecialchars($match['foto']); ?>" alt="<?php echo htmlspecialchars($match['nombre']); ?>">
-                        <h4><?php echo htmlspecialchars($match['nombre']); ?></h4>
-                        <p><?php echo htmlspecialchars($match['rol']); ?></p>
-                    </div>
-                <?php endforeach; ?>
+            <div class="faces-grid" id="faces-container">
+                <!-- Las tarjetas se inyectan dinámicamente mediante JS -->
             </div>
         </section>
 
@@ -129,12 +112,30 @@ $matches = [
     </div>
 
     <!-- ========================================== -->
-    <!-- SECCIÓN JS: Comportamiento y Scripts        -->
+    <!-- SECCIÓN JS: Renderizado Dinámico de Datos  -->
     <!-- ========================================== -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("Tablero de estudiantes cargado y compilado correctamente.");
+        const matches = [
+            { nombre: "Sofía R.", rol: "Estudiante Activo", foto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" },
+            { nombre: "Carlos M.", rol: "Tutor Verificado", foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" },
+            { nombre: "Andrea L.", rol: "Especialista UX", foto: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" },
+            { nombre: "David K.", rol: "Desarrollador Full-Stack", foto: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" }
+        ];
+
+        const container = document.getElementById("faces-container");
+
+        matches.forEach(match => {
+            const card = document.createElement("div");
+            card.className = "face-card";
+            card.innerHTML = `
+                <img src="${match.foto}" alt="${match.nombre}">
+                <h4>${match.nombre}</h4>
+                <p>${match.rol}</p>
+            `;
+            container.appendChild(card);
         });
+
+        console.log("Tablero dinámico renderizado correctamente en GitHub Pages.");
     </script>
 </body>
 </html>
