@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil Personal - CampusLA</title>
+    <style>
+        :root { --sidebar-width: 280px; --primary-blue: #003366; --accent-blue: #385898; }
+        body { font-family: Helvetica, Arial, sans-serif; background: #e9ebee; color: #1c1e21; margin: 0; display: flex; min-height: 100vh; }
+        
+        /* Sidebar Fijo */
+        .help-sidebar { width: var(--sidebar-width); background: #ffffff; border-right: 1px solid #ccd0d5; position: fixed; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; box-sizing: border-box; z-index: 10; }
+        .sidebar-brand h3 { font-size: 16px; color: var(--primary-blue); margin: 5px 0 20px 0; }
+        .brand-badge { background: #e7f3ff; color: var(--accent-blue); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        
+        .help-nav-menu { display: flex; flex-direction: column; gap: 8px; }
+        .nav-item { background: transparent; border: none; text-align: left; padding: 12px; font-size: 13px; font-weight: 600; color: #4b4f56; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .nav-item:hover, .nav-item.active { background: #f0f2f5; color: var(--primary-blue); }
+        .nav-hl-blue { color: #0066cc; }
+        .nav-hl-pink { color: #e91e63; }
+        .nav-hl-yellow { color: #f59e0b; }
+
+        .sidebar-support-box { background: #f0f2f5; padding: 15px; border-radius: 8px; text-align: center; }
+        .sidebar-support-box p { font-size: 12px; color: #606770; margin: 0 0 10px 0; }
+        .btn-sidebar-alert { display: block; background: #003366; color: #fff; text-decoration: none; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+
+        /* Contenido Central */
+        .help-content-body { margin-left: var(--sidebar-width); flex: 1; padding: 40px; box-sizing: border-box; max-width: 1000px; }
+        .help-main-header { margin-bottom: 30px; }
+        .help-main-header h1 { font-size: 24px; color: var(--primary-blue); margin: 0 0 8px 0; }
+        .help-main-header p { color: #606770; font-size: 14px; margin: 0; }
+
+        .master-content-card { background: #ffffff; border-radius: 8px; border: 1px solid #ccd0d5; padding: 30px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+        
+        .help-tab-pane { display: none; }
+        .help-tab-pane.active-pane { display: block; }
+
+        .sec-header { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #dadde1; padding-bottom: 15px; margin-bottom: 20px; }
+        .sec-number { background: #003366; color: #fff; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: bold; }
+        .sec-header h2 { font-size: 16px; margin: 0; color: #1d2129; }
+
+        /* Tablas y Cajas de Datos */
+        .profile-meta-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .profile-meta-table tr td { padding: 12px; border-bottom: 1px solid #f0f2f5; font-size: 13.5px; }
+        .meta-label { font-weight: 700; color: #606770; width: 45%; }
+        .meta-value { color: #1c1e21; font-weight: 500; }
+
+        .btn-logout { background: #fee2e2; color: #dc2626; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-logout:hover { background: #fecaca; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .help-sidebar { position: relative; width: 100%; height: auto; }
+            .help-content-body { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <aside class="help-sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <span class="brand-badge" id="user-welcome-badge">ESTUDIANTE CLA</span>
+                <h3 id="sidebar-user-name">Mi Perfil</h3>
+            </div>
+            
+            <nav class="help-nav-menu">
+                <button onclick="switchTab('datos-registro', this)" class="nav-item active">1. <span class="nav-hl-blue">Datos</span> de Registro</button>
+                <button onclick="switchTab('estado-academico', this)" class="nav-item">2. <span class="nav-hl-pink">Escuelas</span> & LMS</button>
+                <button onclick="switchTab('soportes-pago', this)" class="nav-item">3. Compras & <span class="nav-hl-blue">Soportes</span></button>
+                <button onclick="switchTab('seguridad-cred', this)" class="nav-item">4. <span class="nav-hl-yellow">Seguridad</span> & Sesión</button>
+            </nav>
+        </div>
+
+        <div class="sidebar-support-box">
+            <p>Soporte técnico activo</p>
+            <a href="https://campusla.github.io/tableroestudiantesprueba/" class="btn-sidebar-alert">Volver al Inicio</a>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO CENTRAL -->
+    <main class="help-content-body">
+        <div class="help-main-header">
+            <h1>Panel de Control Personal</h1>
+            <p>Gestiona tus accesos, estado académico y registros en el ecosistema <span id="header-user-email">CampusLA</span>.</p>
+        </div>
+
+        <div class="master-content-card">
+
+            <!-- 1. DATOS DE REGISTRO -->
+            <div id="datos-registro" class="help-tab-pane active-pane">
+                <div class="sec-header">
+                    <span class="sec-number">01</span>
+                    <h2>Metadatos y <span class="nav-hl-blue">Credenciales de Usuario</span></h2>
+                </div>
+                <p>Información oficial registrada en la base de datos central de CampusLA.</p>
+                
+                <table class="profile-meta-table">
+                    <tr>
+                        <td class="meta-label">Nombre Registrado</td>
+                        <td class="meta-value" id="val-nombre">Cargando...</td>
+                    </tr>
+                    <tr>
+                        <td class="meta-label">Correo Electrónico Principal</td>
+                        <td class="meta-value" id="val-email">Cargando...</td>
+                    </tr>
+                    <tr>
+                        <td class="meta-label">Teléfono de Contacto</td>
+                        <td class="meta-value" id="val-telefono">Cargando...</td>
+                    </tr>
+                    <tr>
+                        <td class="meta-label">Fecha de Activación de Cuenta</td>
+                        <td class="meta-value" id="val-fecha">Cargando...</td>
+                    </tr>
+                </table>
+
+                <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión Segura</button>
+            </div>
+
+            <!-- 2. ESTADO ACADÉMICO -->
+            <div id="estado-academico" class="help-tab-pane">
+                <div class="sec-header">
+                    <span class="sec-number">02</span>
+                    <h2><span class="nav-hl-pink">Escuelas</span> y Aulas Virtuales (Moodle)</h2>
+                </div>
+                <p>Tus programas activos y simuladores configurados:</p>
+                <ul style="padding-left: 20px; line-height: 1.8; color: #333;">
+                    <li><strong>Moodle LMS (Nueva Versión):</strong> Sincronizado y activo.</li>
+                    <li><strong>Simulador Oficial TOEFL ITP:</strong> Disponible en tu módulo de pruebas.</li>
+                </ul>
+            </div>
+
+            <!-- 3. COMPRAS Y SOPORTES -->
+            <div id="soportes-pago" class="help-tab-pane">
+                <div class="sec-header">
+                    <span class="sec-number">03</span>
+                    <h2>Historial de <span class="nav-hl-blue">Pagos y Recibos</span></h2>
+                </div>
+                <p>Aquí verás reflejados los comprobantes de tus matrículas y validaciones con pasarelas aliadas.</p>
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px dashed #ccd0d5; text-align: center; color: #666;">
+                    No hay pagos pendientes. Tu cuenta se encuentra al día.
+                </div>
+            </div>
+
+            <!-- 4. SEGURIDAD -->
+            <div id="seguridad-cred" class="help-tab-pane">
+                <div class="sec-header">
+                    <span class="sec-number">04</span>
+                    <h2><span class="nav-hl-yellow">Seguridad</span> y Dispositivos</h2>
+                </div>
+                <p>Tus sesiones operan bajo protocolos cifrados locales. Asegúrate de cerrar sesión al terminar en equipos compartidos.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Lógica de Pestañas
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.help-tab-pane').forEach(pane => pane.classList.remove('active-pane'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active-pane');
+            btnElement.classList.add('active');
+        }
+
+        // Cargar datos de la sesión local al abrir el perfil
+        window.addEventListener('DOMContentLoaded', () => {
+            const sessionData = localStorage.getItem('cla_user_session');
+            
+            if (!sessionData) {
+                alert('No hay una sesión activa. Redirigiendo al tablero...');
+                window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
+                return;
+            }
+
+            const user = JSON.parse(sessionData);
+            
+            // Inyectar datos en la interfaz
+            document.getElementById('sidebar-user-name').innerText = user.nombre;
+            document.getElementById('val-nombre').innerText = user.nombre;
+            document.getElementById('val-email').innerText = user.email;
+            document.getElementById('val-telefono').innerText = user.telefono;
+            document.getElementById('val-fecha').innerText = new Date(user.fechaRegistro).toLocaleString();
+            document.getElementById('header-user-email').innerText = user.email;
+        });
+
+        // Función para cerrar sesión redirigiendo al tablero de pruebas externo
+        function cerrarSesion() {
+            localStorage.removeItem('cla_user_session');
+            window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
+        }
+    </script>
+</body>
+</html>
