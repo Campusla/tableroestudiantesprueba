@@ -62,8 +62,8 @@
         .filter-btn { background: #f0f2f5; border: 1px solid #ccd0d5; color: #4b4f56; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .filter-btn:hover, .filter-btn.active-filter { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
 
-        /* Estudiantes Grid */
-        .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; margin-bottom: 30px; }
+        /* Estudiantes Grid - 3 columnas para evitar espacios vacíos (múltiplos de 3 o 2) */
+        .feed-estudiantes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 30px; }
         .estudiante-mini-card { background: #f9f9f9; border: 1px solid #ccd0d5; border-radius: 8px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
         .estudiante-mini-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px auto; border: 2px solid var(--accent-blue); }
         .estudiante-mini-card h4 { font-size: 13px; margin: 0 0 4px 0; color: var(--primary-blue); }
@@ -169,7 +169,7 @@
         <div class="master-content-card">
 
             <!-- PANEL 01: COMUNIDAD Y FILTROS POR ÁREAS -->
-            <div id="comunidad-estudiantes" class="help-tab-pane active-pane">
+            <section id="comunidad-estudiantes" class="help-tab-pane active-pane">
                 <div class="sec-header">
                     <span class="sec-number">01</span>
                     <h2>Comunidad Activa - <span class="nav-hl-green">Busca tu Partner de Estudio</span></h2>
@@ -192,10 +192,10 @@
                     <p style="font-size: 13px; color: #4b4f56; margin: 0 0 10px 0;">¿Quieres actualizar tu propia biografía y área de estudio para aparecer en la red?</p>
                     <button class="btn-save-bio" onclick="switchTab('datos-registro', document.querySelectorAll('.nav-item')[1])">Actualizar mi Perfil 🚀</button>
                 </div>
-            </div>
+            </section>
 
             <!-- PANEL 02: PERFIL, FOTOS Y BIOGRAFÍA -->
-            <div id="datos-registro" class="help-tab-pane">
+            <section id="datos-registro" class="help-tab-pane">
                 <div class="sec-header">
                     <span class="sec-number">02</span>
                     <h2>Metadatos, <span class="nav-hl-blue">Galería y Biografía</span></h2>
@@ -245,16 +245,16 @@
                 </table>
 
                 <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión Segura</button>
-            </div>
+            </section>
 
             <!-- PANEL 03: ESTADO ACADÉMICO -->
-            <div id="estado-academico" class="help-tab-pane">
+            <section id="estado-academico" class="help-tab-pane">
                 <div class="sec-header"><span class="sec-number">03</span><h2><span class="nav-hl-pink">Escuelas</span> y Moodle LMS</h2></div>
                 <p>Programas activos y simuladores sincronizados en la red académica.</p>
-            </div>
+            </section>
 
             <!-- PANEL 04: MOODLE Y COMPRAS -->
-            <div id="soportes-pago" class="help-tab-pane">
+            <section id="soportes-pago" class="help-tab-pane">
                 <div class="sec-header">
                     <span class="sec-number">04</span>
                     <h2>Acceso a <span class="nav-hl-blue">Moodle & Historial de Compras</span></h2>
@@ -288,13 +288,13 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </section>
 
             <!-- PANEL 05: SEGURIDAD -->
-            <div id="seguridad-cred" class="help-tab-pane">
+            <section id="seguridad-cred" class="help-tab-pane">
                 <div class="sec-header"><span class="sec-number">05</span><h2><span class="nav-hl-yellow">Seguridad</span></h2></div>
                 <p>Sesión cifrada y protegida.</p>
-            </div>
+            </section>
 
         </div>
     </main>
@@ -320,12 +320,14 @@
     <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT               -->
     <!-- ========================================== -->
     <script>
+        // Array con 6 elementos (múltiplo de 3 para llenar perfectamente la grilla sin espacios en blanco)
         const estudiantesComunidad = [
             { id: 1, nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
             { id: 2, nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
             { id: 3, nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: "Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" },
             { id: 4, nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300" },
-            { id: 5, nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" }
+            { id: 5, nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" },
+            { id: 6, nombre: "Carlos Eduardo Soto", categoria: "Matemáticas", goal: "Física Cuántica", bio: "Repasando laboratorios y física de campos avanzados.", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" }
         ];
 
         function switchTab(tabId, btnElement) {
