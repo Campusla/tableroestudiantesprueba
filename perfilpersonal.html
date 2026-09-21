@@ -58,7 +58,7 @@
         .sec-header h2 { font-size: 16px; margin: 0; color: #1d2129; }
 
         /* Filtros de Categorías de Estudio */
-        .filter-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .filter-container { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; justify-content: space-between; }
         .filter-btn { background: #f0f2f5; border: 1px solid #ccd0d5; color: #4b4f56; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .filter-btn:hover, .filter-btn.active-filter { background: var(--primary-blue); color: white; border-color: var(--primary-blue); }
 
@@ -174,16 +174,19 @@
                     <span class="sec-number">01</span>
                     <h2>Comunidad Activa - <span class="nav-hl-green">Busca tu Partner de Estudio</span></h2>
                 </div>
-                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés y encuentra compañeros conectados para repasar matemáticas, derecho, maestrías o idiomas:</p>
+                <p style="font-size: 13px; color: #606770; margin-bottom: 15px;">Filtra por área de interés o deja que el tablero rote perfiles automáticamente cada 12 segundos:</p>
                 
-                <!-- Filtros de Categorías -->
+                <!-- Filtros de Categorías y Botón de Rotación Directa -->
                 <div class="filter-container">
-                    <button class="filter-btn active-filter" onclick="filtrarEstudiantes('todos', this)">Rotar / Recomendados</button>
-                    <button class="filter-btn" onclick="filtrarEstudiantes('Matemáticas', this)">Matemáticas & Exactas</button>
-                    <button class="filter-btn" onclick="filtrarEstudiantes('Derecho', this)">Derecho & Leyes</button>
-                    <button class="filter-btn" onclick="filtrarEstudiantes('Maestría', this)">Maestrías & Postgrados</button>
-                    <button class="filter-btn" onclick="filtrarEstudiantes('Sociales', this)">Ciencias Sociales</button>
-                    <button class="filter-btn" onclick="filtrarEstudiantes('Idiomas', this)">Idiomas & Certificaciones</button>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="filter-btn active-filter" onclick="filtrarEstudiantes('todos', this)">Rotar / Recomendados</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Matemáticas', this)">Matemáticas & Exactas</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Derecho', this)">Derecho & Leyes</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Maestría', this)">Maestrías & Postgrados</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Sociales', this)">Ciencias Sociales</button>
+                        <button class="filter-btn" onclick="filtrarEstudiantes('Idiomas', this)">Idiomas & Certificaciones</button>
+                    </div>
+                    <button class="filter-btn" style="background: var(--success-green); color: white; border: none;" onclick="recargarRotacionDirecta()">🔄 Rotar Ahora</button>
                 </div>
 
                 <div class="feed-estudiantes-grid" id="gridEstudiantes"></div>
@@ -334,6 +337,8 @@
         ];
 
         let estudiantesComunidad = [];
+        let intervaloRotacion = null;
+        let categoriaActualFiltro = 'todos';
 
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.help-tab-pane').forEach(pane => pane.classList.remove('active-pane'));
@@ -374,6 +379,9 @@
 
             inicializarComunidad(user);
             cargarComunidadCompleta();
+
+            // INICIAR ROTACIÓN AUTOMÁTICA CADA 12 SEGUNDOS
+            iniciarRotacionAutomatica();
         });
 
         function inicializarComunidad(user) {
@@ -428,10 +436,16 @@
                 comunidadLocal = estudiantesComunidadBase;
             }
             estudiantesComunidad = comunidadLocal;
-            
-            // LÓGICA DE ROTACIÓN / RECOMENDACIÓN INTELIGENTE (Para que no se sature el dashboard)
-            // Tomamos una muestra aleatoria o rotativa de hasta 6 perfiles recomendados para la vista principal 'todos'
-            renderizarEstudiantesRotativos(estudiantesComunidad);
+            renderizarVistaActual();
+        }
+
+        function renderizarVistaActual() {
+            if(categoriaActualFiltro === 'todos') {
+                renderizarEstudiantesRotativos(estudiantesComunidad);
+            } else {
+                const filtrados = estudiantesComunidad.filter(est => est.categoria === categoriaActualFiltro);
+                renderizarEstudiantes(filtrados);
+            }
         }
 
         function renderizarEstudiantes(lista) {
@@ -457,26 +471,34 @@
             });
         }
 
-        // Función específica para rotar perfiles y evitar saturación en el dashboard principal
         function renderizarEstudiantesRotativos(lista) {
-            // Mezclamos aleatoriamente la lista para ir rotando las recomendaciones en cada visita o clic
             let listaMezclada = [...lista].sort(() => 0.5 - Math.random());
-            // Limitamos a máximo 6 perfiles visibles para mantener el dashboard limpio y ordenado
             let recomendados = listaMezclada.slice(0, 6);
             renderizarEstudiantes(recomendados);
         }
 
         function filtrarEstudiantes(categoria, btnElem) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active-filter'));
-            btnElem.classList.add('active-filter');
+            if(btnElem) btnElem.classList.add('active-filter');
 
-            if(categoria === 'todos') {
-                // Al hacer clic en "Todos", activamos la rotación inteligente de perfiles recomendados
-                renderizarEstudiantesRotativos(estudiantesComunidad);
-            } else {
-                const filtrados = estudiantesComunidad.filter(est => est.categoria === categoria);
-                renderizarEstudiantes(filtrados);
-            }
+            categoriaActualFiltro = categoria;
+            renderizarVistaActual();
+        }
+
+        function recargarRotacionDirecta() {
+            // Vuelve a la pestaña de todos y rota inmediatamente
+            const botonTodos = document.querySelectorAll('.filter-btn')[0];
+            filtrarEstudiantes('todos', botonTodos);
+        }
+
+        function iniciarRotacionAutomatica() {
+            if(intervaloRotacion) clearInterval(intervaloRotacion);
+            // Rota automáticamente cada 12 segundos solo si está en la vista general de recomendados
+            intervaloRotacion = setInterval(() => {
+                if(categoriaActualFiltro === 'todos') {
+                    renderizarVistaActual();
+                }
+            }, 12000);
         }
 
         function abrirChat(nombre) {
@@ -547,9 +569,7 @@
             reader.readAsDataURL(file);
         }
 
-        function guardarBioAuto() {
-            // Guardado automático ligero si se requiere
-        }
+        function guardarBioAuto() {}
 
         function guardarBioManual() {
             const bioText = document.getElementById('user-bio-input').value.trim();
