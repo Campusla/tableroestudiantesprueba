@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusLA - Sistema Integrado</title>
+    <title>CampusLA - Registro y Acceso</title>
     <style>
         body { font-family: Helvetica, Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 40px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .main-container, .profile-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 900px; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); align-items: center; width: 100%; }
-        .profile-container { max-width: 600px; display: none; flex-direction: column; align-items: stretch; }
+        .main-container { display: flex; flex-wrap: wrap; gap: 40px; max-width: 900px; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); align-items: center; }
         .intro-side { flex: 1; min-width: 280px; text-align: center; }
         .intro-side h2 { color: #003366; font-size: 22px; margin-bottom: 10px; }
         .intro-side p { color: #555; font-size: 14px; line-height: 1.5; }
         .form-side { flex: 1; min-width: 320px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .form-side h3, .profile-container h2 { color: #003366; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 18px; }
+        .form-side h3 { color: #003366; font-weight: 700; text-align: center; margin-bottom: 20px; font-size: 18px; }
         .input-group { display: flex; flex-direction: column; gap: 12px; }
         .input-group input { width: 100%; padding: 12px; border: 1px solid #ccd0d5; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
         .terms-box { height: 90px; overflow-y: auto; border: 1px solid #eee; padding: 10px; background: #f9f9f9; border-radius: 6px; font-size: 11px; color: #444; margin-top: 5px; }
@@ -22,17 +21,11 @@
         .login-redirect { text-align: center; margin-top: 15px; font-size: 13px; }
         .login-redirect a { color: #003366; text-decoration: none; font-weight: bold; }
         .login-redirect a:hover { text-decoration: underline; }
-        .user-info { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 20px; }
-        .user-info p { margin: 10px 0; color: #333; font-size: 15px; }
-        .user-info strong { color: #003366; }
-        .btn-logout { background-color: #ff3b30; color: #fff; border: none; font-weight: bold; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 14px; text-transform: uppercase; transition: background 0.2s; }
-        .btn-logout:hover { background-color: #d32f2f; }
     </style>
 </head>
 <body>
 
-    <!-- VISTA REGISTRO / ACCESO -->
-    <div class="main-container" id="viewRegister">
+    <div class="main-container">
         <div class="intro-side">
             <h2>Ecosistema Educativo CLA</h2>
             <p>Regístrate una sola vez y obtén acceso inmediato a tu perfil personal, control de cursos en Moodle y simuladores oficiales.</p>
@@ -70,47 +63,7 @@
         </div>
     </div>
 
-    <!-- VISTA PERFIL PERSONAL -->
-    <div class="profile-container" id="viewProfile">
-        <h2>Mi Perfil Personal</h2>
-        
-        <div class="user-info">
-            <p><strong>Nombre:</strong> <span id="lblNombre">Cargando...</span></p>
-            <p><strong>Correo Electrónico:</strong> <span id="lblEmail">Cargando...</span></p>
-            <p><strong>Teléfono:</strong> <span id="lblTelefono">Cargando...</span></p>
-            <p><strong>Fecha de Registro:</strong> <span id="lblFecha">Cargando...</span></p>
-        </div>
-
-        <button type="button" id="btnLogout" class="btn-logout">Cerrar Sesión</button>
-    </div>
-
     <script>
-        const viewRegister = document.getElementById('viewRegister');
-        const viewProfile = document.getElementById('viewProfile');
-
-        function checkSessionView() {
-            const savedSession = localStorage.getItem('cla_user_session');
-            if (savedSession) {
-                try {
-                    const userData = JSON.parse(savedSession);
-                    document.getElementById('lblNombre').innerText = userData.nombre || 'No especificado';
-                    document.getElementById('lblEmail').innerText = userData.email || 'No especificado';
-                    document.getElementById('lblTelefono').innerText = userData.telefono || 'No especificado';
-                    document.getElementById('lblFecha').innerText = userData.fechaRegistro ? new Date(userData.fechaRegistro).toLocaleString() : 'No especificada';
-                    
-                    viewRegister.style.display = 'none';
-                    viewProfile.style.display = 'flex';
-                } catch (e) {
-                    localStorage.removeItem('cla_user_session');
-                }
-            } else {
-                viewProfile.style.display = 'none';
-                viewRegister.style.display = 'flex';
-            }
-        }
-
-        checkSessionView();
-
         document.getElementById('regForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -118,10 +71,14 @@
             btn.innerText = 'CONFIGURANDO TU PERFIL...';
             btn.disabled = true;
 
+            const nombreVal = document.getElementById('nombre').value;
+            const emailVal = document.getElementById('email').value;
+            const telefonoVal = document.getElementById('telefono').value;
+
             const userSession = {
-                nombre: document.getElementById('nombre').value,
-                email: document.getElementById('email').value,
-                telefono: document.getElementById('telefono').value,
+                nombre: nombreVal,
+                email: emailVal,
+                telefono: telefonoVal,
                 fechaRegistro: new Date().toISOString()
             };
             
@@ -132,21 +89,21 @@
                 method: "POST",
                 body: formData
             })
+            .then(response => response.json())
             .catch(error => console.log('Aviso enviado a Gmail:', error));
 
             setTimeout(() => {
-                checkSessionView();
-                btn.innerText = 'Registrarse Ahora';
-                btn.disabled = false;
+                window.location.href = 'perfilpersonal.html';
             }, 600);
         });
 
+        // Botón de inicio de sesión directo para cuando cierran sesión y caen aquí
         document.getElementById('btn-login-direct').addEventListener('click', function(e) {
             e.preventDefault();
             const savedSession = localStorage.getItem('cla_user_session');
             
             if (savedSession) {
-                checkSessionView();
+                window.location.href = 'perfilpersonal.html';
             } else {
                 const correoIngresado = prompt('No hay sesión activa. Ingresa tu correo electrónico registrado para iniciar sesión:');
                 if (correoIngresado && correoIngresado.trim() !== '') {
@@ -157,14 +114,9 @@
                         fechaRegistro: new Date().toISOString()
                     };
                     localStorage.setItem('cla_user_session', JSON.stringify(restoredSession));
-                    checkSessionView();
+                    window.location.href = 'perfilpersonal.html';
                 }
             }
-        });
-
-        document.getElementById('btnLogout').addEventListener('click', function() {
-            localStorage.removeItem('cla_user_session');
-            window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
         });
     </script>
 </body>
