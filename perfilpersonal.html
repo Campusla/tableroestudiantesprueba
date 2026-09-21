@@ -320,17 +320,17 @@
     <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT              -->
     <!-- ========================================== -->
     <script>
-        // Arreglo base completo para asegurar que NUNCA falten los perfiles en ningún navegador
+        // Arreglo base completo inicial (solo se usa si no hay registros previos en localStorage)
         const estudiantesComunidadBase = [
-            { id: 1, nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
-            { id: 2, nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
-            { id: 3, nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: "Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" },
-            { id: 4, nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300" },
-            { id: 5, nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" },
-            { id: 6, nombre: "Carlos Eduardo Soto", categoria: "Matemáticas", goal: "Física Cuántica", bio: "Repasando laboratorios y física de campos avanzados.", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" },
-            { id: 7, nombre: "pepe", categoria: "Idiomas", goal: "Inglés e idiomas", bio: "Inglés e idiomas.", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300" },
-            { id: 8, nombre: "Marty", categoria: "Maestría", goal: "Estudiante CLA", bio: "Estudiando y conectando en el ecosistema.", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300" },
-            { id: 9, nombre: "Hollman Alvarez", categoria: "Maestría", goal: "Finanzas y desarrollo", bio: "Finanzas y desarrollo", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300" }
+            { id: "camila@cla.edu", nombre: "Camila Restrepo", categoria: "Idiomas", goal: "TOEFL ITP", bio: "Preparando el TOEFL para intercambio internacional.", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" },
+            { id: "mateo@cla.edu", nombre: "Mateo Gómez", categoria: "Matemáticas", goal: "Cálculo Avanzado", bio: "Resolviendo ecuaciones diferenciales y álgebra lineal.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" },
+            { id: "lucia@cla.edu", nombre: "Lucía Fernández", categoria: "Derecho", goal: "Derecho Civil", bio: "Analizando jurisprudencia y preparando casos prácticos.", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" },
+            { id: "andres@cla.edu", nombre: "Andrés Felipe Ruiz", categoria: "Maestría", goal: "Magíster en Gerencia", bio: "Trabajando en la tesis de mi maestría en administración.", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300" },
+            { id: "valentina@cla.edu", nombre: "Valentina Mora", categoria: "Sociales", goal: "Sociología Política", bio: "Investigación sobre dinámicas sociales contemporáneas.", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" },
+            { id: "carlos@cla.edu", nombre: "Carlos Eduardo Soto", categoria: "Matemáticas", goal: "Física Cuántica", bio: "Repasando laboratorios y física de campos avanzados.", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" },
+            { id: "pepe@cla.edu", nombre: "pepe", categoria: "Idiomas", goal: "Inglés e idiomas", bio: "Inglés e idiomas.", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300" },
+            { id: "marty@cla.edu", nombre: "Marty", categoria: "Maestría", goal: "Estudiante CLA", bio: "Estudiando y conectando en el ecosistema.", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300" },
+            { id: "hollman@cla.edu", nombre: "Hollman Alvarez", categoria: "Maestría", goal: "Finanzas y desarrollo", bio: "Finanzas y desarrollo", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300" }
         ];
 
         let estudiantesComunidad = [];
@@ -372,13 +372,24 @@
                 });
             }
 
-            sincronizarComunidadLocal(user);
+            inicializarComunidad(user);
             cargarComunidadCompleta();
         });
 
-        function sincronizarComunidadLocal(user) {
-            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+        function inicializarComunidad(user) {
+            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || 'null');
             
+            // Si es la primera vez que se carga en este navegador, guardamos la base inicial
+            if (!comunidadLocal) {
+                comunidadLocal = estudiantesComunidadBase;
+                localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
+            }
+
+            // Actualizamos o integramos al usuario activo actual en la comunidad sin tocar las fotos de los demás
+            sincronizarUsuarioActualEnComunidad(user, comunidadLocal);
+        }
+
+        function sincronizarUsuarioActualEnComunidad(user, comunidadLocal) {
             let categoriaDetectada = "Maestría";
             let bioTexto = user.bio || "Estudiando y conectando en el ecosistema.";
             let bioLower = bioTexto.toLowerCase();
@@ -388,39 +399,34 @@
             else if(bioLower.includes('idioma') || bioLower.includes('ingles') || bioLower.includes('toefl')) categoriaDetectada = "Idiomas";
             else if(bioLower.includes('social') || bioLower.includes('sociologia')) categoriaDetectada = "Sociales";
 
-            const perfilActualizado = {
-                id: user.email,
-                nombre: user.nombre,
-                categoria: categoriaDetectada,
-                goal: bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA",
-                bio: bioTexto,
-                img: user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
-            };
-
             let index = comunidadLocal.findIndex(item => item.id === user.email || item.nombre === user.nombre);
+            
             if(index >= 0) {
-                comunidadLocal[index] = perfilActualizado;
+                // Si ya existe, actualizamos texto y categoría, PERO PRESERVAMOS SU FOTO si ya tenía una personalizada
+                comunidadLocal[index].nombre = user.nombre;
+                comunidadLocal[index].categoria = categoriaDetectada;
+                comunidadLocal[index].goal = bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA";
+                comunidadLocal[index].bio = bioTexto;
+                if(user.avatar) {
+                    comunidadLocal[index].img = user.avatar;
+                }
             } else {
-                comunidadLocal.push(perfilActualizado);
+                // Si no existe, lo agregamos nuevo
+                comunidadLocal.push({
+                    id: user.email,
+                    nombre: user.nombre,
+                    categoria: categoriaDetectada,
+                    goal: bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA",
+                    bio: bioTexto,
+                    img: user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
+                });
             }
             localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
         }
 
         function cargarComunidadCompleta() {
             let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-            
-            // Unimos la base maestra con los guardados localmente evitando duplicados
-            let combinados = [...estudiantesComunidadBase];
-            comunidadLocal.forEach(localItem => {
-                let existe = combinados.findIndex(item => item.id === localItem.id || item.nombre === localItem.nombre);
-                if (existe >= 0) {
-                    combinados[existe] = localItem; // Actualiza si hubo cambios en la bio o avatar
-                } else {
-                    combinados.push(localItem); // Agrega nuevos
-                }
-            });
-
-            estudiantesComunidad = combinados;
+            estudiantesComunidad = comunidadLocal;
             renderizarEstudiantes(estudiantesComunidad);
         }
 
@@ -496,11 +502,19 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('user-avatar-img').src = e.target.result;
+                const nuevaFoto = e.target.result;
+                document.getElementById('user-avatar-img').src = nuevaFoto;
+                
                 let user = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                user.avatar = e.target.result;
+                user.avatar = nuevaFoto;
                 localStorage.setItem('cla_user_session', JSON.stringify(user));
-                sincronizarComunidadLocal(user);
+
+                let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+                let index = comunidadLocal.findIndex(item => item.id === user.email || item.nombre === user.nombre);
+                if(index >= 0) {
+                    comunidadLocal[index].img = nuevaFoto;
+                    localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
+                }
                 cargarComunidadCompleta();
             };
             reader.readAsDataURL(file);
@@ -530,7 +544,13 @@
             let user = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
             user.bio = bioText;
             localStorage.setItem('cla_user_session', JSON.stringify(user));
-            sincronizarComunidadLocal(user);
+            
+            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+            let index = comunidadLocal.findIndex(item => item.id === user.email || item.nombre === user.nombre);
+            if(index >= 0) {
+                comunidadLocal[index].bio = bioText;
+                localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
+            }
             cargarComunidadCompleta();
         }
 
