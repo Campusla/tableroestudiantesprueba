@@ -76,6 +76,8 @@
                 telefono: telefonoVal,
                 fechaRegistro: new Date().toISOString()
             };
+            
+            // Guardamos los datos reales en el navegador para que el perfil los lea
             localStorage.setItem('cla_user_session', JSON.stringify(userSession));
 
             const formData = new FormData(this);
@@ -86,8 +88,9 @@
             .then(response => response.json())
             .catch(error => console.log('Aviso enviado a Gmail:', error));
 
+            // Redirección corregida apuntando directo al repositorio Ecosistemausuarios
             setTimeout(() => {
-                window.location.href = 'perfilpersonal.html';
+                window.location.href = 'https://campusla.github.io/Ecosistemausuarios/perfilpersonal.html';
             }, 600);
         });
     </script>
