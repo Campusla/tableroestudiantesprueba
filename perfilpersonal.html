@@ -300,7 +300,7 @@
     </main>
 
     <!-- ========================================== -->
-    <!-- 4. SECCIÓN: CHAT FLOTANTE                 -->
+    <!-- 4. SECCIÓN: CHAT FLOTANTE                  -->
     <!-- ========================================== -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-header">
@@ -317,7 +317,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT             -->
+    <!-- 5. SECCIÓN: LÓGICA JAVASCRIPT              -->
     <!-- ========================================== -->
     <script>
         // Arreglo base por defecto para GitHub
@@ -369,10 +369,8 @@
                 });
             }
 
-            // Sincronizar y registrar al usuario actual en la red de comunidad local
             sincronizarComunidadLocal(user);
 
-            // CONEXIÓN INTELIGENTE: Intenta jalar de cPanel; si está en GitHub usa el almacenamiento local compartido
             fetch('obtener_estudiantes.php')
                 .then(response => response.json())
                 .then(res => {
@@ -392,7 +390,6 @@
         function sincronizarComunidadLocal(user) {
             let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
             
-            // Extraer categoría principal o meta de estudio de su biografía
             let categoriaDetectada = "Maestría";
             let bioTexto = user.bio || "";
             let bioLower = bioTexto.toLowerCase();
@@ -411,7 +408,6 @@
                 img: user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
             };
 
-            // Buscar si ya existe y actualizarlo, o agregarlo
             let index = comunidadLocal.findIndex(item => item.id === user.email);
             if(index >= 0) {
                 comunidadLocal[index] = perfilActualizado;
@@ -423,12 +419,8 @@
 
         function cargarComunidadLocal() {
             let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
-            // Fusionar base estática con perfiles creados localmente para que se crucen entre pestañas
             estudiantesComunidad = [...estudiantesComunidadBase, ...comunidadLocal];
-            
-            // Eliminar duplicados por email/id si los hubiera
             estudiantesComunidad = estudiantesComunidad.filter((v, i, a) => a.findIndex(t => (t.id === v.id || t.nombre === v.nombre)) === i);
-            
             renderizarEstudiantes(estudiantesComunidad);
         }
 
@@ -518,11 +510,14 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById(`g-img-${index}`).src = e.target.result;
-                document.getElementById(`g-img-${index}`).style.display = 'block';
-                document.getElementById(`g-text-${index}`).style.display = 'none';
+                const imgElem = document.getElementById(`g-img-${index}`);
+                const textElem = document.getElementById(`g-text-${index}`);
+                imgElem.src = e.target.result;
+                imgElem.style.display = 'block';
+                textElem.style.display = 'none';
+
                 let user = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                if (!user.gallery) user.gallery = ['', '', '', ''];
+                if (!user.gallery) user.gallery = [];
                 user.gallery[index] = e.target.result;
                 localStorage.setItem('cla_user_session', JSON.stringify(user));
             };
@@ -530,19 +525,21 @@
         }
 
         function guardarBioAuto() {
+            let bioText = document.getElementById('user-bio-input').value;
             let user = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-            user.bio = document.getElementById('user-bio-input').value;
+            user.bio = bioText;
             localStorage.setItem('cla_user_session', JSON.stringify(user));
             sincronizarComunidadLocal(user);
         }
 
         function guardarBioManual() {
             guardarBioAuto();
-            alert('¡Biografía guardada con éxito, mi bro!');
+            alert('¡Biografía actualizada y sincronizada con éxito en el panel!');
         }
 
         function cerrarSesion() {
             localStorage.removeItem('cla_user_session');
+            alert('Sesión cerrada correctamente.');
             window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
         }
     </script>
