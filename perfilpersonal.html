@@ -482,7 +482,7 @@
 
         function sincronizarUsuarioActualEnComunidad(user, comunidadLocal) {
             let categoriaDetectada = "Maestría";
-            let bioTexto = document.getElementById('user-bio-input').value || user.bio || "Estudiando y conectando en el ecosistema.";
+            let bioTexto = user.bio || "Estudiando y conectando en el ecosistema.";
             let bioLower = bioTexto.toLowerCase();
             
             if(bioLower.includes('matemática') || bioLower.includes('calculo') || bioLower.includes('exactas')) categoriaDetectada = "Matemáticas";
@@ -497,16 +497,15 @@
                 comunidadLocal[index].categoria = categoriaDetectada;
                 comunidadLocal[index].goal = bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA";
                 comunidadLocal[index].bio = bioTexto;
-                let avatarElem = document.getElementById('user-avatar-img');
-                if(avatarElem && avatarElem.src) {
-                    comunidadLocal[index].img = avatarElem.src;
+                if(user.avatar) {
+                    comunidadLocal[index].img = user.avatar;
                 }
             } else {
                 comunidadLocal.push({
                     id: user.email || "user@cla.edu",
                     nombre: user.nombre,
                     categoria: categoriaDetectada,
-                    goal: "Estudiante CLA",
+                    goal: bioTexto.split('-')[0] ? bioTexto.split('-')[0].trim().substring(0, 25) : "Estudiante CLA",
                     bio: bioTexto,
                     img: user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
                 });
@@ -535,16 +534,16 @@
             const grid = document.getElementById('gridEstudiantes');
             if(!grid) return;
             grid.innerHTML = '';
-            
-            let muestra = [...estudiantesComunidad].sort(() => 0.5 - Math.random()).slice(0, 6);
-            muestra.forEach(est => {
+            let copia = [...estudiantesComunidad].sort(() => 0.5 - Math.random());
+            let seleccionados = copia.slice(0, 6);
+
+            seleccionados.forEach(est => {
                 grid.innerHTML += `
                     <div class="estudiante-mini-card">
-                        <img src="${est.img}" alt="${est.nombre}">
                         <div>
+                            <img src="${est.img}" alt="${est.nombre}">
                             <h4>${est.nombre}</h4>
-                            <p><strong>Meta:</strong> ${est.goal || est.categoria}</p>
-                            <p>${est.bio.substring(0, 50)}...</p>
+                            <p><strong>${est.goal}</strong><br>${est.bio}</p>
                         </div>
                         <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>
                     </div>
@@ -556,21 +555,20 @@
             const grid = document.getElementById('gridEstudiantes');
             if(!grid) return;
             grid.innerHTML = '';
-            
             let filtrados = estudiantesComunidad.filter(e => e.categoria.toLowerCase() === cat.toLowerCase());
+
             if(filtrados.length === 0) {
-                grid.innerHTML = `<p style="grid-column: span 3; text-align: center; color: #606770;">No hay estudiantes registrados en esta categoría aún.</p>`;
+                grid.innerHTML = `<p style="grid-column: span 3; text-align:center; color:#606770; padding:20px;">No hay estudiantes registrados en esta categoría aún.</p>`;
                 return;
             }
 
             filtrados.forEach(est => {
                 grid.innerHTML += `
                     <div class="estudiante-mini-card">
-                        <img src="${est.img}" alt="${est.nombre}">
                         <div>
+                            <img src="${est.img}" alt="${est.nombre}">
                             <h4>${est.nombre}</h4>
-                            <p><strong>Meta:</strong> ${est.goal || est.categoria}</p>
-                            <p>${est.bio.substring(0, 50)}...</p>
+                            <p><strong>${est.goal}</strong><br>${est.bio}</p>
                         </div>
                         <button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>
                     </div>
@@ -578,35 +576,24 @@
             });
         }
 
-        function filtrarEstudiantes(cat, btn) {
+        function filtrarEstudiantes(cat, btnElem) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
+            if(btnElem) btnElem.classList.add('active-filter');
             categoriaActualFiltro = cat;
-            document.querySelectorAll('.filter-btn').forEach(b => {
-                if(!b.innerText.includes('DESCUBRE')) b.classList.remove('active-filter');
-            });
-            if(btn) btn.classList.add('active-filter');
-
-            if(cat === 'todos') {
-                iniciarRotacionAutomatica();
-            } else {
-                if(intervaloRotacion) clearInterval(intervaloRotacion);
-                renderizarEstudiantesFiltrados(cat);
-            }
+            renderizarVistaActual();
         }
 
         function recargarRotacionDirecta() {
-            if(categoriaActualFiltro === 'todos') {
-                renderizarEstudiantesRotativos();
-            }
+            filtrarEstudiantes('todos', document.querySelector('.filter-btn'));
         }
 
         function iniciarRotacionAutomatica() {
             if(intervaloRotacion) clearInterval(intervaloRotacion);
-            renderizarEstudiantesRotativos();
             intervaloRotacion = setInterval(() => {
                 if(categoriaActualFiltro === 'todos') {
                     renderizarEstudiantesRotativos();
                 }
-            }, 8000);
+            }, 12000);
         }
 
         function actualizarFotoPrincipal(event) {
@@ -616,10 +603,13 @@
                 reader.onload = function(e) {
                     const base64Img = e.target.result;
                     document.getElementById('user-avatar-img').src = base64Img;
+                    
                     let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
                     session.avatar = base64Img;
                     localStorage.setItem('cla_user_session', JSON.stringify(session));
+
                     sincronizarUsuarioActualEnComunidad(session, JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]'));
+                    alert('¡Foto principal actualizada con éxito!');
                 }
                 reader.readAsDataURL(file);
             }
@@ -633,14 +623,19 @@
                     const base64Img = e.target.result;
                     const imgElem = document.getElementById(`g-img-${index}`);
                     const textElem = document.getElementById(`g-text-${index}`);
-                    imgElem.src = base64Img;
-                    imgElem.style.display = 'block';
-                    textElem.style.display = 'none';
+                    
+                    if (imgElem && textElem) {
+                        imgElem.src = base64Img;
+                        imgElem.style.display = 'block';
+                        textElem.style.display = 'none';
+                    }
 
                     let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
-                    if(!session.gallery) session.gallery = [];
+                    if(!session.gallery) session.gallery = ["", "", "", ""];
                     session.gallery[index] = base64Img;
                     localStorage.setItem('cla_user_session', JSON.stringify(session));
+
+                    alert(`¡Foto ${index + 1} de la galería guardada!`);
                 }
                 reader.readAsDataURL(file);
             }
@@ -663,25 +658,36 @@
 
         function abrirModalPerfilCompleto() {
             const session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            
+            document.getElementById('preview-modal-avatar').src = session.avatar || document.getElementById('user-avatar-img').src;
             document.getElementById('preview-modal-name').innerText = session.nombre || 'Estudiante CLA';
             document.getElementById('preview-modal-email').innerText = session.email || 'correo@cla.edu';
-            document.getElementById('preview-modal-avatar').src = session.avatar || document.getElementById('user-avatar-img').src;
-            document.getElementById('preview-modal-bio').innerText = document.getElementById('user-bio-input').value || 'Sin biografía';
-            document.getElementById('preview-modal-intereses').innerText = document.getElementById('user-intereses').value || '-';
-            document.getElementById('preview-modal-deportes').innerText = document.getElementById('user-deportes').value || '-';
-            document.getElementById('preview-modal-libros').innerText = document.getElementById('user-libros').value || '-';
+            document.getElementById('preview-modal-bio').innerText = session.bio || document.getElementById('user-bio-input').value || 'Sin biografía registrada.';
+            document.getElementById('preview-modal-intereses').innerText = session.intereses || document.getElementById('user-intereses').value || '-';
+            document.getElementById('preview-modal-deportes').innerText = session.deportes || document.getElementById('user-deportes').value || '-';
+            document.getElementById('preview-modal-libros').innerText = session.libros || document.getElementById('user-libros').value || '-';
 
-            if(session.gallery) {
-                session.gallery.forEach((img, i) => {
-                    const pImg = document.getElementById(`preview-g-${i}`);
-                    if(img) {
-                        pImg.src = img;
-                        pImg.style.display = 'block';
-                    } else {
-                        pImg.style.display = 'none';
+            for(let i = 0; i < 4; i++) {
+                const previewImg = document.getElementById(`preview-g-${i}`);
+                let sourceImg = "";
+
+                if(session.gallery && session.gallery[i]) {
+                    sourceImg = session.gallery[i];
+                } else {
+                    const mainImg = document.getElementById(`g-img-${i}`);
+                    if(mainImg && mainImg.style.display === 'block' && mainImg.src) {
+                        sourceImg = mainImg.src;
                     }
-                });
+                }
+
+                if(sourceImg) {
+                    previewImg.src = sourceImg;
+                    previewImg.style.display = 'block';
+                } else {
+                    previewImg.style.display = 'none';
+                }
             }
+
             document.getElementById('profilePreviewModal').style.display = 'flex';
         }
 
@@ -689,8 +695,8 @@
             document.getElementById('profilePreviewModal').style.display = 'none';
         }
 
-        function abrirChat(nombre) {
-            document.getElementById('chatCompanionName').innerText = "Chat con " + nombre;
+        function abrirChat(nombrePersona) {
+            document.getElementById('chatCompanionName').innerText = "Chat con " + nombrePersona;
             document.getElementById('chatModal').style.display = 'flex';
         }
 
@@ -700,18 +706,279 @@
 
         function enviarMensaje() {
             const input = document.getElementById('chatInput');
-            const body = document.getElementById('chatBody');
-            if(input.value.trim() !== '') {
-                body.innerHTML += `<div class="chat-msg outgoing">${input.value}</div>`;
-                input.value = '';
-                body.scrollTop = body.scrollHeight;
-            }
+            const texto = input.value.trim();
+            if(!texto) return;
+
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML += `<div class="chat-msg outgoing">${texto}</div>`;
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            setTimeout(() => {
+                chatBody.innerHTML += `<div class="chat-msg incoming">¡Mensaje recibido! Estarán coordinando pronto.</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
         }
 
         function cerrarSesion() {
-            localStorage.removeItem('cla_user_session');
-            window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
+            if(confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                localStorage.removeItem('cla_user_session');
+                window.location.href = 'https://campusla.github.io/tableroestudiantesprueba/';
+            }
         }
     </script>
 </body>
+<script>
+    // --- BLOQUE MAESTRO ACTUALIZADO CON BOTÓN DE CONECTAR ---
+    function abrirPerfilEstudiante(nombreEstudiante) {
+        let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+        let estudiante = comunidadLocal.find(e => e.nombre === nombreEstudiante);
+
+        if (!estudiante) {
+            let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            if (session.nombre === nombreEstudiante) {
+                estudiante = {
+                    nombre: session.nombre,
+                    email: session.email || 'correo@cla.edu',
+                    bio: session.bio || 'Sin biografía registrada.',
+                    intereses: session.intereses || '-',
+                    deportes: session.deportes || '-',
+                    libros: session.libros || '-',
+                    img: session.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
+                    gallery: session.gallery || ["", "", "", ""]
+                };
+            } else {
+                return;
+            }
+        }
+
+        const modalAvatar = document.getElementById('preview-modal-avatar');
+        const modalName = document.getElementById('preview-modal-name');
+        const modalEmail = document.getElementById('preview-modal-email');
+        const modalBio = document.getElementById('preview-modal-bio');
+        const modalIntereses = document.getElementById('preview-modal-intereses');
+        const modalDeportes = document.getElementById('preview-modal-deportes');
+        const modalLibros = document.getElementById('preview-modal-libros');
+
+        if (modalAvatar) modalAvatar.src = estudiante.img || estudiante.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300";
+        if (modalName) modalName.innerText = estudiante.nombre || 'Estudiante CLA';
+        if (modalEmail) modalEmail.innerText = estudiante.email || estudiante.id || 'estudiante@cla.edu';
+        if (modalBio) modalBio.innerText = estudiante.bio || 'Sin biografía registrada.';
+        if (modalIntereses) modalIntereses.innerText = estudiante.intereses || '-';
+        if (modalDeportes) modalDeportes.innerText = estudiante.deportes || '-';
+        if (modalLibros) modalLibros.innerText = estudiante.libros || '-';
+
+        for (let i = 0; i < 4; i++) {
+            const previewImg = document.getElementById(`preview-g-${i}`);
+            if (previewImg) {
+                if (estudiante.gallery && estudiante.gallery[i]) {
+                    previewImg.src = estudiante.gallery[i];
+                    previewImg.style.display = 'block';
+                } else {
+                    previewImg.style.display = 'none';
+                }
+            }
+        }
+
+        // Inyectar o asegurar el botón de Conectar dinámicamente dentro del modal si no existe
+        const modalContent = document.querySelector('#profilePreviewModal .modal-content, #profilePreviewModal > div');
+        if (modalContent) {
+            let btnConectarModal = document.getElementById('btn-conectar-modal-dinamico');
+            if (!btnConectarModal) {
+                btnConectarModal = document.createElement('button');
+                btnConectarModal.id = 'btn-conectar-modal-dinamico';
+                btnConectarModal.className = 'btn-conectar-mini';
+                btnConectarModal.style.cssText = 'width: 100%; margin-top: 20px; padding: 12px; font-size: 15px; cursor: pointer;';
+                modalContent.appendChild(btnConectarModal);
+            }
+            btnConectarModal.innerHTML = `Conectar con ${estudiante.nombre} 💬`;
+            btnConectarModal.onclick = function() {
+                cerrarModalPerfilCompleto();
+                abrirChat(estudiante.nombre);
+            };
+        }
+
+        const modalPerfil = document.getElementById('profilePreviewModal');
+        if (modalPerfil) {
+            modalPerfil.style.display = 'flex';
+        }
+    }
+
+    // Automatizador para que cualquier tarjeta de la comunidad active el modal al hacer clic en su foto
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.estudiante-mini-card img, .comunidad-card img')) {
+            const nombreH4 = e.target.closest('.estudiante-mini-card, .comunidad-card')?.querySelector('h4')?.innerText;
+            if (nombreH4) {
+                abrirPerfilEstudiante(nombreH4);
+            }
+        }
+    });
+</script>
+<script>
+    // --- BLOQUE MAESTRO DEFINITIVO: PERFIL, 4 FOTOS Y CHAT PERSISTENTE POR PAREJA ---
+    
+    function abrirPerfilEstudiante(nombreEstudiante) {
+        let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+        let estudiante = comunidadLocal.find(e => e.nombre === nombreEstudiante);
+
+        if (!estudiante) {
+            let session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            if (session.nombre === nombreEstudiante) {
+                estudiante = {
+                    nombre: session.nombre,
+                    email: session.email || 'correo@cla.edu',
+                    bio: session.bio || 'Sin biografía registrada.',
+                    intereses: session.intereses || '-',
+                    deportes: session.deportes || '-',
+                    libros: session.libros || '-',
+                    img: session.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300",
+                    gallery: session.gallery || ["", "", "", ""]
+                };
+            } else {
+                return;
+            }
+        }
+
+        const modalAvatar = document.getElementById('preview-modal-avatar');
+        const modalName = document.getElementById('preview-modal-name');
+        const modalEmail = document.getElementById('preview-modal-email');
+        const modalBio = document.getElementById('preview-modal-bio');
+        const modalIntereses = document.getElementById('preview-modal-intereses');
+        const modalDeportes = document.getElementById('preview-modal-deportes');
+        const modalLibros = document.getElementById('preview-modal-libros');
+
+        if (modalAvatar) modalAvatar.src = estudiante.img || estudiante.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300";
+        if (modalName) modalName.innerText = estudiante.nombre || 'Estudiante CLA';
+        if (modalEmail) modalEmail.innerText = estudiante.email || estudiante.id || 'estudiante@cla.edu';
+        if (modalBio) modalBio.innerText = estudiante.bio || 'Sin biografía registrada.';
+        if (modalIntereses) modalIntereses.innerText = estudiante.intereses || '-';
+        if (modalDeportes) modalDeportes.innerText = estudiante.deportes || '-';
+        if (modalLibros) modalLibros.innerText = estudiante.libros || '-';
+
+        for (let i = 0; i < 4; i++) {
+            const previewImg = document.getElementById(`preview-g-${i}`);
+            if (previewImg) {
+                if (estudiante.gallery && estudiante.gallery[i]) {
+                    previewImg.src = estudiante.gallery[i];
+                    previewImg.style.display = 'block';
+                } else {
+                    previewImg.style.display = 'none';
+                }
+            }
+        }
+
+        const modalContent = document.querySelector('#profilePreviewModal .modal-content, #profilePreviewModal > div');
+        if (modalContent) {
+            let btnConectarModal = document.getElementById('btn-conectar-modal-dinamico');
+            if (!btnConectarModal) {
+                btnConectarModal = document.createElement('button');
+                btnConectarModal.id = 'btn-conectar-modal-dinamico';
+                btnConectarModal.className = 'btn-conectar-mini';
+                btnConectarModal.style.cssText = 'width: 100%; margin-top: 20px; padding: 12px; font-size: 15px; cursor: pointer;';
+                modalContent.appendChild(btnConectarModal);
+            }
+            btnConectarModal.innerHTML = `Conectar con ${estudiante.nombre} 💬`;
+            btnConectarModal.onclick = function() {
+                if(typeof cerrarModalPerfilCompleto === 'function') cerrarModalPerfilCompleto();
+                iniciarChatConUsuario(estudiante.nombre);
+            };
+        }
+
+        const modalPerfil = document.getElementById('profilePreviewModal');
+        if (modalPerfil) {
+            modalPerfil.style.display = 'flex';
+        }
+    }
+
+    function iniciarChatConUsuario(nombreCompañero) {
+        const session = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+        const miNombre = session.nombre || 'Usuario';
+        
+        const chatKey = `cla_chat_${[miNombre, nombreCompañero].sort().join('_')}`;
+        
+        const chatModal = document.getElementById('chatModal');
+        const chatCompanion = document.getElementById('chatCompanionName');
+        const chatBody = document.getElementById('chatBody');
+
+        if(chatCompanion) chatCompanion.innerText = "Chat con " + nombreCompañero;
+        
+        if(chatBody) {
+            const mensajesGuardados = JSON.parse(localStorage.getItem(chatKey) || '[]');
+            chatBody.innerHTML = '';
+            
+            if(mensajesGuardados.length === 0) {
+                chatBody.innerHTML = `<div class="chat-msg incoming" style="text-align:center; color:#666;">Inicia una conversación con ${nombreCompañero}</div>`;
+            } else {
+                mensajesGuardados.forEach(m => {
+                    const clase = m.remitente === miNombre ? 'outgoing' : 'incoming';
+                    chatBody.innerHTML += `<div class="chat-msg ${clase}">${m.texto}</div>`;
+                });
+            }
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        if(chatModal) chatModal.style.display = 'flex';
+
+        window.chatActivoKey = chatKey;
+        window.chatDestinatario = nombreCompañero;
+        window.miNombreActual = miNombre;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputChat = document.getElementById('chatInput');
+
+        const enviarLogica = () => {
+            if(!inputChat || !window.chatActivoKey) return;
+            const texto = inputChat.value.trim();
+            if(!texto) return;
+
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML += `<div class="chat-msg outgoing">${texto}</div>`;
+            
+            let mensajesGuardados = JSON.parse(localStorage.getItem(window.chatActivoKey) || '[]');
+            mensajesGuardados.push({ remitente: window.miNombreActual, texto: texto, tiempo: Date.now() });
+            localStorage.setItem(window.chatActivoKey, JSON.stringify(mensajesGuardados));
+
+            inputChat.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            setTimeout(() => {
+                mensajesGuardados = JSON.parse(localStorage.getItem(window.chatActivoKey) || '[]');
+                const respuestaAuto = { remitente: window.chatDestinatario, texto: `¡Hola ${window.miNombreActual}! Recibí tu mensaje, hablemos por acá.`, tiempo: Date.now() };
+                mensajesGuardados.push(respuestaAuto);
+                localStorage.setItem(window.chatActivoKey, JSON.stringify(mensajesGuardados));
+
+                chatBody.innerHTML += `<div class="chat-msg incoming">${respuestaAuto.texto}</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1200);
+        };
+
+        if(inputChat) {
+            inputChat.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter') enviarLogica();
+            });
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.estudiante-mini-card img, .comunidad-card img')) {
+            const nombreH4 = e.target.closest('.estudiante-mini-card, .comunidad-card')?.querySelector('h4')?.innerText;
+            if (nombreH4) {
+                abrirPerfilEstudiante(nombreH4);
+            }
+        }
+        
+        if (e.target.matches('.btn-conectar-mini') && !e.target.id.includes('dinamico')) {
+            const card = e.target.closest('.estudiante-mini-card, .comunidad-card');
+            if(card) {
+                const nombreH4 = card.querySelector('h4')?.innerText;
+                if(nombreH4) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    iniciarChatConUsuario(nombreH4);
+                }
+            }
+        }
+    });
+</script>    
 </html>
