@@ -980,5 +980,84 @@
             }
         }
     });
+</script>
+<script>
+    (function() {
+        window.addEventListener('DOMContentLoaded', () => {
+            const seccionComunidad = document.getElementById('comunidad-estudiantes');
+            if (!seccionComunidad) return;
+            if (document.getElementById('gridNuevosPerfilesDinamicos')) return;
+
+            const wrapperAparte = document.createElement('div');
+            wrapperAparte.style.cssText = "margin-top: 40px; border-top: 2px dashed #ccd0d5; padding-top: 25px;";
+            wrapperAparte.innerHTML = `
+                <h3 style="font-size: 16px; color: var(--primary-blue); margin-bottom: 15px;">🌟 Nuevos Miembros Registrados en la Red (En Vivo)</h3>
+                <div class="feed-estudiantes-grid" id="gridNuevosPerfilesDinamicos"></div>
+            `;
+            seccionComunidad.appendChild(wrapperAparte);
+            sincronizarYEjecutarRed();
+        });
+
+        function sincronizarYEjecutarRed() {
+            let sessionActual = JSON.parse(localStorage.getItem('cla_user_session') || '{}');
+            let comunidadGlobal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+
+            if (sessionActual.email || sessionActual.nombre) {
+                let bioTexto = sessionActual.bio || "Estudiando y conectando en el ecosistema.";
+                let catDetectada = "Maestría";
+                let bioLower = bioTexto.toLowerCase();
+                
+                if(bioLower.includes('matemática') || bioLower.includes('calculo') || bioLower.includes('exactas')) catDetectada = "Matemáticas";
+                else if(bioLower.includes('derecho') || bioLower.includes('leyes')) catDetectada = "Derecho";
+                else if(bioLower.includes('idioma') || bioLower.includes('ingles') || bioLower.includes('toefl')) catDetectada = "Idiomas";
+                else if(bioLower.includes('social') || bioLower.includes('sociologia')) catDetectada = "Sociales";
+
+                let datosPropios = {
+                    id: sessionActual.email || "user@cla.edu",
+                    nombre: sessionActual.nombre || "Estudiante CLA",
+                    categoria: catDetectada,
+                    goal: bioTexto.substring(0, 30) + "...",
+                    bio: bioTexto,
+                    img: sessionActual.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300"
+                };
+
+                let index = comunidadGlobal.findIndex(item => item.id === datosPropios.id || item.nombre === datosPropios.nombre);
+                if (index >= 0) {
+                    comunidadGlobal[index] = datosPropios;
+                } else {
+                    comunidadGlobal.push(datosPropios);
+                }
+                localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadGlobal));
+            }
+
+            const contenedor = document.getElementById('gridNuevosPerfilesDinamicos');
+            if (!contenedor) return;
+            contenedor.innerHTML = '';
+
+            if (comunidadGlobal.length === 0) {
+                contenedor.innerHTML = `<p style="grid-column: span 3; text-align: center; color: #606770;">Aún no hay perfiles en la red compartida.</p>`;
+                return;
+            }
+
+            comunidadGlobal.forEach(est => {
+                let esUnoMismo = (sessionActual.email && est.id === sessionActual.email);
+                let badgeTexto = esUnoMismo ? "TÚ (ACTIVO)" : "CONECTADO";
+                let badgeColor = esUnoMismo ? "var(--success-green)" : "var(--accent-blue)";
+
+                contenedor.innerHTML += `
+                    <div class="estudiante-mini-card" style="border: 2px solid ${badgeColor};">
+                        <img src="${est.img}" alt="${est.nombre}">
+                        <div>
+                            <span style="background: ${badgeColor}; color: white; font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: bold;">${badgeTexto}</span>
+                            <h4 style="margin-top: 5px;">${est.nombre}</h4>
+                            <p><strong>Meta:</strong> ${est.goal || est.categoria}</p>
+                            <p>${(est.bio || '').substring(0, 45)}...</p>
+                        </div>
+                        ${!esUnoMismo ? `<button class="btn-conectar-mini" onclick="abrirChat('${est.nombre}')">Conectar 💬</button>` : `<button class="btn-conectar-mini" style="background:#4b4f56;" disabled>Tu Perfil</button>`}
+                    </div>
+                `;
+            });
+        }
+    })();
 </script>    
 </html>
