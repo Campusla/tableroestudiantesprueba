@@ -428,7 +428,7 @@
             btnElement.classList.add('active');
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        sincronizarUsuarioActualEnComunidad('DOMContentLoaded', () => {
             const sessionData = localStorage.getItem('cla_user_session');
             if (!sessionData) {
                 alert('No hay una sesión activa. Redirigiendo al tablero...');
@@ -511,6 +511,7 @@
                 });
             }
             localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
+            cargarComunidadCompleta();
         }
 
         function cargarComunidadCompleta() {
@@ -529,6 +530,25 @@
                 renderizarEstudiantesFiltrados(categoriaActualFiltro);
             }
         }
+
+        function cargarComunidadCompleta() {
+            let comunidadLocal = JSON.parse(localStorage.getItem('cla_comunidad_usuarios') || '[]');
+            if(comunidadLocal.length === 0) {
+                comunidadLocal = estudiantesComunidadBase;
+            }
+            estudiantesComunidad = comunidadLocal;
+            renderizarVistaActual();
+        }
+
+        function renderizarVistaActual() {
+            if(categoriaActualFiltro === 'todos') {
+                renderizarEstudiantesRotativos();
+            } else {
+                renderizarEstudiantesFiltrados(categoriaActualFiltro);
+            }
+        localStorage.setItem('cla_comunidad_usuarios', JSON.stringify(comunidadLocal));
+        cargarComunidadCompleta();
+    }
 
         function renderizarEstudiantesRotativos() {
             const grid = document.getElementById('gridEstudiantes');
