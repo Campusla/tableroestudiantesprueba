@@ -999,8 +999,8 @@
             `;
             seccionComunidad.appendChild(wrapperAparte);
 
-            // Consumimos el PHP mediante Fetch API
-            fetch('obtener_estudiantes.php')
+            // Consumimos el PHP mediante Fetch API apuntando a la ruta de cPanel
+            fetch('https://www.campuslatinoamerica.edu.co/Redsocial/obtener_estudiantes.php')
                 .then(response => response.json())
                 .then(resultado => {
                     const contenedor = document.getElementById('gridNuevosPerfilesDinamicos');
